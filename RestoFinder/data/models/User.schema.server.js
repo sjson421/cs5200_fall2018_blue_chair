@@ -52,6 +52,7 @@ const UserSchema = new Schema({
     required: true
   },
   // can remove this field
+  // Add enum in userType
   userType: {
     type: String
   },
