@@ -1,4 +1,4 @@
-const mongoose require('mongoose');
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const OwnerSchema = require('./Owner.schema.server');
@@ -57,7 +57,7 @@ const UserSchema = new Schema({
   },
   owner: OwnerSchema,
   critic: CriticSchema,
-  RegisteredUser: RegisteredUserScehma, 
+  RegisteredUser: RegisteredUserScehma,
   date: {
     type: Date,
     default: Date.now
