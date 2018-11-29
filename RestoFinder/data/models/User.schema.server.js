@@ -1,6 +1,9 @@
 const mongoose require('mongoose');
 
 const Schema = mongoose.Schema;
+const OwnerSchema = require('./Owner.schema.server');
+const CriticSchema = require('./Critic.schema.server');
+const RegisteredUserScehma = require('./RegisteredUser.schema.server');
 
 const UserSchema = new Schema({
   username: {
@@ -52,14 +55,9 @@ const UserSchema = new Schema({
   userType: {
     type: String
   },
-  ownerSchema: {
-    type: Schema.Types.ObjectId,
-    ref: 'owners'
-  },
-  criticSchema: {
-    type: Schema.Types.ObjectId,
-    ref: 'critics'
-  },
+  owner: OwnerSchema,
+  critic: CriticSchema,
+  RegisteredUser: RegisteredUserScehma, 
   date: {
     type: Date,
     default: Date.now

@@ -9,8 +9,20 @@ const CriticSchema = new Schema({
       type: String,
       required: true
     }
-
-  }
+  },
+  // an endorse array and follow array not sure
+  reviews: [{
+    type: Schema.Types.ObjectId,
+    ref: 'reviews'
+  }],
+  follows: [{
+    type: Schema.Types.ObjectId,
+    ref: 'follows'
+  }],
+  endorse: [{
+    type: Schema.Types.ObjectId,
+    ref: 'endorses'
+  }]
 })
 
-module.exports = Critic = mongoose.model('critics', CriticSchema)
+module.exports = CriticSchema;
