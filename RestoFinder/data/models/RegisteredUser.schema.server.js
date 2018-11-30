@@ -1,29 +1,30 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-
 const RegisteredUserSchema = new Schema({
-  favouritesList: {
-    name: {
-      type: String,
-      required: true
-    },
-    restaurants: [{
+  // Have various favorities list
+  favouritesList: [
+    {
+      name: {
+        type: String,
+        required: true
+      },
+      restaurants: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Restaurant"
+        }
+      ]
+    }
+  ],
+  // Follows critics and registered users
+  follows: [
+    {
       type: Schema.Types.ObjectId,
-      ref: 'restaurants'
-    }]
-  },
-  reviews: [{
-    type: Schema.Types.ObjectId,
-    ref: 'reviews'
-  }],
-  // not sure of this
-  follows: [{
-    type: Schema.Types.ObjectId,
-    ref: 'follows'
-  }]
+      ref: "User"
+    }
+  ]
 });
-
 
 module.exports = RegisteredUserSchema;
