@@ -22,6 +22,6 @@ mongoose.connect(db)
 app.get('/', (req, res) => res.send('Hello world whatsup'));
 app.use('/api/users', user);
 
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server running on ${port}`));
