@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Restaurant = require("../data/models/Restaurant.schema.server");
 
-router.get("/test", (req, res) => res.json({ msg: "User works" }));
-
 // post restaurant
 router.post("/", async (req, res) => {
   try {
@@ -111,10 +109,10 @@ router.put("/:id", async (req, res) => {
 });
 
 // delete restaurant
-router.delete("/:id", async (req,res) => {
+router.delete("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    var restaurant = await Restaurant.find({_id:id});
+    var restaurant = await Restaurant.find({ _id: id });
     restaurant = restaurant[0];
     if (!restaurant) return res.status(404).send("Object not found");
     const result = await Restaurant.deleteOne({ _id: restaurant._id });

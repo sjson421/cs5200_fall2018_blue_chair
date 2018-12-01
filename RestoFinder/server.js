@@ -19,7 +19,8 @@ mongoose.connect(db)
         .catch(err => console.log(err));
 
 
-app.get('/', (req, res) => res.send('Hello world whatsup'));
+app.use(express.static(__dirname + '/public')); 
+//app.get('/', (req, res) => res.send('Hello world whatsup'));
 app.use('/api/users', user);
 app.use('/api/restaurant', restaurant);
 const port = process.env.PORT || 5000;
