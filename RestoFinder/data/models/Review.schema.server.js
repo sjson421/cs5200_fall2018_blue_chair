@@ -15,7 +15,8 @@ const ReviewSchema = new Schema(
     rating: Number,
     text: String,
     time_create: String,
-    url: String
+    url: String,
+    yelp_review: Boolean
   },
   { collection: "reviews" }
 );

@@ -16,6 +16,7 @@
     "mongoose": "^5.3.13",
     "morgan": "^1.9.1",
     "nodemon": "^1.17.5",
+    "sleep": "^5.2.3",
     "yelp-fusion": "^2.2.1"
   }
 }
