@@ -4,7 +4,7 @@
         .module("RestoFinder")
         .controller("HomeController", function ($rootScope, $scope, $http) {
             $scope.testvar = "Angular Working";
-            var data = "../../models/TODO";
+            var data = "/restaurant";
 
             $http.get(data)
                 .then(function (response) {
