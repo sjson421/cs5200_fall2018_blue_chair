@@ -104,11 +104,62 @@ router.post('/register', (req, res) => {
       });
 });
 
+
+
+// login
+router.post('/login', (req, res) => {
+  if(req.body.username == '' || req.body.password == '')
+    return res.status(400).json({login: 'Username or password is empty'});
+
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.findOne({username})
+      .then(user => {
+        if(!user) {
+          return res.status(404).json({username: 'User not found'});
+        }
+        bcrypt.compare(password, user.password)
+              .then(isMatch => {
+                if(isMatch)
+                  res.json({msg: 'Success'});
+                else
+                  return res.status(400).json({password: 'Password wrong'});
+              });
+      });
+});
+
 // get all users
 router.get("/all", async (req, res) => {
   try {
     const users = await User.find();
     res.send(users);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+// get by id
+router.get("/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+    const user = await User.find({ _id: id });
+    res.send(user);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+// delete a user by id
+router.delete("/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+    var user = await User.find({ _id: id });
+    if (!user) return res.status(404).send("User not found");
+    const result = await User.deleteOne({ _id: user._id });
+    res.send(result);
   } catch (err) {
     res.status(400).send(err);
   }
