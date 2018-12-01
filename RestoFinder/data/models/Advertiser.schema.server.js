@@ -7,7 +7,7 @@ const AdvertiserSchema = new Schema({
           type: String,
           required: true
         },
-        postion: String
+        position: String
     },
     payment: {
         credit_card_number: {
@@ -27,7 +27,7 @@ const AdvertiserSchema = new Schema({
             required: true
         }
     }
-    
+
 });
 
 module.exports = AdvertiserSchema;

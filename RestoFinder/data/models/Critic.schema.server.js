@@ -9,7 +9,7 @@ const CriticSchema = new Schema({
       type: String,
       required: true
     },
-    postion: String
+    position: String
   },
 
   // Follows another critics which are type of user
