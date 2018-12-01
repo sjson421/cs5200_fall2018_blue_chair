@@ -48,6 +48,7 @@ router.get("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     const event = await Event.find({ _id: id });
+    res.send(event);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -60,7 +61,7 @@ router.put("/:id", async (req, res) => {
     var event = await Event.find({ _id: id });
     event = event[0];
     if (!event) return res.status(404).send("Object not found");
-    let userId = req.body.user;
+    let userId = req.body.owner;
     let restaurantId = req.body.restaurant;
     const user = await User.findOne({ _id: userId });
     if (!user) return res.status(404).send("Invalid User");

@@ -43,6 +43,7 @@ router.get("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     const review = await Review.find({ _id: id });
+    res.send(review);
   } catch (err) {
     res.status(400).send(err);
   }

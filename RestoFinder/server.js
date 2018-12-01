@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 
 const user = require('./routes/user');
 const restaurant = require('./routes/restaurant');
+const event = require('./routes/event');
+const advertisement = require('./routes/advertisement');
+const review = require('./routes/review');
 const app = express();
 
 
@@ -21,8 +24,12 @@ mongoose.connect(db)
 
 app.use(express.static(__dirname + '/public')); 
 //app.get('/', (req, res) => res.send('Hello world whatsup'));
-app.use('/api/users', user);
+app.use('/api/user', user);
 app.use('/api/restaurant', restaurant);
+app.use('/api/event', event);
+app.use('/api/review',review);
+app.use('/api/advertisement', advertisement);
+
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server running on ${port}`));

@@ -53,6 +53,7 @@ router.get("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     const restaurant = await Restaurant.find({ _id: id });
+    res.send(restaurant);
   } catch (err) {
     res.status(400).send(err);
   }
