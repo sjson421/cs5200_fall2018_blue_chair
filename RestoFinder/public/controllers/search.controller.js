@@ -1,8 +1,7 @@
 (function () {
     angular
         .module("RestoFinder")
-        .controller("HomeController", function ($rootScope, $scope, $http) {
-            $scope.testvar = "Angular Working";
+        .controller("SearchController", function ($rootScope, $scope, $http) {
             var data = "http://localhost:5000/api/restaurant";
 
             $http.get(data)

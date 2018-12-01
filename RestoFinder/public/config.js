@@ -16,7 +16,11 @@
                 templateUrl: "./home.view.html",
                 controller: "HomeController"
             })
-            
+        $routeProvider
+            .when("/search", {
+                templateUrl: "./search.html",
+                controller: "SearchController"
+            })
     }
 
 })();

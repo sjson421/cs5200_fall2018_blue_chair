@@ -29,6 +29,58 @@
     <link rel="stylesheet" href="../css/magnific-popup.css">
     <!-- Main CSS -->
     <link rel="stylesheet" href="../css/style.css">
+
+
+
+
+    <!-- jQuery, Bootstrap JS. -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- Magnific popup JS -->
+    <script src="../js/jquery.magnific-popup.js"></script>
+    <!-- Swipper Slider JS -->
+    <script src="../js/swiper.min.js"></script>
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 3,
+            slidesPerGroup: 3,
+            loop: true,
+            loopFillGroupWithBlank: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    </script>
+    <script>
+        if ($('.image-link').length) {
+            $('.image-link').magnificPopup({
+                type: 'image',
+                gallery: {
+                    enabled: true
+                }
+            });
+        }
+        if ($('.image-link2').length) {
+            $('.image-link2').magnificPopup({
+                type: 'image',
+                gallery: {
+                    enabled: true
+                }
+            });
+        }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <script src="../app.js"></script>
+    <script src="../config.js"></script>
+    <script src="../controllers/home.controller.js"></script>
 </head>
 
 <body>
@@ -38,7 +90,7 @@
         <div class="row">
             <div class="col-md-12">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="navbar-brand" href="index.view.html">Listing</a>
+                    <a class="navbar-brand" href="index.html">Listing</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="icon-menu"></span>
                     </button>
@@ -96,104 +148,21 @@
 <section class="light-bg booking-details_wrap">
     <div class="container">
         <div class="row">
-            <div class="col-md-4 responsive-wrap">
-
-                <div class="follow">
-                    <div class="follow-img">
-                        <img src="../images/follow-img.jpg" class="img-fluid" alt="#">
-                        <h6>Christine Evans</h6>
-                        <span>New York I'm so sick of this woman's face</span>
-                    </div>
-                    <ul class="social-counts">
-                        <li>
-                            <h6>26</h6>
-                            <span>Listings</span>
-                        </li>
-                        <li>
-                            <h6>326</h6>
-                            <span>Followers</span>
-                        </li>
-                        <li>
-                            <h6>12</h6>
-                            <span>Followers</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
             <div class="col-md-8 responsive-wrap">
-                <div class="booking-checkbox_wrap">
-                    <div class="booking-checkbox">
-                        <h4>About Me</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus et velit maximus,
-                            mattis sem ac, semper eros. Aenean ex justo, fringilla sed lorem eu, sagittis elementum risus.
-                            Maecenas imperdiet metus vitae tellus efficitur vulputate. Fusce scelerisque dignissim neque, non facilisis
-                            felis hendrerit molestie. Nullam consectetur sollicitudin velit a interdum. </p>
-
-                        <p>
-                            Duis non congue arcu, et viverra turpis.
-                            Donec rutrum tellus molestie odio condimentum vulputate. Morbi ac magna vel nisi consequat suscipit.
-                            Suspendisse efficitur leo mauris, in imperdiet eros porttitor eu. Integer quis orci facilisis, posuere ante a,
-                            mollis eros. Cras aliquet est lacus, eget ornare eros sodales eu.
-
-                        </p>
-                        <hr>
-                    </div>
-                </div>
                 <div class="main-block light-bg">
 
-                    <h5>Reviews</h5>
-                    <hr>
-                    <div class="customer-review_wrap">
-                                <div class="customer-review">
-                                    <h6>Best noodles in the Newyork city</h6>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span class="round-icon-blank"></span>
-                                    <p>Reviewed 2 days ago</p>
-                                </div>
-                                <div class="customer-rating">8.0</div>
-                            </div>
-                            <p class="customer-text">I love the noodles here but it is so rare that I get to come here. Tasty Hand-Pulled Noodles is the best type of whole in the wall restaurant. The staff are really nice, and you should be seated quickly. I usually get the
-                                hand pulled noodles in a soup. House Special #1 is amazing and the lamb noodles are also great. If you want your noodles a little chewier, get the knife cut noodles, which are also amazing. Their dumplings are great
-                                dipped in their chili sauce.
-                            </p>
-                            <p class="customer-text">I love how you can see into the kitchen and watch them make the noodles and you can definitely tell that this is a family run establishment. The prices are are great with one dish maybe being $9. You just have to remember
-                                to bring cash.
-                            </p>
-
-                    <hr>
                     <ul class="">
                         <div class="follow-img">
                             <h6>
-                                Followers
+                                Restaurants
                             </h6>
                             <hr>
                             <!-- TODO fix this later -->
                             <table class="">
                                 <tbody>
-                                <tr ng-repeat="f in followed">
-                                    <td><img src={{f.imgUrl}} class="img-fluid" alt="#"></td>
-                                    <td><a href={{f.url}}>{{f.firstName f.lastName}}</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </ul>
-                    <ul class="">
-                        <div class="follow-img">
-                            <h6>
-                                Followed
-                            </h6>
-                            <hr>
-                            <!-- TODO fix this later -->
-                            <table class="">
-                                <tbody>
-                                <tr ng-repeat="dataModel in followed">
-                                    <td><img src="../images/customer-img1.jpg" class="img-fluid" alt="#"></td>
-                                    <td><a href="#">{{dataModel.firstName dataModel.lastName}}</a></td>
+                                <tr ng-repeat="r in restaurants">
+                                    <td><img src={{r.imgUrl}} class="img-fluid" alt="#"></td>
+                                    <td><a href={{r.url}}>{{r.name}}</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -226,54 +195,6 @@
     </div>
 </footer>
 <!--//END FOOTER -->
-
-
-
-
-<!-- jQuery, Bootstrap JS. -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="../js/jquery-3.2.1.min.js"></script>
-<script src="../js/popper.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<!-- Magnific popup JS -->
-<script src="../js/jquery.magnific-popup.js"></script>
-<!-- Swipper Slider JS -->
-<script src="../js/swiper.min.js"></script>
-<script>
-    var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 3,
-        slidesPerGroup: 3,
-        loop: true,
-        loopFillGroupWithBlank: true,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-    });
-</script>
-<script>
-    if ($('.image-link').length) {
-        $('.image-link').magnificPopup({
-            type: 'image',
-            gallery: {
-                enabled: true
-            }
-        });
-    }
-    if ($('.image-link2').length) {
-        $('.image-link2').magnificPopup({
-            type: 'image',
-            gallery: {
-                enabled: true
-            }
-        });
-    }
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 </body>
 
 </html>

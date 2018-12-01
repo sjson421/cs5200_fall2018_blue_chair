@@ -11,14 +11,14 @@
   "author": "Jay Son, Rishabh Malik, Tejas Parab",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
-    "express": "^4.16.3",
-    "mongoose": "^5.3.13",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.3.14",
     "morgan": "^1.9.1",
     "nodemon": "^1.17.5",
     "sleep": "^5.2.3",
-    "yelp-fusion": "^2.2.1",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^8.3.0"
+    "yelp-fusion": "^2.2.1"
   }
 }
