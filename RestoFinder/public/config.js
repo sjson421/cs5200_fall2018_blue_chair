@@ -13,11 +13,11 @@
 
         $routeProvider
             .when("/", {
-                templateUrl: "./home.view.html",
+                templateUrl: "./views/home.view.html",
                 controller: "HomeController"
             })
             .when("/search", {
-                templateUrl: "./search.html",
+                templateUrl: "./views/search.html",
                 controller: "SearchController"
             })
     }
