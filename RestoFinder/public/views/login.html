@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--referenced from Jason Watmore-->
+<html ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <title>Login</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+</head>
+<body>
+
+<div class="jumbotron">
+    <div class="container">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+            <div ng-view></div>
+        </div>
+    </div>
+</div>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="//code.angularjs.org/1.6.0/angular.min.js"></script>
+<script src="//code.angularjs.org/1.6.0/angular-route.min.js"></script>
+<script src="//code.angularjs.org/1.6.0/angular-cookies.min.js"></script>
+
+<!-- add authentication service-->
+<!--some service here to deal with data-->
+<script src = ""></script>
+
+<script src="../app.js"></script>
+<script src="../login.js"></script>
+<script src="../controllers/login.controller.js"></script>
+<script src="../controllers/register.controller.js"></script>
+</body>
+</html>

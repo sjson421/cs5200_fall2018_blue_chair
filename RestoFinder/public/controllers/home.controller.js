@@ -9,7 +9,7 @@
                 .then(function (response) {
                     alert(response);
                 }, function (err) {
-                    alert('failure getting data');
+                    alert("error code " + err.status);
                 });
         });
 })();
