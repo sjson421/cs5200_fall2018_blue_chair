@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const User = require('../data/models/User.schema.server');
+const Review = require('../data/models/Review.schema.server');
 const bcrypt = require('bcryptjs');
 
 // Get user dao here
 router.get("/test", (req, res) => res.json({ msg: "User works" }));
 
-/// register User
+// register User
 router.post('/register', (req, res) => {
   User.findOne({username: req.body.username})
       .then(user => {
@@ -162,6 +163,27 @@ router.delete("/:id", async (req, res) => {
     res.send(result);
   } catch (err) {
     res.status(400).send(err);
+  }
+});
+
+//
+router.get('/:id/reviews', async (req, res) => {
+  try {
+    let id = req.params.id;
+    const user = await User.find({
+      _id: id
+    });
+    if (!user) return res.status(404).send("User not found");
+    else {
+      if (user.userType == 'OWNER' || user.userType == 'ADVERTISER')
+        res.send("No Reviews found");
+      else
+        const reviews = await Review.find({user: id});.populate('user').populate('comments.userId').exec();
+        res.send(reviews);
+    }
+  }
+  catch(err){
+      res.status(400).send(err);
   }
 });
 
