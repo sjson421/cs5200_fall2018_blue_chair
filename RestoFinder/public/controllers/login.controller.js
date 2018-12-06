@@ -1,4 +1,4 @@
-<!--referenced from Jason Watmore-->
+// <!--referenced from Jason Watmore-->
 (function () {
     'use strict';
 
