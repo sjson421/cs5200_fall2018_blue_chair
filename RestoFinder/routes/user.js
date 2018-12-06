@@ -122,7 +122,7 @@ router.post('/login', (req, res) => {
         bcrypt.compare(password, user.password)
               .then(isMatch => {
                 if(isMatch)
-                  res.json({msg: 'Success'});
+                  res.send(user);
                 else
                   return res.status(400).json({password: 'Password wrong'});
               });
