@@ -200,7 +200,7 @@ p {
 
 .btn-group1 {
   padding: 24px;
-  width: 40%;
+  width: 100%;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
   border: none; }
@@ -302,6 +302,9 @@ p {
 /* ==============================================================
    FEATURED PLACES
    ============================================================== */
+.search-text {
+  color: #ffffff;
+}
 .featured-place-wrap {
   background: #fff;
   margin: 0 0 30px;
