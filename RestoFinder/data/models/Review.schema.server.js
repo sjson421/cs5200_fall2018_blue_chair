@@ -16,7 +16,19 @@ const ReviewSchema = new Schema(
     text: String,
     time_create: String,
     url: String,
-    yelp_review: Boolean
+    yelp_review: Boolean,
+    comments: [
+      {
+        userId: {
+          type: Schema.Types.ObjectId,
+          ref: "User"
+        },
+        text: {
+          type: String,
+          required: true
+        }
+      }
+    ]
   },
   { collection: "reviews" }
 );

@@ -11,8 +11,16 @@ const OwnerSchema = new Schema({
     ref: "Restaurant"
   },
 
-  // Endorses owner type User
-  endorse: [
+  // Endorses other owner type User
+  endorses: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ],
+
+  // Endorsed By Owner and Critic
+  endorsedBy: [
     {
       type: Schema.Types.ObjectId,
       ref: "User"
@@ -25,7 +33,8 @@ const OwnerSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "User"
     }
-  ]
+  ] 
+
 });
 
 module.exports = OwnerSchema;

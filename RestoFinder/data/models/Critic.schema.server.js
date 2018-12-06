@@ -21,9 +21,18 @@ const CriticSchema = new Schema({
     }
   ],
 
+  // All users which follows this critic(many to many)
+  // have to do validation
+  followedBy: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ],
   // Endorses owner which are type of User
   // have to do some validation
-  endorse: [
+  // whenever there is a endorse in 
+  endorses: [
     {
       type: Schema.Types.ObjectId,
       ref: "User"

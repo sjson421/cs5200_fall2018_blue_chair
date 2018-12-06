@@ -4,22 +4,22 @@ const Schema = mongoose.Schema;
 
 const RegisteredUserSchema = new Schema({
   // Have various favorities list
-  favouritesList: [
+  favourites: [
     {
-      name: {
-        type: String,
-        required: true
-      },
-      restaurants: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "Restaurant"
-        }
-      ]
+      type: Schema.Types.ObjectId,
+      ref: "Restaurant"
     }
   ],
   // Follows critics and registered users
   follows: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ],
+
+  // Followed By only users
+  followedBy: [
     {
       type: Schema.Types.ObjectId,
       ref: "User"
