@@ -14,7 +14,8 @@ const RegisteredUserSchema = new Schema({
   follows: [
     {
       type: Schema.Types.ObjectId,
-      ref: "User"
+      ref: "User",
+      unique: true
     }
   ],
 
