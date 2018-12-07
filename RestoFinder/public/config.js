@@ -1,4 +1,4 @@
-(function(){
+(function () {
     angular
         .module("RestoFinder")
         .config(configuration);
@@ -40,6 +40,13 @@
                 templateUrl: "./views/admin.view.html",
                 controller: "AdminController"
             })
+            .when("/view-user", {
+                templateUrl: "./views/view-user.view.html",
+                controller: "ViewUserController"
+            })
+            .otherwise({
+                redirectTo: "/"
+            });
     }
 
 })();

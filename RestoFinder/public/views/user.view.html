@@ -4,24 +4,12 @@
         <div class="row">
             <div class="col-md-4 responsive-wrap">
                 <div class="follow">
-                    <div class="follow-img">
-                        <img src="../images/follow-img.jpg" class="img-fluid" alt="#">
-                        <h6>Christine Evans</h6>
-                        <span>New York</span>
-                    </div>
-                    <ul class="social-counts">
-                        <li>
-                            <h6>26</h6>
-                            <span>Listings</span>
-                        </li>
-                        <li>
-                            <h6>326</h6>
-                            <span>Followers</span>
-                        </li>
-                        <li>
-                            <h6>12</h6>
-                            <span>Followers</span>
-                        </li>
+                    <ul>
+                        <li>{{user.email}}</li>
+                        <li>{{user.password}}</li>
+                        <li>{{user.address}}</li>
+                        <li>{{user.phone}}</li>
+                        <li>{{user.type}}</li>
                     </ul>
                     <div><a href="/add-restaurant" class="btn btn-outline-light top-btn"><span class="ti-plus"></span>
                         Add
@@ -29,66 +17,21 @@
                 </div>
             </div>
             <div class="col-md-8 responsive-wrap">
-                <div class="booking-checkbox_wrap">
-                    <div class="booking-checkbox">
-                        <h4>About Me</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus et velit maximus,
-                            mattis sem ac, semper eros. Aenean ex justo, fringilla sed lorem eu, sagittis elementum
-                            risus.
-                            Maecenas imperdiet metus vitae tellus efficitur vulputate. Fusce scelerisque dignissim
-                            neque, non facilisis
-                            felis hendrerit molestie. Nullam consectetur sollicitudin velit a interdum. </p>
-
-                        <p>
-                            Duis non congue arcu, et viverra turpis.
-                            Donec rutrum tellus molestie odio condimentum vulputate. Morbi ac magna vel nisi consequat
-                            suscipit.
-                            Suspendisse efficitur leo mauris, in imperdiet eros porttitor eu. Integer quis orci
-                            facilisis, posuere ante a,
-                            mollis eros. Cras aliquet est lacus, eget ornare eros sodales eu.
-
-                        </p>
-                        <hr>
-                    </div>
-                </div>
                 <div class="main-block light-bg">
-
                     <h5>Reviews</h5>
                     <hr>
-                    <div class="customer-review_wrap">
-                        <div class="customer-review">
-                            <h6>Best noodles in the Newyork city</h6>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span class="round-icon-blank"></span>
-                            <p>Reviewed 2 days ago</p>
+                    <div ng-repeat="r in reviews">
+                        <div class="customer-review_wrap">
+                            <div class="customer-rating">{{r.rating}}</div>
                         </div>
-                        <div class="customer-rating">8.0</div>
+                        <p class="customer-text">{{review.text}}</p>
+                        </br>
                     </div>
-                    <p class="customer-text">I love the noodles here but it is so rare that I get to come here. Tasty
-                        Hand-Pulled Noodles is the best type of whole in the wall restaurant. The staff are really nice,
-                        and you should be seated quickly. I usually get the
-                        hand pulled noodles in a soup. House Special #1 is amazing and the lamb noodles are also great.
-                        If you want your noodles a little chewier, get the knife cut noodles, which are also amazing.
-                        Their dumplings are great
-                        dipped in their chili sauce.
-                    </p>
-                    <p class="customer-text">I love how you can see into the kitchen and watch them make the noodles and
-                        you can definitely tell that this is a family run establishment. The prices are are great with
-                        one dish maybe being $9. You just have to remember
-                        to bring cash.
-                    </p>
-                    </br>
                     <hr>
-                    <h5>
-                        Following
-                    </h5>
+                    <h5>Following</h5>
                     <ul class="">
                         <ul ng-repeat="f in following">
-                            <li><a href=/#!/user/{{f.username}}>{{f.username}}</a></li>
+                            <li><a href=/#!/view-user>{{f.username}}</a></li>
                         </ul>
                     </ul>
                     <hr>

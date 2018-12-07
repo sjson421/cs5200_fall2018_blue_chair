@@ -831,7 +831,7 @@ footer {
 .customer-rating {
   background: #46cd38;
   padding: 8px 14px;
-  float: right;
+  float: left;
   font-size: 18px;
   color: #fff;
   border-radius: 3px; }
@@ -897,9 +897,9 @@ footer {
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
     -webkit-justify-content: space-around;
     -ms-flex-pack: distribute;
     justify-content: space-around;
@@ -907,7 +907,7 @@ footer {
     .follow ul li {
       list-style: none;
       padding: 13px 0;
-      width: 33%; }
+      width: 100%; }
       @media (max-width: 1200px) {
         .follow ul li {
           padding: 12px 18px; } }
@@ -923,14 +923,6 @@ footer {
     font-weight: 400;
     padding: 14px 0; }
 
-.follow-img {
-  text-align: center;
-  padding: 20px 16px;
-  color: #3e434b; }
-  .follow-img img {
-    border-radius: 50%; }
-  .follow-img h6 {
-    margin: 11px 0 0; }
 
 .social-counts span {
   font-size: 14px;

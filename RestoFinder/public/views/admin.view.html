@@ -53,84 +53,6 @@
     <hr>
     <div>
         <h5>
-            Follows
-        </h5>
-        <hr>
-        <button class="btn btn-outline-primary" ng-click="showHideFollows()">View Follows</button>
-        <div ng-show="isVisibleFollows">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Follow</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="f in follows">
-                    <td>
-                        <a href=/#!/follow/:{{f._id}}>{{f.name}}</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <!-- need a create page for each -->
-            <button class="btn btn-success" ng-click="createFollow()">Create</button>
-        </div>
-    </div>
-    <hr>
-    <div>
-        <h5>
-            Favorites
-        </h5>
-        <hr>
-        <button class="btn btn-outline-primary" ng-click="showHideFavorites()">View Favorites</button>
-        <div ng-show="isVisibleFavorites">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Favorite</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="f in favorites">
-                    <td>
-                        <a href=/#!/favorite/{{f._id}}>{{f.name}}</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <!-- need a create page for each -->
-            <button class="btn btn-success" ng-click="createFavorite()">Create</button>
-        </div>
-    </div>
-    <hr>
-    <div>
-        <h5>
-            Endorsements
-        </h5>
-        <hr>
-        <button class="btn btn-outline-primary" ng-click="showHideEndorsements()">View Endorsements</button>
-        <div ng-show="isVisibleEndorsements">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Endorsement</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="e in endorsements">
-                    <td>
-                        <a href=/#!/endorsement/{{e._id}}>{{e.name}}</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <!-- need a create page for each -->
-            <button class="btn btn-success" ng-click="createEndorsement()">Create</button>
-        </div>
-    </div>
-    <hr>
-    <div>
-        <h5>
             Restaurants
         </h5>
         <hr>
@@ -139,7 +61,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Restaurants</th>
+                    <th>Restaurant</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -151,9 +73,7 @@
                 </tbody>
             </table>
             <!-- need a create page for each -->
-            <button class="btn btn-success" ng-click="createRestaurant()">Create</button>
+            <button class="btn btn-success" ng-click="createFollow()">Create</button>
         </div>
     </div>
-    <hr>
-    <!-- Copy/paste restaurants, reviews, follows, favorites, and endorsements -->
 </section>
