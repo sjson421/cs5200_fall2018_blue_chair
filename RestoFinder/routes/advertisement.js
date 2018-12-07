@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
     let userId = req.body.advertiser;
     const user = await User.findOne({ _id: userId });
     if (!user) return res.status(404).send("Invalid User");
-    if (user.userType != "ADVERTISER")
+    if (user.userType != "ADVERTISER" && user.userType != "ADMIN")
       return res.status(404).send("Invalid Request");
     const advertisement = new Advertisement({
       advertiser: userId,
@@ -57,7 +57,7 @@ router.put("/:id", async (req, res) => {
     let userId = req.body.advertiser;
     const user = await User.findOne({ _id: userId });
     if (!user) return res.status(404).send("Invalid User");
-    if (user.userType != "ADVERTISER")
+    if (user.userType != "ADVERTISER" && user.userType != "ADMIN")
       return res.status(404).send("Invalid Request");
     Advertisement.updateOne(
       { _id: id },

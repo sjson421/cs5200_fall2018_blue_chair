@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
     if (!user) return res.status(404).send("Invalid User");
     const restaurant = await Restaurant.findOne({ _id: restaurantId });
     if (!restaurant) return res.status(404).send("Invalid Restaturant");
-    if (user.userType != "OWNER" && user.owner.restaurant == restaurantId)
+    if (user.userType != "OWNER" && user.userType != "ADMIN")
       return res.status(404).send("Invalid Request");
     const event = new Event({
       name: req.body.name,
@@ -67,7 +67,7 @@ router.put("/:id", async (req, res) => {
     if (!user) return res.status(404).send("Invalid User");
     const restaurant = await Restaurant.findOne({ _id: restaurantId });
     if (!restaurant) return res.status(404).send("Invalid Restaturant");
-    if (user.userType != "OWNER" && user.owner.restaurant == restaurantId)
+    if (user.userType != "OWNER" && user.userType != "ADMIN")
       return res.status(404).send("Invalid Request");
     Event.updateOne(
       { _id: id },
