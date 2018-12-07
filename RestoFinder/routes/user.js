@@ -161,9 +161,9 @@ router.post('/login', (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const users = await User.find();
-    res.send(users);
+    return res.send(users);
   } catch (err) {
-    res.status(400).send(err);
+    return res.status(400).send(err);
   }
 });
 
@@ -171,9 +171,9 @@ router.get("/", async (req, res) => {
 router.get("/:username", async (req, res) => {
   try {
     const users = await User.find({username: req.params.username})
-    res.send(user);
+    return res.send(user);
   } catch(err) {
-    res.status(400).send(err);
+    return res.status(400).send(err);
   }
 })
 
@@ -185,9 +185,9 @@ router.get("/:id", async (req, res) => {
     const user = await User.find({
       _id: id
     });
-    res.send(user);
+    return res.send(user);
   } catch (err) {
-    res.status(400).send(err);
+    return res.status(400).send(err);
   }
 });
 
@@ -203,7 +203,7 @@ router.delete("/:id", async (req, res) => {
     const result = await User.deleteOne({
       _id: user._id
     });
-    res.send(result);
+    return res.send(result);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -217,16 +217,16 @@ router.get('/:id/reviews', async (req, res) => {
       _id: id
     });
     if (!user) return res.status(404).send("User not found");
+
+    if (user.userType == 'OWNER' || user.userType == 'ADVERTISER')
+    return res.send("No Reviews found");
     else {
-      if (user.userType == 'OWNER' || user.userType == 'ADVERTISER')
-      res.send("No Reviews found");
-      else {
-        const reviews = await Review.find({
-          user: id
-        }).populate('user').populate('comments.userId').exec();
-        res.send(reviews);
-      }
+      const reviews = await Review.find({
+        user: id
+      }).populate('user').populate('comments.userId').exec();
+      return res.send(reviews);
     }
+
   } catch (err) {
     res.status(400).send(err);
   }
@@ -249,8 +249,6 @@ router.post('/:id1/follow/:id2', async (req, res) => {
       _id: id2
     });
     user2 = user2[0];
-    console.log("this is jay", user1);
-    console.log("this is charlie", user2);
     // console.log(user1);
     // console.log(user2.userType);
     if (!user1 || !user2) return res.status(404).send('user not found');
@@ -295,7 +293,6 @@ router.post('/:id1/follow/:id2', async (req, res) => {
       if (user1.critic.follows.length > 0)
       return res.status(400).json({alreadyFollows: 'User already follows the user'});
       else {
-        console.log("HELLO FROM CRITC CRITIC")
         user1.critic.follows.push(user2);
         user1.save();
         user2.critic.followedBy.push(user1);
@@ -331,25 +328,217 @@ router.post('/:id1/follow/:id2', async (req, res) => {
 });
 
 
+// id1 unfollows id2
+// id2 is unfollowed by id1
+// POST REQUEST
+
+router.post('/:id1/unfollow/:id2', async (req, res) => {
+  try {
+
+    const id1 = req.params.id1;
+    const id2 = req.params.id2;
+    // console.log("id is", id1);
+    let user1 = await User.find({
+      _id: id1
+    });
+    user1 = user1[0];
+    let user2 = await User.find({
+      _id: id2
+    });
+    user2 = user2[0];
+    // console.log(user1);
+    // console.log(user2.userType);
+    if (!user1 || !user2) return res.status(404).send('user not found');
+
+    if (user1.userType == 'REGISTERED' || user1.userType == 'ADMIN') {
+      // user1.registeredUser.follows = [];
+
+      // if(user1.registeredUser.follows.filter())
+      console.log(user1.registeredUser.follows[0]);
+      console.log(user2._id);
+      user1.registeredUser.follows.filter(user => user.equals(user2._id));
+      if (user1.registeredUser.follows.length == 0)
+      return res.status(400).json({NotFollows: 'User doesnt follow the user'});
+      if (user2.userType == 'CRITIC' || user2.userType == 'REGISTERED') {
+
+        user1.registeredUser.follows.shift(user2);
+
+        user1.save();
+
+        // registerd user is the other user
+        if (user2.userType == 'REGISTERED') {
+          user2.registeredUser.followedBy.shfit(user1);
+          user2.save();
+
+        }
+        // critic is the second user
+        else {
+          user2.critic.followedBy.shift(user1);
+          user2.save();
+        }
+        //
+        //
+        return res.json(user1);
+      }
+    }
+    //
+    //
+    // critic follows a critic
+
+    else if (user1.userType == 'CRITIC' && user2.userType == 'CRITIC' || user1.userType == 'ADMIN') {
+      user1.critic.follows.filter(user => user.equals(user2._id));
+      if (user1.critic.follows.length == 0)
+      return res.status(400).json({NotFollows: 'User doesnt follow the user'});
+      else {
+        user1.critic.follows.shift(user2);
+        user1.save();
+        user2.critic.followedBy.shift(user1);
+        user2.save();
+
+        return res.json(user1);
+      }
+    }
+    // owner follows a critic
+    else if ((user1.userType == 'OWNER' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
+      user1.owner.follows.filter(user => user.equals(user2._id));
+      if (user1.owner.follows.length > 0)
+      return res.status(400).json({alreadyFollows: 'User already follows the user'});
+      else {
+        user1.owner.follows.shift(user2);
+        user1.save();
+        user2.critic.followedBy.shift(user1);
+        user2.save();
+
+        return res.json(user1);
+      }
+    }
+
+    else {
+      res.status(400).json({followError: 'cannot follow this user'});
+    }
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+
 // /api/user/userId/follow
 // GET REQUEST
 // get follows list for the user
 
 router.get('/:id/follows', async (req, res) => {
   try {
+    const id = req.params.id;
+    let user = await User.find({_id: id});
+    user = user[0];
+
+    if (!user) return res.status(404).send("User not found");
+
+    else if(user.userType == 'ADVERTISER') {
+
+      return res.status(404).json({followError: 'advertiser does not have followers'});
+    }
+
+    else if(user.userType == 'REGISTERED' || user.userType == 'ADMIN') {
+
+      let follows = user.registeredUser.follows;
+      let followsPopulate = follows.map(id => {
+        User.find({_id: id}).then(user => res.json(user));
+      });
+    }
+
+    else if(user.userType == 'CRITIC' || user.userType == 'ADMIN') {
+      let follows = user.critic.follows;
+      //
+      // let followsPopulate = follows.map(async (id) => {
+      //
+      //   let user =  User.find({_id: id});
+      //   return user;
+      // });
+      //
+      // Promise.all(followsPopulate)
+      // .then((follows) => {
+      //   console.log(follows);
+      //   return res.json(follows);
+      // })
+      // .catch(err => res.json({error: 'Populate error'}));
+
+
+      let followsPopulate = follows.map(id => {
+        User.find({_id: id}).then(user => res.json(user));
+      });
+
+    }
+
+    else if(user.userType == 'OWNER' || user.userType == 'ADMIN') {
+
+      let follows = user.critic.follows.populate('user').exec();
+      let followsPopulate = follows.map(id => {
+        User.find({_id: id}).then(user => res.json(user));
+      });
+    }
 
   }
+
   catch (err) {
     console.log(err);
     res.status(400).send(err);
   }
-})
+});
 
+// /api/user/userId/followedBy
+// GET REQUEST
+// get followedBy list for the user
+router.get('/:id/followedby', async (req, res) => {
+  try {
+    const id = req.params.id;
+    let user = await User.find({_id: id});
+    user = user[0];
 
-// id1 follows id2
-// id2 is follwed by id1
-// DELETE REQUEST
+    if (!user) return res.status(404).send("User not found");
 
+    else if(user.userType == 'ADVERTISER' || user.userType == 'OWNER') {
 
+      return res.status(404).json({followError: 'User is not followed by others'});
+    }
+
+    else if(user.userType == 'REGISTERED' || user.userType == 'ADMIN') {
+
+      let follows = user.registeredUser.followedBy;
+      let followsPopulate = follows.map(id => {
+        User.find({_id: id}).then(user => res.json(user));
+      });
+    }
+
+    else if(user.userType == 'CRITIC' || user.userType == 'ADMIN') {
+      let follows = user.critic.followedBy;
+      //
+      // let followsPopulate = follows.map(async (id) => {
+      //
+      //   let user =  User.find({_id: id});
+      //   return user;
+      // });
+      //
+      // Promise.all(followsPopulate)
+      // .then((follows) => {
+      //   console.log(follows);
+      //   return res.json(follows);
+      // })
+      // .catch(err => res.json({error: 'Populate error'}));
+
+      let followsPopulate = follows.map(id => {
+        User.find({_id: id}).then(user => res.json(user));
+      });
+
+    }
+  }
+
+  catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
 
 module.exports = router;
