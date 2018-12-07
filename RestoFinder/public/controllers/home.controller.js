@@ -7,9 +7,7 @@
 
             $http.get(data)
                 .then(function (response) {
-                    alert(response.data);
                 }, function (err) {
-                    alert("error code " + err.status);
                 });
         });
 })();
