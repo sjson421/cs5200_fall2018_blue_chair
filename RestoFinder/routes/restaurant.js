@@ -159,7 +159,15 @@ router.delete("/:id", async (req, res) => {
       let term = req.params.term;
       var regex = new RegExp(term, 'i'); 
       const restaurants = await Restaurant.find({name: regex}).limit(15);
-      res.send(restaurants);
+      const returnRestaurants = []
+      const seen = []
+      for(r of restaurants){
+        if(!seen.includes(r.name)){
+          returnRestaurants.push(r);
+          seen.push(r.name)
+        }
+      }
+      res.send(returnRestaurants);
    }
    catch (err){
     res.status(400).send(err);
