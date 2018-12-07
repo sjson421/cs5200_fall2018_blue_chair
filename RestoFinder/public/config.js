@@ -26,7 +26,7 @@
             })
             .when("/register", {
                 templateUrl: "./views/register.view.html",
-                controller: "ViewController"
+                controller: "RegisterController"
             })
             .when("/user", {
                 templateUrl: "./views/user.view.html",
@@ -35,6 +35,10 @@
             .when("/restaurant", {
                 templateUrl: "./views/restaurant.view.html",
                 controller: "RestaurantController"
+            })
+            .when("/admin", {
+                templateUrl: "./views/admin.view.html",
+                controller: "AdminController"
             })
     }
 

@@ -1,0 +1,159 @@
+<section class="booking-details_wrap container">
+    <div>
+        <h5>
+            Users
+        </h5>
+        <hr>
+        <button class="btn btn-outline-primary" ng-click="showHideUsers()">View Users</button>
+        <div ng-show="isVisibleUsers">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>User</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="u in users">
+                    <td>
+                        <a href=/#!/user/:{{u._id}}>{{u.username}}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- need a create page for each -->
+            <button class="btn btn-success" ng-click="createUser()">Create</button>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <h5>
+            Reviews
+        </h5>
+        <hr>
+        <button class="btn btn-outline-primary" ng-click="showHideReviews()">View Reviews</button>
+        <div ng-show="isVisibleReviews">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Review</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="r in reviews">
+                    <td>
+                        <a href=/#!/review/:{{r._id}}>{{u.text.substring(0,20)}}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- need a create page for each -->
+            <button class="btn btn-success" ng-click="createReview()">Create</button>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <h5>
+            Follows
+        </h5>
+        <hr>
+        <button class="btn btn-outline-primary" ng-click="showHideFollows()">View Follows</button>
+        <div ng-show="isVisibleFollows">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Follow</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="f in follows">
+                    <td>
+                        <a href=/#!/follow/:{{f._id}}>{{f.name}}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- need a create page for each -->
+            <button class="btn btn-success" ng-click="createFollow()">Create</button>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <h5>
+            Favorites
+        </h5>
+        <hr>
+        <button class="btn btn-outline-primary" ng-click="showHideFavorites()">View Favorites</button>
+        <div ng-show="isVisibleFavorites">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Favorite</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="f in favorites">
+                    <td>
+                        <a href=/#!/favorite/{{f._id}}>{{f.name}}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- need a create page for each -->
+            <button class="btn btn-success" ng-click="createFavorite()">Create</button>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <h5>
+            Endorsements
+        </h5>
+        <hr>
+        <button class="btn btn-outline-primary" ng-click="showHideEndorsements()">View Endorsements</button>
+        <div ng-show="isVisibleEndorsements">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Endorsement</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="e in endorsements">
+                    <td>
+                        <a href=/#!/endorsement/{{e._id}}>{{e.name}}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- need a create page for each -->
+            <button class="btn btn-success" ng-click="createEndorsement()">Create</button>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <h5>
+            Restaurants
+        </h5>
+        <hr>
+        <button class="btn btn-outline-primary" ng-click="showHideRestaurants()">View Restaurants</button>
+        <div ng-show="isVisibleRestaurants">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Restaurants</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="r in restaurants">
+                    <td>
+                        <a href=/#!/restaurant/{{r._id}}>{{r.name}}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- need a create page for each -->
+            <button class="btn btn-success" ng-click="createRestaurant()">Create</button>
+        </div>
+    </div>
+    <hr>
+    <!-- Copy/paste restaurants, reviews, follows, favorites, and endorsements -->
+</section>

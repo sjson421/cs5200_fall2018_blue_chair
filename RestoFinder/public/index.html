@@ -40,6 +40,7 @@
     <script src="./controllers/login.controller.js"></script>
     <script src="./controllers/register.controller.js"></script>
     <script src="./controllers/search.controller.js"></script>
+    <script src="./controllers/admin.controller.js"></script>
 </head>
 
 <body ng-app="RestoFinder">
@@ -49,12 +50,15 @@
             <div class="row">
                 <div class="col-md-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
-                        <a class="navbar-brand" href="index.html">Listing</a>
+                        <a class="navbar-brand" href="/">RestoFinder</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="icon-menu"></span>
                         </button>
                         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                             <ul class="navbar-nav">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="#!/admin">ADMIN DELETE LATER</a>
+                                </li>
                                 <li class="nav-item active">
                                     <a class="nav-link" href="#!/user">Profile</a>
                                 </li>
@@ -64,7 +68,6 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="#!/register">Register</a>
                                 </li>
-                                <li><a href="#" class="btn btn-outline-light top-btn"><span class="ti-plus"></span> Add Listing</a></li>
                             </ul>
                         </div>
                     </nav>

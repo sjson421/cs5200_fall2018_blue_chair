@@ -3,12 +3,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 responsive-wrap">
-
                 <div class="follow">
                     <div class="follow-img">
                         <img src="../images/follow-img.jpg" class="img-fluid" alt="#">
                         <h6>Christine Evans</h6>
-                        <span>New York I'm so sick of this woman's face</span>
+                        <span>New York</span>
                     </div>
                     <ul class="social-counts">
                         <li>
@@ -88,15 +87,9 @@
                         Following
                     </h5>
                     <ul class="">
-                        <!-- TODO fix this later -->
-                        <table class="">
-                            <tbody>
-                            <tr ng-repeat="f in following">
-                                <td><img src={{f.imgUrl}} class="img-fluid" alt="#"></td>
-                                <td><a href={{f.url}}>{{f.firstName f.lastName}}</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <ul ng-repeat="f in following">
+                            <li><a href=/#!/user/{{f.username}}>{{f.username}}</a></li>
+                        </ul>
                     </ul>
                     <hr>
                 </div>
