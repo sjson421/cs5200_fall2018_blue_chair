@@ -21,8 +21,9 @@ router.post('/register', (req, res) => {
         username: 'Username already taken'
       });
     } else {
+
       if (req.body.password == req.body.confirmpassword) {
-        console.log(req.body.name);
+
         let user = {
           username: req.body.username,
           email: req.body.email,
@@ -39,6 +40,7 @@ router.post('/register', (req, res) => {
           userType: req.body.userType,
         }
         if (req.body.userType == "REGISTERED") {
+          console.log("inside registeredUser");
           let registeredUser = {};
           let favourites = [];
           let follows = [];
@@ -47,7 +49,13 @@ router.post('/register', (req, res) => {
           registeredUser.follows = follows;
           registeredUser.followedBy = followedBy;
           user.registeredUser = registeredUser;
-        } else if (req.body.userType == "OWNER") {
+        }
+
+
+
+        else if (req.body.userType == "OWNER") {
+          console.log("inside owner");
+          console.log("user is ", user);
           let owner = {};
           let endorses = [];
           let follows = [];
@@ -56,7 +64,11 @@ router.post('/register', (req, res) => {
           owner.follows = follows;
           owner.endorsedBy = endorsedBy;
           user.owner = owner;
-        } else if (req.body.userType == "CRITIC") {
+          console.log("user after owner insert is", user)
+        }
+
+
+        else if (req.body.userType == "CRITIC") {
           let critic = {};
           let company = {};
           let name = req.body.name;
@@ -92,13 +104,15 @@ router.post('/register', (req, res) => {
         }
 
         const newUser = new User(user);
+        console.log("newUser is", newUser)
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) throw err;
             newUser.password = hash;
+            console.log(" user before saving", newUser)
             newUser.save()
             .then(newUser => res.json(newUser))
-            .catch(err => console.log(err));
+            .catch(err => console.log("user save error",err));
           });
         });
       } else {
@@ -152,6 +166,16 @@ router.get("/", async (req, res) => {
     res.status(400).send(err);
   }
 });
+
+// get user by Username
+router.get("/:username", async (req, res) => {
+  try {
+    const users = await User.find({username: req.params.username})
+    res.send(user);
+  } catch(err) {
+    res.status(400).send(err);
+  }
+})
 
 
 // get by id
@@ -225,7 +249,8 @@ router.post('/:id1/follow/:id2', async (req, res) => {
       _id: id2
     });
     user2 = user2[0];
-
+    console.log("this is jay", user1);
+    console.log("this is charlie", user2);
     // console.log(user1);
     // console.log(user2.userType);
     if (!user1 || !user2) return res.status(404).send('user not found');
@@ -233,54 +258,84 @@ router.post('/:id1/follow/:id2', async (req, res) => {
     if (user1.userType == 'REGISTERED') {
       // user1.registeredUser.follows = [];
 
+      // if(user1.registeredUser.follows.filter())
+      console.log(user1.registeredUser.follows[0]);
+      console.log(user2._id);
+      user1.registeredUser.follows.filter(user => user.equals(user2._id));
+      if (user1.registeredUser.follows.length > 0)
+      return res.status(400).json({alreadyFollows: 'User already follows the user'});
       if (user2.userType == 'CRITIC' || user2.userType == 'REGISTERED') {
 
-        // user1.registeredUser.follows.push(user2);
-        //
-        // user1.save();
+        user1.registeredUser.follows.push(user2);
+
+        user1.save();
 
         // registerd user is the other user
         if (user2.userType == 'REGISTERED') {
-          // user2.registeredUser.followedBy.push(user1);
-          // user2.save();
-          console.log('hello');
+          user2.registeredUser.followedBy.push(user1);
+          user2.save();
+
         }
         // critic is the second user
         else {
-          // console.log('helo');
-          console.log('from critic else');
-          // user2.critic.followedBy.push(user1);
-          // user2.save();
+          user2.critic.followedBy.push(user1);
+          user2.save();
         }
-    //
-    //
-        res.json(user2);
+        //
+        //
+        return res.json(user1);
       }
+    }
     //
     //
-      // critic follows a critic
-      else if (user1.userType == 'CRITIC' && user2.userType == 'CRITIC') {
+    // critic follows a critic
 
+    else if (user1.userType == 'CRITIC' && user2.userType == 'CRITIC') {
+      user1.critic.follows.filter(user => user.equals(user2._id));
+      if (user1.critic.follows.length > 0)
+      return res.status(400).json({alreadyFollows: 'User already follows the user'});
+      else {
+        console.log("HELLO FROM CRITC CRITIC")
         user1.critic.follows.push(user2);
         user1.save();
         user2.critic.followedBy.push(user1);
         user2.save();
-      }
-      // owner follows a critic
-      else if (user1.userType == 'OWNER' && user2.userType == 'CRITIC') {
 
+        return res.json(user1);
+      }
+    }
+    // owner follows a critic
+    else if (user1.userType == 'OWNER' && user2.userType == 'CRITIC') {
+      user1.owner.follows.filter(user => user.equals(user2._id));
+      if (user1.owner.follows.length > 0)
+      return res.status(400).json({alreadyFollows: 'User already follows the user'});
+      else {
         user1.owner.follows.push(user2);
         user1.save();
         user2.critic.followedBy.push(user1);
-      } else res.send('cannot follow the user');
-    //
+        user2.save();
+
+        return res.json(user1);
+      }
     }
+
+    else {
+      res.status(400).json({followError: 'cannot follow this user'});
+    }
+
   }
   catch (err) {
     console.log(err);
     res.status(400).send(err);
   }
 });
+
+
+
+// id1 follows id2
+// id2 is follwed by id1
+// DELETE REQUEST
+
 
 
 module.exports = router;
