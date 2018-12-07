@@ -152,4 +152,17 @@ router.delete("/:id", async (req, res) => {
     res.status(400).send(err);
    }
  })
+
+ // search by term for restaurant
+ router.get("/search/:term", async (req,res) => {
+   try{
+      let term = req.params.term;
+      var regex = new RegExp(term, 'i'); 
+      const restaurants = await Restaurant.find({name: regex}).limit(15);
+      res.send(restaurants);
+   }
+   catch (err){
+    res.status(400).send(err);
+   }
+ })
 module.exports = router;
