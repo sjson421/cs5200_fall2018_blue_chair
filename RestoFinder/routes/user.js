@@ -255,7 +255,7 @@ router.post('/:id1/follow/:id2', async (req, res) => {
     // console.log(user2.userType);
     if (!user1 || !user2) return res.status(404).send('user not found');
 
-    if (user1.userType == 'REGISTERED') {
+    if (user1.userType == 'REGISTERED' || user1.userType == 'ADMIN') {
       // user1.registeredUser.follows = [];
 
       // if(user1.registeredUser.follows.filter())
@@ -290,7 +290,7 @@ router.post('/:id1/follow/:id2', async (req, res) => {
     //
     // critic follows a critic
 
-    else if (user1.userType == 'CRITIC' && user2.userType == 'CRITIC') {
+    else if (user1.userType == 'CRITIC' && user2.userType == 'CRITIC' || user1.userType == 'ADMIN') {
       user1.critic.follows.filter(user => user.equals(user2._id));
       if (user1.critic.follows.length > 0)
       return res.status(400).json({alreadyFollows: 'User already follows the user'});
@@ -305,7 +305,7 @@ router.post('/:id1/follow/:id2', async (req, res) => {
       }
     }
     // owner follows a critic
-    else if (user1.userType == 'OWNER' && user2.userType == 'CRITIC') {
+    else if ((user1.userType == 'OWNER' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
       user1.owner.follows.filter(user => user.equals(user2._id));
       if (user1.owner.follows.length > 0)
       return res.status(400).json({alreadyFollows: 'User already follows the user'});
@@ -330,6 +330,20 @@ router.post('/:id1/follow/:id2', async (req, res) => {
   }
 });
 
+
+// /api/user/userId/follow
+// GET REQUEST
+// get follows list for the user
+
+router.get('/:id/follows', async (req, res) => {
+  try {
+
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+})
 
 
 // id1 follows id2
