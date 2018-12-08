@@ -68,110 +68,51 @@
     <div class="row justify-content-center">
       <div class="col-md-5">
         <div class="styled-heading">
-          <h3>{{ testvar }}</h3>
+          <h3>Featured Restaurants</h3>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-4 featured-responsive">
+      <div class="col-md-4 featured-responsive"  ng-repeat="restaurant in featuredRestaurants">
         <div class="featured-place-wrap">
-          <a href="restaurant.view.html">
-            <img src="../images/featured1.jpg" class="img-fluid" alt="#" />
-            <span class="featured-rating-orange">{{ rating }}</span>
+          <a ng-click="viewRestaurant(restaurant)">
+            <img src={{restaurant.image_url}} class="restaurant-image" alt="#" />
+            <span class="featured-rating-orange ">{{restaurant.rating}}</span>
             <div class="featured-title-box">
-              <h6>{{ name }}</h6>
-              <p>{{ reviewCount }} Reviews</p>
-              <ul>
-                <li>
-                  <span class="icon-location-pin"></span>
-                  <p>{{ address }}</p>
-                </li>
-                <li>
-                  <span class="icon-screen-smartphone"></span>
-                  <p>{{ phone }}</p>
-                </li>
-                <li>
-                  <span class="icon-link"></span>
-                  <p>{{ url }}</p>
-                </li>
-              </ul>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-4 featured-responsive">
-        <div class="featured-place-wrap">
-          <a href="restaurant.view.html">
-            <img src="../images/featured2.jpg" class="img-fluid" alt="#" />
-            <span class="featured-rating-green">9.5</span>
-            <div class="featured-title-box">
-              <h6>Joe’s Shanghai</h6>
+              <h6>{{ restaurant.name }}</h6>
               <p>Restaurant</p>
               <span>• </span>
-              <p>3 Reviews</p>
+              <p>{{restaurant.review_count}} Reviews</p>
               <span> • </span>
-              <p><span>$$$</span>$$</p>
+              <p><span>{{restaurant.price}}</span></p>
               <ul>
                 <li>
                   <span class="icon-location-pin"></span>
-                  <p>1301 Avenue, Brooklyn, NY 11230</p>
+                  <p>{{restaurant.location.address1}}, {{restaurant.location.city}}, {{restaurant.location.zip_code}}</p>
                 </li>
                 <li>
                   <span class="icon-screen-smartphone"></span>
-                  <p>+44 20 7336 8898</p>
+                  <p>{{restaurant.phone}}</p>
                 </li>
-                <li>
+                <!-- <li>
                   <span class="icon-link"></span>
-                  <p>https://burgerandlobster.com</p>
-                </li>
+                  <p>{{restaurant.url}}</p>
+                </li> -->
               </ul>
               <div class="bottom-icons">
-                <div class="closed-now">CLOSED NOW</div>
-                <span class="ti-heart"></span> <span class="ti-bookmark"></span>
+                <!-- <div class="closed-now">CLOSED NOW</div> -->
+                <span class="ti-heart"></span>
+                <span class="ti-bookmark"></span>
               </div>
             </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-4 featured-responsive">
-        <div class="featured-place-wrap">
-          <a href="restaurant.view.html">
-            <img src="../images/featured3.jpg" class="img-fluid" alt="#" />
-            <span class="featured-rating">3.2</span>
-            <div class="featured-title-box">
-              <h6>Tasty Hand-Pulled Noodles</h6>
-              <p>Restaurant</p>
-              <span>• </span>
-              <p>3 Reviews</p>
-              <span> • </span>
-              <p><span>$$$</span>$$</p>
-              <ul>
-                <li>
-                  <span class="icon-location-pin"></span>
-                  <p>1301 Avenue, Brooklyn, NY 11230</p>
-                </li>
-                <li>
-                  <span class="icon-screen-smartphone"></span>
-                  <p>+44 20 7336 8898</p>
-                </li>
-                <li>
-                  <span class="icon-link"></span>
-                  <p>https://burgerandlobster.com</p>
-                </li>
-              </ul>
-              <div class="bottom-icons">
-                <div class="open-now">OPEN NOW</div>
-                <span class="ti-heart"></span> <span class="ti-bookmark"></span>
-              </div>
-            </div>
-          </a>
+        </a>
         </div>
       </div>
     </div>
     <div class="row justify-content-center">
       <div class="col-md-4">
         <div class="featured-btn-wrap">
-          <a href="#" class="btn btn-danger">VIEW ALL</a>
+          <a href="#!/restaurants" class="btn btn-danger">VIEW ALL</a>
         </div>
       </div>
     </div>

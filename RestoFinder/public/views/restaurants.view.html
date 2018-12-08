@@ -1,0 +1,73 @@
+<section class="main-block light-bg" ng-if="!loading">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-5">
+        <div class="styled-heading"><h3>Restaurants</h3></div>
+      </div>
+    </div>
+    <div class="row">
+      <div
+        class="col-md-4 featured-responsive"
+        ng-repeat="restaurant in restaurants"
+      >
+        <div class="featured-place-wrap">
+          <a ng-click="viewRestaurant(restaurant)">
+            <img
+              src="{{restaurant.image_url}}"
+              class="restaurant-image"
+              alt="#"
+            />
+            <span class="featured-rating-orange ">{{ restaurant.rating }}</span>
+            <div class="featured-title-box">
+              <h6>{{ restaurant.name }}</h6>
+              <p>Restaurant</p>
+              <span>• </span>
+              <p>{{ restaurant.review_count }} Reviews</p>
+              <span> • </span>
+              <p>
+                <span>{{ restaurant.price }}</span>
+              </p>
+              <ul>
+                <li>
+                  <span class="icon-location-pin"></span>
+                  <p>
+                    {{ restaurant.location.address1 }},
+                    {{ restaurant.location.city }},
+                    {{ restaurant.location.zip_code }}
+                  </p>
+                </li>
+                <li>
+                  <span class="icon-screen-smartphone"></span>
+                  <p>{{ restaurant.phone }}</p>
+                </li>
+                <!--
+                  <li>
+                    <span class="icon-link"></span>
+                    <p>{{restaurant.url}}</p>
+                  </li>
+                -->
+              </ul>
+              <div class="bottom-icons">
+                <!-- <div class="closed-now">CLOSED NOW</div> -->
+                <span class="ti-heart"></span> <span class="ti-bookmark"></span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!--
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <div class="featured-btn-wrap">
+            <a href="#" class="btn btn-danger">VIEW ALL</a>
+          </div>
+        </div>
+      </div>
+    -->
+  </div>
+</section>
+<div class="spinner" ng-if ="loading">
+    <div class="double-bounce1"></div>
+    <div class="double-bounce2"></div>
+</div>

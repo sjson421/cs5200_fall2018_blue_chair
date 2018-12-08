@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 const user = require('./routes/user');
 const restaurant = require('./routes/restaurant');
+const featured = require('./routes/featured');
 const event = require('./routes/event');
 const advertisement = require('./routes/advertisement');
 const review = require('./routes/review');
@@ -35,7 +36,7 @@ app.use('/api/restaurant', restaurant);
 app.use('/api/event', event);
 app.use('/api/review',review);
 app.use('/api/advertisement', advertisement);
-
+app.use('/api/featured', featured);
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server running on ${port}`));

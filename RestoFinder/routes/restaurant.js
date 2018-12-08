@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Restaurant = require("../data/models/Restaurant.schema.server");
-const Review = require('../data/models/Review.schema.server');
-const Event = require('../data/models/Event.schema.server');
+const Review = require("../data/models/Review.schema.server");
+const Event = require("../data/models/Event.schema.server");
 // post restaurant
 router.post("/", async (req, res) => {
   try {
@@ -125,52 +125,53 @@ router.delete("/:id", async (req, res) => {
 });
 
 // get reviews for restaurant
- router.get("/:id/review", async (req,res) => {
-   try{
+router.get("/:id/review", async (req, res) => {
+  try {
     let id = req.params.id;
     var restaurant = await Restaurant.find({ _id: id });
     restaurant = restaurant[0];
     if (!restaurant) return res.status(404).send("Object not found");
-    const reviews = await Review.find({restaurant: id}).populate("user").populate("comments.userId");
-    res.send(reviews)
-   }
-   catch (err){
+    const reviews = await Review.find({ restaurant: id })
+      .populate("user")
+      .populate("comments.userId");
+    res.send(reviews);
+  } catch (err) {
     res.status(400).send(err);
-   }
- })
- // get events for restaurant
- router.get("/:id/event", async (req,res) => {
-   try{
+  }
+});
+// get events for restaurant
+router.get("/:id/event", async (req, res) => {
+  try {
     let id = req.params.id;
     var restaurant = await Restaurant.find({ _id: id });
     restaurant = restaurant[0];
     if (!restaurant) return res.status(404).send("Object not found");
-    const events = await Review.find({restaurant: id}).populate("admin")
-    res.send(events)
-   }
-   catch (err){
+    const events = await Review.find({ restaurant: id }).populate("admin");
+    res.send(events);
+  } catch (err) {
     res.status(400).send(err);
-   }
- })
+  }
+});
 
- // search by term for restaurant
- router.get("/search/:term", async (req,res) => {
-   try{
-      let term = req.params.term;
-      var regex = new RegExp(term, 'i'); 
-      const restaurants = await Restaurant.find({name: regex}).limit(15);
-      const returnRestaurants = []
-      const seen = []
-      for(r of restaurants){
-        if(!seen.includes(r.name)){
-          returnRestaurants.push(r);
-          seen.push(r.name)
-        }
+// search by term for restaurant
+router.get("/search/:term", async (req, res) => {
+  try {
+    let term = req.params.term;
+    var regex = new RegExp(term, "i");
+    const restaurants = await Restaurant.find({ name: regex }).limit(15);
+    const returnRestaurants = [];
+    const seen = [];
+    for (r of restaurants) {
+      if (!seen.includes(r.name)) {
+        returnRestaurants.push(r);
+        seen.push(r.name);
       }
-      res.send(returnRestaurants);
-   }
-   catch (err){
+    }
+    res.send(returnRestaurants);
+  } catch (err) {
     res.status(400).send(err);
-   }
- })
+  }
+});
+
+
 module.exports = router;
