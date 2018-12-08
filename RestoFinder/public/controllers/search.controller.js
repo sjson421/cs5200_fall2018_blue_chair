@@ -1,7 +1,7 @@
 (function () {
     angular
         .module("RestoFinder")
-        .controller("SearchController", function ($rootScope, $scope, $http, SearchService) {
+        .controller("SearchController", function ($rootScope, $scope, $http, SearchService,$location) {
             $scope.getRestaurants = getRestaurants();
             $scope.viewRestaurant = viewRestaurant;
             function getRestaurants(){
@@ -17,6 +17,8 @@
 
             function viewRestaurant(restaurant){
                 console.log("restaurant passed is", restaurant);
+                let id = restaurant._id; 
+                $location.url("/restaurant/" + id);
             }
         });
 })();

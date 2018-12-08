@@ -2,8 +2,6 @@
     angular
         .module("RestoFinder")
         .controller("HomeController", function ($rootScope, $scope, $http, $location, RestaurantService) {
-            // $scope.testvar = "Angular Wo";
-            // var data = "http://localhost:5000/api/restaurant";
             $scope.search = "";
             $scope.getFeaturedRestaurants = getFeaturedResults();
             $scope.getSearchResults = function(){

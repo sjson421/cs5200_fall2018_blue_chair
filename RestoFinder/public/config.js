@@ -32,7 +32,7 @@
                 templateUrl: "./views/user.view.html",
                 controller: "UserController"
             })
-            .when("/restaurant", {
+            .when("/restaurant/:restaurantId", {
                 templateUrl: "./views/restaurant.view.html",
                 controller: "RestaurantController"
             })

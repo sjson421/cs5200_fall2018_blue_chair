@@ -7,7 +7,8 @@
         var baseUrl = "http://localhost:5000/api/restaurant"
         var api = {
             getFeaturedRestaurants: getFeaturedRestaurants,
-            getAllRestaurants: getAllRestaurants
+            getAllRestaurants: getAllRestaurants,
+            getRestaurant: getRestaurant
         };
         return api;
         function getFeaturedRestaurants(){
@@ -17,6 +18,10 @@
         
         function getAllRestaurants(){
             return $http.get(baseUrl);
+        }
+
+        function getRestaurant(id){
+            return $http.get(baseUrl +"/" + id);
         }
 
     }
