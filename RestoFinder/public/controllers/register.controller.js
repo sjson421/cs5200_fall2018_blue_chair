@@ -7,11 +7,16 @@
         .controller('RegisterController', RegisterController);
 
     RegisterController.$inject = ['UserService', '$location', '$rootScope', 'FlashService'];
-    function RegisterController(UserService, $location, $rootScope, FlashService) {
-        var vm = this;
+    function RegisterController(UserService, $location, $rootScope, FlashService, $scope) {
+        var vm = $scope;
 
         vm.register = register;
 
+        vm.user = {
+            firstName: "",
+            lastName: "",
+            // create user here
+        }
         function register() {
             vm.dataLoading = true;
             UserService.Create(vm.user)

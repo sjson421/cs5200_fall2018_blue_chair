@@ -1,24 +1,71 @@
-<!--referenced from Jason Watmore-->
+<!-- referenced from Jason Watmore -->
 <section class="light-bg booking-details_wrap">
-    <div class="container">
-        <div class="col-md-6 col-md-offset-3">
-            <h2>Register</h2>
-            <form name="form" ng-submit="register()" role="form">
-                <div class="form-group"
-                     ng-class="{ 'has-error': form.firstName.$dirty && form.firstName.$error.required }">
-                    <label for="username">First name</label>
-                    <input type="text" name="firstName" id="firstName" class="form-control" ng-model="vm.user.firstName"
-                           required/>
-                    <span ng-show="form.firstName.$dirty && form.firstName.$error.required" class="help-block">First name is required</span>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Register
-                    </button>
-                    <img ng-if="vm.dataLoading"
-                         src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-                    <a href="#!/login" class="btn btn-link">Cancel</a>
-                </div>
-            </form>
+  <div class="container">
+    <div class="col-md-6 col-md-offset-3">
+      <h2>Register</h2>
+      <form name="registerForm" ng-submit="register()" role="form">
+        <div
+          class="form-group"
+          ng-class="{ 'has-error': registerForm.firstName.$dirty && registerForm.firstName.$error.required }"
+        >
+          <label for="firstName">First name</label>
+          <input
+            type="text"
+            name="firstName"
+            id="firstName"
+            class="form-control"
+            ng-model="vm.user.firstName"
+            required
+          />
+          <span
+            ng-show="registerForm.firstName.$dirty && registerForm.firstName.$error.required"
+            class="help-block"
+            >First name is required
+          </span>
+          <label for="lastName">Last name</label>
+          <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            class="form-control"
+            ng-model="vm.user.lastName"
+            required
+          />
+          <span
+            ng-show="registerForm.lastName.$dirty && registerForm.lastName.$error.required"
+            class="help-block"
+            >Last name is required
+          </span>
+          <label for="lastName">Last name</label>
+          <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            class="form-control"
+            ng-model="vm.user.lastName"
+            required
+          />
+          <span
+            ng-show="registerForm.lastName.$dirty && registerForm.lastName.$error.required"
+            class="help-block"
+            >Last name is required
+          </span>
         </div>
+        <div class="form-actions">
+          <button
+            type="submit"
+            ng-disabled="form.$invalid || vm.dataLoading"
+            class="btn btn-primary"
+          >
+            Register
+          </button>
+          <img
+            ng-if="vm.dataLoading"
+            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+          />
+          <a href="#!/login" class="btn btn-link">Cancel</a>
+        </div>
+      </form>
     </div>
+  </div>
 </section>
