@@ -8,7 +8,8 @@
         var api = {
             getFeaturedRestaurants: getFeaturedRestaurants,
             getAllRestaurants: getAllRestaurants,
-            getRestaurant: getRestaurant
+            getRestaurant: getRestaurant,
+            getReviewsForRestaurant: getReviewsForRestaurant
         };
         return api;
         function getFeaturedRestaurants(){
@@ -24,5 +25,8 @@
             return $http.get(baseUrl +"/" + id);
         }
 
+        function getReviewsForRestaurant(id){
+            return $http.get(baseUrl + "/" + id + "/" + "review");
+        }
     }
 })();

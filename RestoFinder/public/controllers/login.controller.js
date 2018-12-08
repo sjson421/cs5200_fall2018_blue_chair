@@ -6,28 +6,30 @@
         .module('RestoFinder')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location', 'AuthenticationService', 'FlashService'];
-    function LoginController($location, AuthenticationService, FlashService) {
-        var vm = this;
-
+    function LoginController($location, LoginService, FlashService, $scope, $rootScope) {
+        var vm = $scope;
         vm.login = login;
-
+        vm.username = "";
+        vm.password = "";
         (function initController() {
             // reset login status
-            AuthenticationService.ClearCredentials();
+            LoginService.clearCookieData();
         })();
 
         function login() {
+            console.log("in login");
             vm.dataLoading = true;
-            AuthenticationService.Login(vm.username, vm.password, function (response) {
-                if (response.success) {
-                    AuthenticationService.SetCredentials(vm.username, vm.password);
-                    $location.path('/');
-                } else {
-                    FlashService.Error(response.message);
-                    vm.dataLoading = false;
-                }
+            LoginService.login(vm.username, vm.password)
+            .then(function (response){
+                console.log("user", response.data._id);
+                LoginService.setCookieData(JSON.stringify(response.data));
+                $rootScope.currentUser = LoginService.getCookieData(); 
+                $location.path('/');
+            }, function (err) {
+                console.log(err);
+                FlashService.createFailFlash(err.message);
             });
+            
         };
     }
 

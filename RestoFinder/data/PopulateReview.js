@@ -7,6 +7,7 @@ mongoose
   .then(conn => console.log("mongodb connected"))
   .catch(err => console.log(err));
 
-reviewDao
-  .populateReviews()
+reviewDao.createDefaultYelpuser();
+// reviewDao
+//   .populateReviews()
   

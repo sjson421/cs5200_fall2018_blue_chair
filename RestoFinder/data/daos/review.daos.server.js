@@ -14,6 +14,7 @@ const yelpUserId = "5c01e4265c2ce02c1f8ce6d5";
 
 async function createDefaultYelpuser() {
   let yelpUser = {
+    _id: "5c01e4265c2ce02c1f8ce6d5",
     username: "yelp-user",
     email: "default@yelp.com",
     password: "####",
