@@ -168,9 +168,11 @@ router.get("/", async (req, res) => {
 });
 
 // get user by Username
+// send the username from front end
 router.get("/:username", async (req, res) => {
   try {
-    const users = await User.find({username: req.params.username})
+    const user = await User.find({username: req.params.username})
+    user = user[0];
     return res.send(user);
   } catch(err) {
     return res.status(400).send(err);
@@ -179,12 +181,15 @@ router.get("/:username", async (req, res) => {
 
 
 // get by id
+// get the user by id where id is passed in from the front
+// GET REQUEST
 router.get("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     const user = await User.find({
       _id: id
     });
+    user = user[0];
     return res.send(user);
   } catch (err) {
     return res.status(400).send(err);
@@ -193,12 +198,16 @@ router.get("/:id", async (req, res) => {
 
 
 // delete a user by id
+// ID IS THE USER ID
 router.delete("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     var user = await User.find({
       _id: id
     });
+
+    user = user[0];
+
     if (!user) return res.status(404).send("User not found");
     const result = await User.deleteOne({
       _id: user._id
@@ -209,13 +218,16 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-//
+// get all reviews for a user
+// ID IS THE USER ID
 router.get('/:id/reviews', async (req, res) => {
   try {
     let id = req.params.id;
     const user = await User.find({
       _id: id
     });
+    user = user[0];
+
     if (!user) return res.status(404).send("User not found");
 
     if (user.userType == 'OWNER' || user.userType == 'ADVERTISER')
@@ -232,6 +244,30 @@ router.get('/:id/reviews', async (req, res) => {
   }
 });
 
+// delete a review for the user
+// id1 is the id of user
+// id2 is the id of review
+// give both of them from front
+// DELETE REQUEST
+router.delete('/:id1/review/:id2', async (req, res) => {
+  try {
+    let user = req.params.id1;
+    let reviewId = req.params.id2;
+
+    let review = await Review.find({_id: reviewId});
+    review = review[0];
+
+    if(review.user == user) return res.status(404).send("User cannot delete others reviews")
+    else {
+      const result = await Review.deleteOne({ _id: review._id});
+      return res.send(result);
+    }
+  }
+  catch(err) {
+    res.status(400).send(err);
+
+  }
+})
 // id1 follows id2
 // id2 is follwed by id1
 // POST REQUEST
@@ -305,9 +341,10 @@ router.post('/:id1/follow/:id2', async (req, res) => {
     }
     // owner follows a critic
     else if ((user1.userType == 'OWNER' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
-
+      console.log('owner as first user')
+      console.log('critic the second')
       if (user1.owner.follows.filter(user => user.equals(user2._id)).length > 0)
-      return res.status(400).json({alreadyFollows: 'User already follows the user'});
+        return res.status(400).json({alreadyFollows: 'User already follows the user'});
       else {
         user1.owner.follows.push(user2);
         user1.save();
@@ -441,10 +478,10 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
     // owner follows a critic
     else if ((user1.userType == 'OWNER' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
 
-      if (user1.owner.follows.filter(user => user.equals(user2._id)).length > 0)
-        return res.status(400).json({alreadyFollows: 'User already follows the user'});
+      if (user1.owner.follows.filter(user => user.equals(user2._id)).length == 0)
+        return res.status(400).json({alreadyFollows: 'User doesnt user'});
       else {
-        
+
         let removalindex = 0;
         let removalindex2 = 0;
         user1.owner.follows.map((item, index) => {
