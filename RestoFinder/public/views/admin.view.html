@@ -1,5 +1,5 @@
-<section class="booking-details_wrap container">
-    <div>
+<section class="booking-details_wrap container" id = "popupContainer">
+    <div class="dialog-demo-content">
         <h5>
             Users
         </h5>
@@ -20,8 +20,7 @@
                 </tr>
                 </tbody>
             </table>
-            <!-- need a create page for each -->
-            <button class="btn btn-success" ng-click="createUser()">Create</button>
+            <a class="btn btn-success" href = "/#!/create-user">Create User</a>
         </div>
     </div>
     <hr>
@@ -36,18 +35,21 @@
                 <thead>
                 <tr>
                     <th>Review</th>
+                    <th>Writer</th>
+                    <th>Restaurant</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="r in reviews">
                     <td>
-                        <a href=/#!/review/:{{r._id}}>{{u.text.substring(0,20)}}</a>
+                        {{r.text}}
                     </td>
+                    <td>{{r.user}}</td>
+                    <td>{{r.restaurant}}</td>
                 </tr>
                 </tbody>
             </table>
-            <!-- need a create page for each -->
-            <button class="btn btn-success" ng-click="createReview()">Create</button>
+            <a class="btn btn-success" href="/#!/create-review">Create Review</a>
         </div>
     </div>
     <hr>
@@ -56,7 +58,7 @@
             Restaurants
         </h5>
         <hr>
-        <button class="btn btn-outline-primary" ng-click="showHideRestaurants()">View Restaurants</button>
+        <a class="btn btn-outline-primary" ng-click="showHideRestaurants()">View Restaurants</a>
         <div ng-show="isVisibleRestaurants">
             <table class="table">
                 <thead>
@@ -72,8 +74,7 @@
                 </tr>
                 </tbody>
             </table>
-            <!-- need a create page for each -->
-            <button class="btn btn-success" ng-click="createFollow()">Create</button>
+            <a class="btn btn-success" href = "/#!/create-restaurant">Create Restaurant</a>
         </div>
     </div>
 </section>

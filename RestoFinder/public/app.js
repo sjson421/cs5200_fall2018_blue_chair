@@ -1,4 +1,4 @@
 (function () {
     angular
-        .module("RestoFinder", ["ngRoute", "ngFlash", "ngCookies"]);
+        .module("RestoFinder", ["ngRoute", "ngFlash", "ngCookies", "ngMaterial", "ngMessages"]);
 })();

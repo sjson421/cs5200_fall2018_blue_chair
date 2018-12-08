@@ -28,7 +28,7 @@
                 templateUrl: "./views/register.view.html",
                 controller: "RegisterController"
             })
-            .when("/user", {
+            .when("/user/:userId", {
                 templateUrl: "./views/user.view.html",
                 controller: "UserController"
             })
@@ -44,9 +44,13 @@
                 templateUrl: "./views/admin.view.html",
                 controller: "AdminController"
             })
-            .when("/view-user", {
-                templateUrl: "./views/view-user.view.html",
-                controller: "ViewUserController"
+            .when("/create-review", {
+                templateUrl: "./views/create-review.view.html",
+                controller: "CreateReviewController"
+            })
+            .when("/create-restaurant", {
+                templateUrl: "./views/create-restaurant.view.html",
+                controller: "CreateRestaurantController"
             })
             .otherwise({
                 redirectTo: "/"
