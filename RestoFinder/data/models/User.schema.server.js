@@ -58,7 +58,7 @@ const UserSchema = new Schema(
     userType: {
       type: String,
       required: true,
-      enum: ["REGISTERED", "CRITIC", "OWNER", "ADVERTISER"]
+      enum: ["REGISTERED", "CRITIC", "OWNER", "ADVERTISER", "ADMIN"]
     },
     owner: OwnerSchema,
     critic: CriticSchema,

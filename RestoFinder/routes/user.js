@@ -259,9 +259,11 @@ router.post('/:id1/follow/:id2', async (req, res) => {
       // if(user1.registeredUser.follows.filter())
       console.log(user1.registeredUser.follows[0]);
       console.log(user2._id);
-      user1.registeredUser.follows.filter(user => user.equals(user2._id));
-      if (user1.registeredUser.follows.length > 0)
-      return res.status(400).json({alreadyFollows: 'User already follows the user'});
+
+      if (user1.registeredUser.follows.filter(user => user.equals(user2._id)).length > 0)
+        return res.status(400).json({alreadyFollows: 'User already follows the user'});
+
+
       if (user2.userType == 'CRITIC' || user2.userType == 'REGISTERED') {
 
         user1.registeredUser.follows.push(user2);
@@ -288,9 +290,9 @@ router.post('/:id1/follow/:id2', async (req, res) => {
     //
     // critic follows a critic
 
-    else if (user1.userType == 'CRITIC' && user2.userType == 'CRITIC' || user1.userType == 'ADMIN') {
-      user1.critic.follows.filter(user => user.equals(user2._id));
-      if (user1.critic.follows.length > 0)
+    else if ((user1.userType == 'CRITIC' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC' ) {
+
+      if (user1.critic.follows.filter(user => user.equals(user2._id)).length > 0)
       return res.status(400).json({alreadyFollows: 'User already follows the user'});
       else {
         user1.critic.follows.push(user2);
@@ -303,8 +305,8 @@ router.post('/:id1/follow/:id2', async (req, res) => {
     }
     // owner follows a critic
     else if ((user1.userType == 'OWNER' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
-      user1.owner.follows.filter(user => user.equals(user2._id));
-      if (user1.owner.follows.length > 0)
+
+      if (user1.owner.follows.filter(user => user.equals(user2._id)).length > 0)
       return res.status(400).json({alreadyFollows: 'User already follows the user'});
       else {
         user1.owner.follows.push(user2);
@@ -346,7 +348,7 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
       _id: id2
     });
     user2 = user2[0];
-    // console.log(user1);
+
     // console.log(user2.userType);
     if (!user1 || !user2) return res.status(404).send('user not found');
 
@@ -354,26 +356,52 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
       // user1.registeredUser.follows = [];
 
       // if(user1.registeredUser.follows.filter())
-      console.log(user1.registeredUser.follows[0]);
-      console.log(user2._id);
-      user1.registeredUser.follows.filter(user => user.equals(user2._id));
-      if (user1.registeredUser.follows.length == 0)
-      return res.status(400).json({NotFollows: 'User doesnt follow the user'});
-      if (user2.userType == 'CRITIC' || user2.userType == 'REGISTERED') {
+      console.log("user1 follows list", user1.registeredUser.follows);
+      console.log("user2 id is ", user2._id);
 
-        user1.registeredUser.follows.shift(user2);
+      if (user1.registeredUser.follows.filter(user => user.equals(user2._id)).length == 0)
+        return res.status(400).json({NotFollows: 'User doesnt follow the user'});
+
+
+
+
+      if (user2.userType == 'CRITIC' || user2.userType == 'REGISTERED') {
+        let removalindex = 0;
+        user1.registeredUser.follows.map((item, index) => {
+          if(item.toString() == user2._id.toString())
+            removalindex = index;
+        });
+
+        // user1.registeredUser.follows.splice(removalindex,1);
+
+
+        console.log('remove index for the user', removalindex);
+
+        user1.registeredUser.follows.splice(removalindex,1);
 
         user1.save();
 
         // registerd user is the other user
         if (user2.userType == 'REGISTERED') {
-          user2.registeredUser.followedBy.shfit(user1);
-          user2.save();
+          // user2.registeredUser.followedBy.shift(user1);
+          user2.registeredUser.followedBy.map((item, index) => {
+            if(item.toString() == user1._id.toString())
+              removalindex = index;
+          });
 
+          user2.registeredUser.follows.splice(removalindex,1);
+
+          user2.save();
         }
+
         // critic is the second user
         else {
-          user2.critic.followedBy.shift(user1);
+
+          user2.critic.followedBy.map((item, index) => {
+            if(item.toString() == user1._id.toString())
+              removalindex = index;
+          });
+          user2.critic.followedBy.splice(removalindex,1);
           user2.save();
         }
         //
@@ -385,32 +413,57 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
     //
     // critic follows a critic
 
-    else if (user1.userType == 'CRITIC' && user2.userType == 'CRITIC' || user1.userType == 'ADMIN') {
-      user1.critic.follows.filter(user => user.equals(user2._id));
-      if (user1.critic.follows.length == 0)
-      return res.status(400).json({NotFollows: 'User doesnt follow the user'});
+    else if ((user1.userType == 'CRITIC' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
+      if (user1.critic.follows.filter(user => user.equals(user2._id)).length == 0)
+        return res.status(400).json({NotFollows: 'User doesnt follow the user'});
       else {
-        user1.critic.follows.shift(user2);
+        let removalindex = 0;
+        let removalindex2 = 0;
+        user1.critic.follows.map((item, index) => {
+          if(item.toString() == user2._id.toString())
+            removalindex = index;
+        });
+
+        user1.critic.follows.splice(removalindex, 1);
         user1.save();
-        user2.critic.followedBy.shift(user1);
+
+        user2.critic.followedBy.map((item, index) => {
+          if(item.toString() == user1._id.toString())
+            removalindex2 = index;
+        });
+
+        user2.critic.followedBy.splice(removalindex2, 1);
         user2.save();
 
-        return res.json(user1);
       }
+      return res.json(user1);
     }
     // owner follows a critic
     else if ((user1.userType == 'OWNER' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
-      user1.owner.follows.filter(user => user.equals(user2._id));
-      if (user1.owner.follows.length > 0)
-      return res.status(400).json({alreadyFollows: 'User already follows the user'});
-      else {
-        user1.owner.follows.shift(user2);
-        user1.save();
-        user2.critic.followedBy.shift(user1);
-        user2.save();
 
-        return res.json(user1);
+      if (user1.owner.follows.filter(user => user.equals(user2._id)).length > 0)
+        return res.status(400).json({alreadyFollows: 'User already follows the user'});
+      else {
+        
+        let removalindex = 0;
+        let removalindex2 = 0;
+        user1.owner.follows.map((item, index) => {
+          if(item.toString() == user2._id.toString())
+            removalindex = index;
+        });
+
+        user1.owner.follows.splice(removalindex, 1);
+        user1.save();
+
+        user2.critic.followedBy.map((item, index) => {
+          if(item.toString() == user1._id.toString())
+            removalindex2 = index;
+        });
+
+        user2.critic.followedBy.splice(removalindex2, 1);
+        user2.save();
       }
+      return res.json(user1);
     }
 
     else {
@@ -428,6 +481,8 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
 // GET REQUEST
 // get follows list for the user
 
+
+// front end check if the json is empty, if empty then no one follows the user
 router.get('/:id/follows', async (req, res) => {
   try {
     const id = req.params.id;
@@ -442,42 +497,56 @@ router.get('/:id/follows', async (req, res) => {
     }
 
     else if(user.userType == 'REGISTERED' || user.userType == 'ADMIN') {
-
+      console.log('registered');
       let follows = user.registeredUser.follows;
-      let followsPopulate = follows.map(id => {
-        User.find({_id: id}).then(user => res.json(user));
-      });
+      console.log(follows);
+      let followsArr = [];
+
+
+      for(i = 0; i < follows.length; i++){
+        user = await User.find({_id: id});
+        console.log(user[0]);
+        followsArr.push(user[0]);
+      }
+
+      return res.json(followsArr);
+
+
     }
 
     else if(user.userType == 'CRITIC' || user.userType == 'ADMIN') {
+      console.log('critic');
       let follows = user.critic.follows;
+      console.log(follows);
       //
-      // let followsPopulate = follows.map(async (id) => {
-      //
-      //   let user =  User.find({_id: id});
-      //   return user;
-      // });
-      //
-      // Promise.all(followsPopulate)
-      // .then((follows) => {
-      //   console.log(follows);
-      //   return res.json(follows);
-      // })
-      // .catch(err => res.json({error: 'Populate error'}));
 
+      let followsArr = [];
 
-      let followsPopulate = follows.map(id => {
-        User.find({_id: id}).then(user => res.json(user));
-      });
+      for(i = 0; i < follows.length; i++){
+        user = await User.find({_id: id});
+        console.log(user[0]);
+        followsArr.push(user[0]);
+      }
+
+      return res.json(followsArr);
 
     }
 
     else if(user.userType == 'OWNER' || user.userType == 'ADMIN') {
 
-      let follows = user.critic.follows.populate('user').exec();
-      let followsPopulate = follows.map(id => {
-        User.find({_id: id}).then(user => res.json(user));
-      });
+      console.log('owner');
+      let follows = user.owner.follows;
+      console.log(follows);
+
+      let followsArr = [];
+
+      for(i = 0; i < follows.length; i++) {
+        user = await User.find({_id: id});
+        console.log(user[0]);
+        followsArr.push(user[0]);
+      }
+
+      return res.json(followsArr);
     }
 
   }
@@ -505,36 +574,33 @@ router.get('/:id/followedby', async (req, res) => {
     }
 
     else if(user.userType == 'REGISTERED' || user.userType == 'ADMIN') {
+      console.log('registered User type')
+      let followedBy = user.registeredUser.followedBy;
 
-      let follows = user.registeredUser.followedBy;
-      let followsPopulate = follows.map(id => {
-        User.find({_id: id}).then(user => res.json(user));
-      });
+      let followedbyArr = [];
+
+      for (i = 0; i < followedBy.length; i++) {
+        user = await User.find({_id: id});
+        console.log(user[0]);
+        followedbyArr.push(user[0]);
+      }
+
+      return res.json(followedbyArr);
     }
 
     else if(user.userType == 'CRITIC' || user.userType == 'ADMIN') {
-      let follows = user.critic.followedBy;
-      //
-      // let followsPopulate = follows.map(async (id) => {
-      //
-      //   let user =  User.find({_id: id});
-      //   return user;
-      // });
-      //
-      // Promise.all(followsPopulate)
-      // .then((follows) => {
-      //   console.log(follows);
-      //   return res.json(follows);
-      // })
-      // .catch(err => res.json({error: 'Populate error'}));
+      let followedBy = user.critic.followedBy;
+      let followedbyArr = [];
 
-      let followsPopulate = follows.map(id => {
-        User.find({_id: id}).then(user => res.json(user));
-      });
+      for (i = 0; i < followedBy.length; i++) {
+        user = await User.find({_id: id});
+        console.log(user[0]);
+        followedbyArr.push(user[0]);
+      }
 
+      return res.json(followedbyArr);
     }
   }
-
   catch (err) {
     console.log(err);
     res.status(400).send(err);
