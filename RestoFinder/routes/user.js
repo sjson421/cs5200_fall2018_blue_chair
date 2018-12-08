@@ -34,8 +34,9 @@ router.post('/register', (req, res) => {
             city: req.body.city,
             state: req.body.state,
             country: req.body.country,
-            zipcode: req.body.zipcode,
+            zipcode: req.body.zipcode
           },
+          picture: req.body.picture,
           phone: req.body.phone,
           userType: req.body.userType,
         }
@@ -167,17 +168,27 @@ router.get("/", async (req, res) => {
   }
 });
 
-// get user by Username
+// get user by term
 // send the username from front end
-router.get("/:username", async (req, res) => {
+// PUBLIC API AVAILABLE FOR ANON USER
+router.get("/search/:username", async (req, res) => {
   try {
-    const user = await User.find({username: req.params.username})
-    user = user[0];
-    return res.send(user);
+    let term = req.params.username;
+    var regex = new RegExp(term, "i");
+    const users = await User.find({ username: regex }).limit(15);
+    const returnUsers = [];
+    const seen = [];
+    for (r of users) {
+      if (!seen.includes(r.username)) {
+        returnUsers.push(r);
+        seen.push(r.username);
+      }
+    }
+    return res.send(returnUsers);
   } catch(err) {
     return res.status(400).send(err);
   }
-})
+});
 
 
 // get by id
@@ -365,6 +376,8 @@ router.post('/:id1/follow/:id2', async (req, res) => {
     res.status(400).send(err);
   }
 });
+
+
 
 
 // id1 unfollows id2
