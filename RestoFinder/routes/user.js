@@ -290,7 +290,7 @@ router.post('/:id1/follow/:id2', async (req, res) => {
     //
     // critic follows a critic
 
-    else if (user1.userType == 'CRITIC' && user2.userType == 'CRITIC' || user1.userType == 'ADMIN') {
+    else if ((user1.userType == 'CRITIC' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC' ) {
 
       if (user1.critic.follows.filter(user => user.equals(user2._id)).length > 0)
       return res.status(400).json({alreadyFollows: 'User already follows the user'});
@@ -358,15 +358,16 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
       // if(user1.registeredUser.follows.filter())
       console.log("user1 follows list", user1.registeredUser.follows);
       console.log("user2 id is ", user2._id);
-      ;
+
       if (user1.registeredUser.follows.filter(user => user.equals(user2._id)).length == 0)
         return res.status(400).json({NotFollows: 'User doesnt follow the user'});
+
+
 
 
       if (user2.userType == 'CRITIC' || user2.userType == 'REGISTERED') {
         let removalindex = 0;
         user1.registeredUser.follows.map((item, index) => {
-          console.log(item.toString() == user2._id.toString());
           if(item.toString() == user2._id.toString())
             removalindex = index;
         });
@@ -376,7 +377,7 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
 
         console.log('remove index for the user', removalindex);
 
-        // user1.registeredUser.follows.shift(user2);
+        user1.registeredUser.follows.splice(removalindex,1);
 
         user1.save();
 
@@ -384,16 +385,23 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
         if (user2.userType == 'REGISTERED') {
           // user2.registeredUser.followedBy.shift(user1);
           user2.registeredUser.followedBy.map((item, index) => {
-            console.log(item.toString() == user1._id.toString())
-          })
-          user2.save();
+            if(item.toString() == user1._id.toString())
+              removalindex = index;
+          });
 
+          user2.registeredUser.follows.splice(removalindex,1);
+
+          user2.save();
         }
 
         // critic is the second user
         else {
 
-          user2.critic.followedBy.shift(user1);
+          user2.critic.followedBy.map((item, index) => {
+            if(item.toString() == user1._id.toString())
+              removalindex = index;
+          });
+          user2.critic.followedBy.splice(removalindex,1);
           user2.save();
         }
         //
@@ -405,32 +413,57 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
     //
     // critic follows a critic
 
-    else if (user1.userType == 'CRITIC' && user2.userType == 'CRITIC' || user1.userType == 'ADMIN') {
-      user1.critic.follows.filter(user => user.equals(user2._id));
-      if (user1.critic.follows.length == 0)
-      return res.status(400).json({NotFollows: 'User doesnt follow the user'});
+    else if ((user1.userType == 'CRITIC' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
+      if (user1.critic.follows.filter(user => user.equals(user2._id)).length == 0)
+        return res.status(400).json({NotFollows: 'User doesnt follow the user'});
       else {
-        user1.critic.follows.shift(user2);
+        let removalindex = 0;
+        let removalindex2 = 0;
+        user1.critic.follows.map((item, index) => {
+          if(item.toString() == user2._id.toString())
+            removalindex = index;
+        });
+
+        user1.critic.follows.splice(removalindex, 1);
         user1.save();
-        user2.critic.followedBy.shift(user1);
+
+        user2.critic.followedBy.map((item, index) => {
+          if(item.toString() == user1._id.toString())
+            removalindex2 = index;
+        });
+
+        user2.critic.followedBy.splice(removalindex2, 1);
         user2.save();
 
-        return res.json(user1);
       }
+      return res.json(user1);
     }
     // owner follows a critic
     else if ((user1.userType == 'OWNER' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
-      user1.owner.follows.filter(user => user.equals(user2._id));
-      if (user1.owner.follows.length > 0)
-      return res.status(400).json({alreadyFollows: 'User already follows the user'});
-      else {
-        user1.owner.follows.shift(user2);
-        user1.save();
-        user2.critic.followedBy.shift(user1);
-        user2.save();
 
-        return res.json(user1);
+      if (user1.owner.follows.filter(user => user.equals(user2._id)).length > 0)
+        return res.status(400).json({alreadyFollows: 'User already follows the user'});
+      else {
+        
+        let removalindex = 0;
+        let removalindex2 = 0;
+        user1.owner.follows.map((item, index) => {
+          if(item.toString() == user2._id.toString())
+            removalindex = index;
+        });
+
+        user1.owner.follows.splice(removalindex, 1);
+        user1.save();
+
+        user2.critic.followedBy.map((item, index) => {
+          if(item.toString() == user1._id.toString())
+            removalindex2 = index;
+        });
+
+        user2.critic.followedBy.splice(removalindex2, 1);
+        user2.save();
       }
+      return res.json(user1);
     }
 
     else {
