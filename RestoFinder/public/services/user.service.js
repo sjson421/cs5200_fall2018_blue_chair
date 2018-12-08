@@ -22,8 +22,8 @@
         function setUser(id) {
 
         }
-        function addUser() {
-
+        function register(user) {
+          //  user.
         }
     }
 })();
