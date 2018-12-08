@@ -7,7 +7,9 @@
         var baseUrl = "http://localhost:5000/api/user"
         var api = {
             getAllUsers: getAllUsers,
-            getUser: getUser
+            getUser: getUser,
+            setUser: setUser,
+            register: register
         };
         return api;
 
@@ -23,7 +25,6 @@
 
         }
         function register(user) {
-          //  user.
         }
     }
 })();
