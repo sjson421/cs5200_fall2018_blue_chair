@@ -25,6 +25,7 @@
 
         }
         function register(user) {
+            return $http.put(baseUrl, user);
         }
     }
 })();

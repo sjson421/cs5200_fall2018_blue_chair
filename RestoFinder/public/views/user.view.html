@@ -4,35 +4,86 @@
         <div class="row">
             <div class="col-md-4 responsive-wrap">
                 <div class="follow">
-                    <ul>
-                        <li>{{user.email}}</li>
-                        <li>{{user.password}}</li>
-                        <li>{{user.address}}</li>
-                        <li>{{user.phone}}</li>
-                        <li>{{user.type}}</li>
+                    <div class="follow-img">
+                        <img src="../images/follow-img.jpg" class="img-fluid" alt="#">
+                        <h6>Christine Evans</h6>
+                        <span>New York I'm so sick of this woman's face</span>
+                    </div>
+                    <ul class="social-counts">
+                        <li>
+                            <h6>26</h6>
+                            <span>Reviews</span>
+                        </li>
+                        <li>
+                            <h6>326</h6>
+                            <span>Followers</span>
+                        </li>
+                        <li>
+                            <h6>12</h6>
+                            <span>Followed</span>
+                        </li>
                     </ul>
-                    <div><a href="/add-restaurant" class="btn btn-outline-light top-btn"><span class="ti-plus"></span>
-                        Add
-                        Restaurant</a></div>
                 </div>
             </div>
             <div class="col-md-8 responsive-wrap">
                 <div class="main-block light-bg">
+
                     <h5>Reviews</h5>
                     <hr>
-                    <div ng-repeat="r in reviews">
-                        <div class="customer-review_wrap">
-                            <div class="customer-rating">{{r.rating}}</div>
+                    <div class="customer-review_wrap">
+                        <div class="customer-review">
+                            <h6>Best noodles in the Newyork city</h6>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span class="round-icon-blank"></span>
+                            <p>Reviewed 2 days ago</p>
                         </div>
-                        <p class="customer-text">{{review.text}}</p>
-                        </br>
+                        <div class="customer-rating">8.0</div>
                     </div>
+                    <p class="customer-text">I love the noodles here but it is so rare that I get to come here. Tasty Hand-Pulled Noodles is the best type of whole in the wall restaurant. The staff are really nice, and you should be seated quickly. I usually get the
+                        hand pulled noodles in a soup. House Special #1 is amazing and the lamb noodles are also great. If you want your noodles a little chewier, get the knife cut noodles, which are also amazing. Their dumplings are great
+                        dipped in their chili sauce.
+                    </p>
+                    <p class="customer-text">I love how you can see into the kitchen and watch them make the noodles and you can definitely tell that this is a family run establishment. The prices are are great with one dish maybe being $9. You just have to remember
+                        to bring cash.
+                    </p>
+
                     <hr>
-                    <h5>Following</h5>
                     <ul class="">
-                        <ul ng-repeat="f in following">
-                            <li><a href=/#!/view-user>{{f.username}}</a></li>
-                        </ul>
+                        <div class="follow-img">
+                            <h6>
+                                Followers
+                            </h6>
+                            <hr>
+                            <!-- TODO fix this later -->
+                            <table class="">
+                                <tbody>
+                                <tr ng-repeat="f in followed">
+                                    <td><img src={{f.imgUrl}} class="img-fluid" alt="#"></td>
+                                    <td><a href={{f.url}}>{{f.firstName f.lastName}}</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </ul>
+                    <ul class="">
+                        <div class="follow-img">
+                            <h6>
+                                Followed
+                            </h6>
+                            <hr>
+                            <!-- TODO fix this later -->
+                            <table class="">
+                                <tbody>
+                                <tr ng-repeat="dataModel in followed">
+                                    <td><img src="../images/customer-img1.jpg" class="img-fluid" alt="#"></td>
+                                    <td><a href="#">{{dataModel.firstName dataModel.lastName}}</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </ul>
                     <hr>
                 </div>
@@ -40,4 +91,3 @@
         </div>
     </div>
 </section>
-<!--//END BOOKING DETAILS -->
