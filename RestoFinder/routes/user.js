@@ -721,16 +721,16 @@ router.get('/:id/follows', async (req, res) => {
       console.log('registered');
       let follows = user.registeredUser.follows;
       console.log(follows);
-      let followsArr = [];
+      // let followsArr = [];
+      //
+      //
+      // for(i = 0; i < follows.length; i++){
+      //   user = await User.find({_id: id});
+      //   console.log(user[0]);
+      //   followsArr.push(user[0]);
+      // }
 
-
-      for(i = 0; i < follows.length; i++){
-        user = await User.find({_id: id});
-        console.log(user[0]);
-        followsArr.push(user[0]);
-      }
-
-      return res.json(followsArr);
+      return res.json(follows);
 
 
     }
@@ -741,15 +741,15 @@ router.get('/:id/follows', async (req, res) => {
       console.log(follows);
       //
 
-      let followsArr = [];
+      // let followsArr = [];
+      //
+      // for(i = 0; i < follows.length; i++){
+      //   user = await User.find({_id: id});
+      //   console.log(user[0]);
+      //   followsArr.push(user[0]);
+      // }
 
-      for(i = 0; i < follows.length; i++){
-        user = await User.find({_id: id});
-        console.log(user[0]);
-        followsArr.push(user[0]);
-      }
-
-      return res.json(followsArr);
+      return res.json(follows);
 
     }
 
@@ -759,15 +759,15 @@ router.get('/:id/follows', async (req, res) => {
       let follows = user.owner.follows;
       console.log(follows);
 
-      let followsArr = [];
+      // let followsArr = [];
+      //
+      // for(i = 0; i < follows.length; i++) {
+      //   user = await User.find({_id: id});
+      //   console.log(user[0]);
+      //   followsArr.push(user[0]);
+      // }
 
-      for(i = 0; i < follows.length; i++) {
-        user = await User.find({_id: id});
-        console.log(user[0]);
-        followsArr.push(user[0]);
-      }
-
-      return res.json(followsArr);
+      return res.json(follows);
     }
 
   }
