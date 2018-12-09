@@ -1,5 +1,5 @@
 <!-- ============================= DETAIL ============================= -->
-<section>
+<section ng-if="searchType == 'restaurant'">
   <div class="container">
     <div class="row">
       <div class="col-md-12 responsive-wrap">
@@ -73,3 +73,46 @@
   </div>
 </section>
 <!-- //END DETAIL -->
+<!-- ============================= DETAIL ============================= -->
+<section ng-if="searchType == 'user'">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 responsive-wrap">
+          <div class="row detail-filter-wrap">
+            <div class="col-md-4 featured-responsive">
+              <div class="detail-filter-text">
+                <p>
+                  {{ users.length }} Results For <span>Users</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="row detail-options-wrap">
+            <div
+              class="col-sm-3 col-lg-3 col-xl-3 featured-responsive"
+              ng-repeat="user in users"
+            >
+              <div>
+                <a ng-click="viewUser(user)">
+                    <div class="follow-img" style="text-align: center">
+                        <br>
+                        <br>
+                    <img src="../images/follow-img.jpg" style="border-radius: 50%;" alt="#" />
+                    <br>
+                    <br>
+                    <h6>{{ user.username | uppercase }}</h6>
+                    <span>{{ user.address.city | uppercase}}</span>
+                  </div>
+                
+              </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- //END DETAIL -->
+  

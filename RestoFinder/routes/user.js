@@ -255,7 +255,7 @@ router.get('/:id/reviews', async (req, res) => {
     else {
       const reviews = await Review.find({
         user: id
-      }).populate('user');
+      }).populate('user').populate('restaurant');
       return res.send(reviews);
     }
 
@@ -610,7 +610,7 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
             removalindex = index;
           });
 
-          user2.registeredUser.follows.splice(removalindex,1);
+          user2.registeredUser.followedBy.splice(removalindex,1);
 
           user2.save();
         }

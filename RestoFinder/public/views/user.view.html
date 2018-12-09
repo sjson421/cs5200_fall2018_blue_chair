@@ -1,93 +1,215 @@
-<!--============================= BOOKING DETAILS =============================-->
-<section class="light-bg booking-details_wrap">
-    <div class="container">
-        <div class="row">
+<!--
+  =============================Section Break =============================
+-->
+<section class="light-bg booking-details_wrap" ng-if= "loggedUser._id == user._id">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 responsive-wrap">
+        <div class="follow">
+          <div class="follow-img" style="text-align: center">
+                <br>
+                <br>
+            <img src="../images/follow-img.jpg" class="img-fluid" style="border-radius: 50%;" alt="#" />
+            <br>
+            <br>
+            <h6>{{ user.username | uppercase }}</h6>
+            <span>{{ user.address.city | uppercase}}</span>
+          </div>
+          <br>
+          
+          <ul class="social-counts">
+            <li>
+              <h6>{{ reviews.length }}</h6>
+              <span>Reviews</span>
+            </li>
+            <li>
+              <h6>{{ followedBy.length }}</h6>
+              <span>Followers</span>
+            </li>
+            <li>
+              <h6>{{ follows.length }}</h6>
+              <span>Followed</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8 responsive-wrap">
+        <div class="main-block light-bg">
+          <h5>Reviews</h5>
+          <div ng-repeat="review in reviews" ng-if="!reviewsLoading">
+            <hr />
+            <div class="customer-content">
+              <div class="customer-review">
+                <h6 style="padding: 5px;">{{review.restaurant.name}}</h6>
+                <!-- <span></span> <span></span> <span></span> <span></span>
+                <span class="round-icon-blank"></span> -->
+                <p>Reviewed on {{ review.time_created | date: "short" }}</p>
+              </div>
+              <div class="customer-rating">{{ review.rating }}</div>
+            </div>
+            <br>
+            <p class="customer-text">{{ review.text }}</p>
+            <br>
+            <span>28</span>
+            <a href="#"><span class="icon-like"></span> likes</a> &nbsp; &nbsp; &nbsp; &nbsp;
+            <a href="#"><span class="icon-pencil"></span></a> &nbsp; &nbsp; &nbsp; &nbsp;
+            <a ng-click="deleteReview(review)"><span class="icon-trash"></span></a>
+          </div>
+          <div class="spinner" ng-if="reviewsLoading">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+          <hr />
+        </div>
+        <div class="main-block light-bg">
+          <h5>Follows</h5>
+          <div ng-repeat="follow in follows" ng-if="!followsLoading">
+            <hr />
+            <div class="row">
+              <div class="col-md-4">{{ follow.user.username }}</div>
+              <div class="col-md-4">{{ follow.user.userType }}</div>
+              <div class="col-md-4">
+                <button class="btn btn-danger" ng-click="unfollowUser(follow)">
+                  Unfollow
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="spinner" ng-if="followsLoading">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+          <hr />
+        </div>
+        <div class="main-block light-bg">
+          <h5>Followed By</h5>
+          <div ng-repeat="followed in followedBy" ng-if="!followedByLoading">
+            <hr />
+            <div class="row">
+              <div class="col-md-4">{{ followed.user.username }}</div>
+              <div class="col-md-4">{{ followed.user.userType }}</div>
+              <div class="col-md-4">
+                <button class="btn btn-danger" ng-click="viewProfile(followed.user)">
+                  view profile
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="spinner" ng-if="followedByLoading">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+          <hr />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--
+  ============================= Section Break =============================
+-->
+<section class="light-bg booking-details_wrap" ng-if= "loggedUser._id != user._id">
+        <div class="container">
+          <div class="row">
             <div class="col-md-4 responsive-wrap">
-                <div class="follow">
-                    <div class="follow-img">
-                        <img src="../images/follow-img.jpg"  alt="#">
-                        <h6>Username: {{user.username}}</h6>
-                        <span>City: {{user.address.city}}</span>
-                    </div>
-                    <ul class="social-counts">
-                        <li>
-                            <h6>{{reviews.length}}</h6>
-                            <span>Reviews</span>
-                        </li>
-                        <li>
-                            <h6>{{followedBy.length}}</h6>
-                            <span>Followers</span>
-                        </li>
-                        <li>
-                            <h6>{{follows.length}}</h6>
-                            <span>Followed</span>
-                        </li>
-                    </ul>
+              <div class="follow">
+                <div class="follow-img" style="text-align: center">
+                      <br>
+                      <br>
+                  <img src="../images/follow-img.jpg" class="img-fluid" style="border-radius: 50%;" alt="#" />
+                  <br>
+                  <br>
+                  <h6>{{ user.username | uppercase }}</h6>
+                  <span>{{ user.address.city | uppercase}}</span>
                 </div>
+                <br>
+                
+                <ul class="social-counts">
+                  <li>
+                    <h6>{{ reviews.length }}</h6>
+                    <span>Reviews</span>
+                  </li>
+                  <li>
+                    <h6>{{ followedBy.length }}</h6>
+                    <span>Followers</span>
+                  </li>
+                  <li>
+                    <h6>{{ follows.length }}</h6>
+                    <span>Followed</span>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div class="col-md-8 responsive-wrap">
-                <div class="main-block light-bg">
-
-                    <h5>Reviews</h5>
-                    <hr>
-                    <div ng-repeat="review in reviews">
-                            <hr>
-                            <div class="customer-review_wrap">
-                              <!-- <div class="customer-img">
-                                <img
-                                  src="../images/customer-img1.jpg"
-                                  class="img-fluid"
-                                  alt="#"
-                                />
-                                <p>{{review.user.username}}</p>
-                                <span>00 Reviews</span>
-                              </div> -->
-                              <div class="customer-content-wrap">
-                                <div class="customer-content">
-                                  <div class="customer-review">
-                                    <h6>Title </h6>
-                                    <span></span> <span></span> <span></span> <span></span>
-                                    <span class="round-icon-blank"></span>
-                                    <p>Reviewed on {{review.time_created | date : 'medium'}}</p>
-                                  </div>
-                                  <div class="customer-rating">{{review.rating}}</div>
-                                </div>
-                                <p class="customer-text">
-                                {{review.text}}
-                                </p>
-                                <!-- <ul>
-                                  <li>
-                                    <img
-                                      src="../images/review-img1.jpg"
-                                      class="img-fluid"
-                                      alt="#"
-                                    />
-                                  </li>
-                                  <li>
-                                    <img
-                                      src="../images/review-img2.jpg"
-                                      class="img-fluid"
-                                      alt="#"
-                                    />
-                                  </li>
-                                  <li>
-                                    <img
-                                      src="../images/review-img3.jpg"
-                                      class="img-fluid"
-                                      alt="#"
-                                    />
-                                  </li>
-                                </ul> -->
-                                <span>28 people marked this review as helpful</span>
-                                <a href="#"><span class="icon-like"></span>Helpful</a>
-                              </div>
-                            </div>
-                          </div>
-
-                    <hr>
-                    
+              <div class="main-block light-bg">
+                <h5>Reviews</h5>
+                <div ng-repeat="review in reviews" ng-if="!reviewsLoading">
+                  <hr />
+                  <div class="customer-content">
+                    <div class="customer-review">
+                      <h6 style="padding: 5px;">{{review.restaurant.name}}</h6>
+                      <!-- <span></span> <span></span> <span></span> <span></span>
+                      <span class="round-icon-blank"></span> -->
+                      <p>Reviewed on {{ review.time_created | date: "short" }}</p>
+                    </div>
+                    <div class="customer-rating">{{ review.rating }}</div>
+                  </div>
+                  <br>
+                  <p class="customer-text">{{ review.text }}</p>
+                  <br>
+                  <span>28</span>
+                  <a href="#"><span class="icon-like"></span> likes</a> &nbsp; &nbsp; &nbsp; &nbsp;
+                  <!-- <a href="#"><span class="icon-pencil"></span></a> &nbsp; &nbsp; &nbsp; &nbsp;
+                  <a ng-click="deleteReview(review)"><span class="icon-trash"></span></a> -->
                 </div>
+                <div class="spinner" ng-if="reviewsLoading">
+                  <div class="double-bounce1"></div>
+                  <div class="double-bounce2"></div>
+                </div>
+                <hr />
+              </div>
+              <div class="main-block light-bg">
+                <h5>Follows</h5>
+                <div ng-repeat="follow in follows" ng-if="!followsLoading">
+                  <hr />
+                  <div class="row">
+                    <div class="col-md-4">{{ follow.user.username }}</div>
+                    <div class="col-md-4">{{ follow.user.userType }}</div>
+                    <div class="col-md-4">
+                      <button class="btn btn-danger" ng-click="followUser(follow)">
+                        follow
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="spinner" ng-if="followsLoading">
+                  <div class="double-bounce1"></div>
+                  <div class="double-bounce2"></div>
+                </div>
+                <hr />
+              </div>
+              <div class="main-block light-bg">
+                <h5>Followed By</h5>
+                <div ng-repeat="followed in followedBy" ng-if="!followedByLoading">
+                  <hr />
+                  <div class="row">
+                    <div class="col-md-4">{{ followed.user.username }}</div>
+                    <div class="col-md-4">{{ followed.user.userType }}</div>
+                    <div class="col-md-4">
+                      <button class="btn btn-danger" ng-click="viewProfile(followed.user)">
+                        view profile
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="spinner" ng-if="followedByLoading">
+                  <div class="double-bounce1"></div>
+                  <div class="double-bounce2"></div>
+                </div>
+                <hr />
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</section>
+      </section>

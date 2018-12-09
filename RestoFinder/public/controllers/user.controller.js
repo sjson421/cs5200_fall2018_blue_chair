@@ -7,10 +7,16 @@
       $http,
       LoginService,
       $routeParams,
-      UserService
+      UserService,
+      $q,
+      $location,
+      ReviewService
     ) {
       $scope.getLoggedInUser = getLoggedInUser();
       $scope.getProfileUser = getProfileUser();
+      $scope.reviewsLoading = true;
+      $scope.followsLoading = true;
+      $scope.followedByLoading = true;
     //   $scope.getUserReviews = getUserReviews();
     //   $scope.getUserFollows = getUserFollows();
     //   $scope.getUserFollowedBy = getUserFollowedBy();
@@ -47,6 +53,7 @@
           UserService.getReviews(id).then(
             function(response) {
               $scope.reviews = response.data;
+              $scope.reviewsLoading = false;
             },
             function(err) {
               console.log("error in fetching reviews", err);
@@ -64,7 +71,15 @@
           let id = $scope.user._id;
           UserService.getFollows(id).then(
             function(response) {
-              $scope.follows = response.data;
+                populatedUsers =[]
+                $q.all(extractUsers(response.data, populatedUsers)).then(function(response){
+                    $scope.follows = angular.copy(populatedUsers);
+                    console.log("follows are", $scope.follows);
+                    $scope.followsLoading = false;
+
+                },function(err){
+                    console.log(err);
+                })
             },
             function(err) {
               console.log("error in fetching folllows", err);
@@ -72,7 +87,23 @@
           );
         }
       }
+      function extractUsers(usersArray,populatedUsers){
+        console.log("users array is", usersArray);
+        // populatedUsers = []
+        promises = []
+        for(user of usersArray){
+            let promise =  UserService.getUser(user);
+            promise.then(function(response){
+                populatedUsers.push(response.data);
+            },function(err){
+                console.log(err);
+            })
+            promises.push(promise)
+        }
+        return promises;
 
+        
+      }
       function getUserFollowedBy() {
         if (
             $scope.userType == "REGISTERED" ||
@@ -81,7 +112,15 @@
             let id = $scope.user._id;
             UserService.getFollowedBy(id).then(
               function(response) {
-                $scope.followedBy = response.data;
+                // $scope.followedBy = response.data;
+                populatedUsers1 =[]
+                $q.all(extractUsers(response.data, populatedUsers1)).then(function(response){
+                    $scope.followedBy = angular.copy(populatedUsers1);
+                    $scope.followedByLoading = false;
+
+                },function(err){
+                    console.log(err);
+                })
               },
               function(err) {
                 console.log("error in fetching followedBy", err);
@@ -137,6 +176,64 @@
               }
             );
           }
+      }
+
+      $scope.viewProfile = function viewProfile(user){
+        let id= user._id;
+        $location.url("/user/" + id);
+      }
+
+      $scope.unfollowUser = function unfollowUser(follow){
+          let userId1 = $scope.loggedUser._id;
+          let userId2 = follow.user._id;
+          UserService.deleteFollow(userId1,userId2)
+            .then(
+                function(response){
+                    let index = $scope.follows.indexOf(follow);
+                    if (index > -1){
+                        $scope.follows.splice(index,1);
+                        console.log("user unfollowed, new follows is", $scope.follows);
+                    }
+                       
+                },
+                function(err){
+                    console.log("error unfollowing", err);
+                }
+            )
+
+      }
+
+      $scope.deleteReview = function deleteReview (review) {
+          // body
+          let reviewId = review._id;
+          ReviewService.removeReview(reviewId)
+            .then(
+                function(response){
+                    let index = $scope.reviews.indexOf(review)
+                    $scope.reviews.splice(index,1)
+                },
+                function(err){
+                    console.log("error in removing review",err);
+                }
+            )
+
+      }
+
+      $scope.followUser = function followUser(follow) {
+          // body
+          let userId1= loggedUser._id;
+          let userId2 = follow.user._id;
+          UserService.createFollow(userId1,userId2)
+            .then(
+                function(response){
+                //    $scope.follows
+                       
+                },
+                function(err){
+                    console.log("error following", err);
+                }
+            )
+
       }
       // review, follows, followedBy, favorites, endorses, endorsedBy, restaurant
       // RU

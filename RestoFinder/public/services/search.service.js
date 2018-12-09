@@ -6,11 +6,17 @@
     function searchService($http) {
 
         var api = {
-            getSearchRestaurants: getSearchRestaurants
+            getSearchRestaurants: getSearchRestaurants,
+            getSearchUsers: getSearchUsers
         };
         return api;
         function getSearchRestaurants(term){
-            url = "http://localhost:5000/api/restaurant/search/" + term
+            url = "http://localhost:5000/api/restaurant/search/" + term;
+            return $http.get(url);
+        }
+
+        function getSearchUsers(term){
+            url = "http://localhost:5000/api/user/search/" + term;
             return $http.get(url);
         }
         
