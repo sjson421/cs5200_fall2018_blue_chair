@@ -3,6 +3,7 @@ const router = express.Router();
 
 const User = require('../data/models/User.schema.server');
 const Review = require('../data/models/Review.schema.server');
+const Restaurant = require('../data/models/Restaurant.schema.server');
 const bcrypt = require('bcryptjs');
 
 // Get user dao here
@@ -128,7 +129,6 @@ router.post('/register', (req, res) => {
     }
   });
 });
-
 
 
 // login
@@ -448,6 +448,7 @@ router.post('/:id1/unendorse/:id2', async (req, res) => {
 
   catch(err) {
     console.log(err);
+    res.status(400).send(err);
   }
 });
 
@@ -797,31 +798,123 @@ router.get('/:id/followedby', async (req, res) => {
       console.log('registered User type')
       let followedBy = user.registeredUser.followedBy;
 
-      let followedbyArr = [];
+      // let followedbyArr = [];
+      //
+      // for (i = 0; i < followedBy.length; i++) {
+      //   user = await User.find({_id: id});
+      //   console.log(user[0]);
+      //   followedbyArr.push(user[0]);
+      // }
 
-      for (i = 0; i < followedBy.length; i++) {
-        user = await User.find({_id: id});
-        console.log(user[0]);
-        followedbyArr.push(user[0]);
-      }
-
-      return res.json(followedbyArr);
+      return res.json(followedBy);
     }
 
     else if(user.userType == 'CRITIC' || user.userType == 'ADMIN') {
       let followedBy = user.critic.followedBy;
-      let followedbyArr = [];
+      // let followedbyArr = [];
+      //
+      // for (i = 0; i < followedBy.length; i++) {
+      //   user = await User.find({_id: id});
+      //   console.log(user[0]);
+      //   followedbyArr.push(user[0]);
+      // }
 
-      for (i = 0; i < followedBy.length; i++) {
-        user = await User.find({_id: id});
-        console.log(user[0]);
-        followedbyArr.push(user[0]);
-      }
 
-      return res.json(followedbyArr);
+
+      return res.json(followedBy);
     }
   }
   catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+// /userId/favorites/restaurantId
+// add to favorites list of User
+// POST Request
+// add a restaurant to the favorites list.
+router.post('/:id1/favorites/:id2', async (req, res) => {
+  try {
+    const userid = req.params.id1;
+    const restid = req.params.id2;
+
+    let user = await User.find({_id: userid});
+    user = user[0];
+
+    // console.log(user);
+    if (!user) return res.status(404).send("User not found");
+
+    let restId = await Restaurant.find({_id: restid});
+    restId = restId[0];
+
+    if (!restId) return res.status(404).send("Restaurant not found");
+
+
+
+    if(user.userType == "REGISTERED" || user.userType == "ADMIN") {
+      if (user.registeredUser.favourites.filter(rest => rest.equals(restId._id)).length > 0)
+      return res.status(400).json({alreadyFavorite: 'User already has the restaurant as favorite'});
+      else {
+        user.registeredUser.favourites.push(restId);
+        user.save();
+        return res.json({user: user});
+      }
+    }
+
+    else return res.status(400).json({userTypeError: 'This user type cannot have Favorites'})
+
+
+
+  }
+  catch(err) {
+    res.status(400).send(err);
+  }
+});
+
+
+
+// /userId/favorites/restaurantId
+// delete a restaurant from favorites list of user
+// POST request
+router.post('/:id1/unfavorites/:id2', async(req, res) => {
+  try {
+    const userid = req.params.id1;
+    const restid = req.params.id2;
+
+    let user = await User.find({_id: userid});
+    user = user[0];
+
+    // console.log(user);
+    if (!user) return res.status(404).send("User not found");
+
+    let restId = await Restaurant.find({_id: restid});
+    restId = restId[0];
+
+    if (!restId) return res.status(404).send("Restaurant not found");
+
+    if(user.userType == "REGISTERED" || user.userType == "ADMIN") {
+      if (user.registeredUser.favourites.filter(rest => rest.equals(restId._id)).length == 0)
+        return res.status(400).json({alreadyFavorite: 'User does not have the restaurant as favorite'});
+
+
+      let removalindex = 0;
+      user.registeredUser.favourites.map((item, index) => {
+        if(item.toString() == restId._id.toString())
+        removalindex = index;
+
+
+      });
+
+      console.log('remove index for the restaurant', removalindex);
+
+      user1.registeredUser.favourites.splice(removalindex,1);
+
+      user1.save();
+      return res.json({user: user});
+    }
+  }
+  catch(err) {
     console.log(err);
     res.status(400).send(err);
   }
