@@ -1,7 +1,7 @@
 (function () {
     angular
         .module("RestoFinder")
-        .controller("AdminController", function ($rootScope, $scope) {
+        .controller("AdminController", function ($rootScope, $scope, UserService) {
             $scope.isVisibleUsers = false;
             $scope.showHideUsers = function () {
                 $scope.isVisibleUsers = $scope.isVisibleUsers ? false : true;
@@ -16,6 +16,10 @@
             $scope.showHideRestaurants = function () {
                 $scope.isVisibleRestaurants = $scope.isVisibleRestaurants ? false : true;
             };
-            // Get and $scope on users, reviews, restaurants
+
+            UserService.getAllUsers()
+                .then(function(response) {
+                    $scope.users = response.data;
+                });
         });
 })();

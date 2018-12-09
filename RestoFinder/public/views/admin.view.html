@@ -1,4 +1,4 @@
-<section class="booking-details_wrap container" id = "popupContainer">
+<section class="booking-details_wrap container" id="popupContainer">
     <div class="dialog-demo-content">
         <h5>
             Users
@@ -6,21 +6,24 @@
         <hr>
         <button class="btn btn-outline-primary" ng-click="showHideUsers()">View Users</button>
         <div ng-show="isVisibleUsers">
-            <table class="table">
+            <table class="table table-sm">
                 <thead>
-                <tr>
-                    <th>User</th>
-                </tr>
+                    <tr>
+                        <th>User</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="u in users">
-                    <td>
-                        <a href=/#!/user/:{{u._id}}>{{u.username}}</a>
-                    </td>
-                </tr>
+                    <tr ng-repeat="u in users">
+                        <td>
+                            <a href="/#!/user/{{u._id}}">{{u.username}}</a>
+                        </td>
+                        <td>
+                            <a href="/#!/update-user/{{u._id}}" class="btn btn-primary">Update</a>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-            <a class="btn btn-success" href = "/#!/create-user">Create User</a>
+            <a class="btn btn-success" href="/#!/register">Create User</a>
         </div>
     </div>
     <hr>
@@ -31,7 +34,7 @@
         <hr>
         <button class="btn btn-outline-primary" ng-click="showHideReviews()">View Reviews</button>
         <div ng-show="isVisibleReviews">
-            <table class="table">
+            <table class="table table-sm">
                 <thead>
                 <tr>
                     <th>Review</th>
@@ -60,7 +63,7 @@
         <hr>
         <a class="btn btn-outline-primary" ng-click="showHideRestaurants()">View Restaurants</a>
         <div ng-show="isVisibleRestaurants">
-            <table class="table">
+            <table class="table table-sm">
                 <thead>
                 <tr>
                     <th>Restaurant</th>
@@ -74,7 +77,7 @@
                 </tr>
                 </tbody>
             </table>
-            <a class="btn btn-success" href = "/#!/create-restaurant">Create Restaurant</a>
+            <a class="btn btn-success" href="/#!/create-restaurant">Create Restaurant</a>
         </div>
     </div>
 </section>

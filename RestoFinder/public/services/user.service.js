@@ -4,7 +4,7 @@
         .factory("UserService", userService);
 
     function userService($http) {
-        var baseUrl = "http://localhost:5000/api/user"
+        var baseUrl = "http://localhost:5000/api/user";
         var api = {
             getAllUsers: getAllUsers,
             getUser: getUser,
@@ -25,7 +25,7 @@
 
         }
         function register(user) {
-            return $http.put(baseUrl, user);
+            return $http.post(baseUrl + "/register", user);
         }
     }
 })();
