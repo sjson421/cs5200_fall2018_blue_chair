@@ -1089,9 +1089,9 @@ footer {
 }
 
 .follow-img {
-    text-align: center;
-    padding: 20px 16px;
-    color: #3e434b;
+    text-align: center !important;
+    padding: 20px 16px !important;
+    color: #3e434b !important;
     img {
         border-radius: 50%;
     }

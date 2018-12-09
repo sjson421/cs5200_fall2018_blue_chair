@@ -9,24 +9,30 @@
             getFeaturedRestaurants: getFeaturedRestaurants,
             getAllRestaurants: getAllRestaurants,
             getRestaurant: getRestaurant,
-            getReviewsForRestaurant: getReviewsForRestaurant
+            getReviewsForRestaurant: getReviewsForRestaurant,
+            removeRestaurant: removeRestaurant
         };
         return api;
-        function getFeaturedRestaurants(){
+
+        function getFeaturedRestaurants() {
             url = "http://localhost:5000/api/featured";
             return $http.get(url);
         }
-        
-        function getAllRestaurants(){
+
+        function getAllRestaurants() {
             return $http.get(baseUrl);
         }
 
-        function getRestaurant(id){
-            return $http.get(baseUrl +"/" + id);
+        function getRestaurant(id) {
+            return $http.get(baseUrl + "/" + id);
         }
 
-        function getReviewsForRestaurant(id){
+        function getReviewsForRestaurant(id) {
             return $http.get(baseUrl + "/" + id + "/" + "review");
+        }
+
+        function removeRestaurant(id) {
+            return $http.delete(baseUrl + "/" + id);
         }
     }
 })();

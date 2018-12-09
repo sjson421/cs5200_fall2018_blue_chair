@@ -1,30 +1,31 @@
-<section class="booking-details_wrap container" id="popupContainer">
-    <div class="dialog-demo-content">
-        <h5>
-            Users
-        </h5>
-        <hr>
-        <button class="btn btn-outline-primary" ng-click="showHideUsers()">View Users</button>
-        <div ng-show="isVisibleUsers">
-            <table class="table table-sm">
-                <thead>
-                    <tr>
-                        <th>User</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="u in users">
-                        <td>
-                            <a href="/#!/user/{{u._id}}">{{u.username}}</a>
-                        </td>
-                        <td>
-                            <a href="/#!/update-user/{{u._id}}" class="btn btn-primary">Update</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <a class="btn btn-success" href="/#!/register">Create User</a>
-        </div>
+<section class="booking-details_wrap container">
+    <h5>
+        Users
+    </h5>
+    <hr>
+    <button class="btn btn-outline-primary" ng-click="showHideUsers()">View Users</button>
+    <div ng-show="isVisibleUsers">
+        <table class="table table-sm admin-table">
+            <thead>
+            <tr>
+                <th>User</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="u in users">
+                <td>
+                    <a href="/#!/user/{{u._id}}">{{u.username}}</a>
+                </td>
+                <td>
+                    <a href="/#!/update-user/{{u._id}}" class="btn btn-primary">Update</a>
+                </td>
+                <td>
+                    <button class="btn btn-danger" ng-click="removeUser(u._id, $index)">Remove</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-success" href="/#!/register">Create User</a>
     </div>
     <hr>
     <div>
@@ -34,7 +35,7 @@
         <hr>
         <button class="btn btn-outline-primary" ng-click="showHideReviews()">View Reviews</button>
         <div ng-show="isVisibleReviews">
-            <table class="table table-sm">
+            <table class="table table-sm admin-table">
                 <thead>
                 <tr>
                     <th>Review</th>
@@ -47,8 +48,14 @@
                     <td>
                         {{r.text}}
                     </td>
-                    <td>{{r.user}}</td>
+                    <td>{{r.username}}</td>
                     <td>{{r.restaurant}}</td>
+                    <td>
+                        <a href="/#!/update-review/{{r._id}}" class="btn btn-primary">Update</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="removeReview(r._id, $index)">Remove</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -63,7 +70,7 @@
         <hr>
         <a class="btn btn-outline-primary" ng-click="showHideRestaurants()">View Restaurants</a>
         <div ng-show="isVisibleRestaurants">
-            <table class="table table-sm">
+            <table class="table table-sm admin-table">
                 <thead>
                 <tr>
                     <th>Restaurant</th>
@@ -73,6 +80,12 @@
                 <tr ng-repeat="r in restaurants">
                     <td>
                         <a href=/#!/restaurant/{{r._id}}>{{r.name}}</a>
+                    </td>
+                    <td>
+                        <a href="/#!/update-restaurant/{{r._id}}" class="btn btn-primary">Update</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="removeRestaurant(r._id, $index)">Remove</button>
                     </td>
                 </tr>
                 </tbody>

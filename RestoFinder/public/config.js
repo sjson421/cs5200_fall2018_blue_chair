@@ -51,9 +51,6 @@
             .when("/create-restaurant", {
                 templateUrl: "./views/create-restaurant.view.html",
                 controller: "CreateRestaurantController"
-            })
-            .otherwise({
-                redirectTo: "/"
             });
     }
 
