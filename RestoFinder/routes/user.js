@@ -908,9 +908,9 @@ router.post('/:id1/unfavorites/:id2', async(req, res) => {
 
       console.log('remove index for the restaurant', removalindex);
 
-      user1.registeredUser.favourites.splice(removalindex,1);
+      user.registeredUser.favourites.splice(removalindex,1);
 
-      user1.save();
+      user.save();
       return res.json({user: user});
     }
   }
