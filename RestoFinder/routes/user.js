@@ -985,6 +985,27 @@ router.post('/:id1/unfavorites/:id2', async(req, res) => {
 
 // /userId1/favorite
 // get favorites list for a user
+// GET REQUEST
+router.get('/:id/favorites', async(req, res) => {
+  try {
+    const userid = req.params.id;
+    let user = await User.find({_id: userid});
+    user = user[0];
+
+    if(!user) return res.status(404).send("User not found");
+
+    if(user.userType == 'REGISTERED' || user.userType == 'ADMIN') {
+      let favorites = user.registeredUser.favourites;
+      return res.json(favorites);
+
+    } else return res.status(404).json({favoritesError: 'User type does not have favorites'});
+
+  }
+  catch(err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+})
 
 
 module.exports = router;
