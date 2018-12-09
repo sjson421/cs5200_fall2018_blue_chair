@@ -452,6 +452,8 @@ router.post('/:id1/unendorse/:id2', async (req, res) => {
   }
 });
 
+// get endorses
+
 // id1 follows id2
 // id2 is follwed by id1
 // POST REQUEST
@@ -829,6 +831,67 @@ router.get('/:id/followedby', async (req, res) => {
     res.status(400).send(err);
   }
 });
+
+
+// /api/user/userId/endorses
+// GET REQUEST
+// get endorses list for the user
+// returns an array
+
+router.post('/:id/endorses', async (req, res) => {
+  try {
+    const id = req.params.id;
+    let user = await User.find({_id: id});
+
+    user = user[0];
+
+    if (!user) return res.status(404).send("User not found");
+
+    else if (user.userType == 'OWNER' || user.userType == 'CRITIC') {
+      if(user.userType == 'OWNER') {
+        let endorses = user.owner.endorses;
+        return res.json(endorses);
+      } else {
+        let endorses = user.critic.endorses;
+        return res.json(endorses);
+      }
+
+    } else return res.status(404).json({endorseError: 'User does not endorse others'});
+
+  }
+  catch(err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+// /api/user/userId/endorsedBy
+// GET request
+// get endorsedBy list for the user
+// returns an array
+
+router.post('/:id/endorsedBy', async (req, res) => {
+  try {
+    const id = req.params.id;
+    let user = await User.find({_id: id});
+
+    user = user[0];
+
+    if (!user) return res.status(404).send("User not found");
+
+    else if (user.userType == 'OWNER') {
+      let endorsedBy = user.owner.endorsedBy;
+      return res.json(endorsedBy);
+
+    } else return res.status(404).json({endorsedByError: 'User type not endorsed By anyone'});
+  }
+  catch(err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+
 
 // /userId/favorites/restaurantId
 // add to favorites list of User
