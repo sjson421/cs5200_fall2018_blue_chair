@@ -116,6 +116,8 @@ router.post('/register', (req, res) => {
             .catch(err => console.log("user save error",err));
           });
         });
+
+        return res.json({user: newUser});
       } else {
         return res.status(400).json({
           password: 'Passwords do not match'
@@ -196,13 +198,19 @@ router.get("/search/:username", async (req, res) => {
 // GET REQUEST
 router.get("/:id", async (req, res) => {
   try {
+
     let id = req.params.id;
-    const user = await User.find({
-      _id: id
-    });
-    user = user[0];
-    return res.send(user);
-  } catch (err) {
+    console.log(id);
+    // const user = await User.findOne({_id: id});
+    const user = await User.findOne({_id: id});
+
+
+    if (!user) return res.status(404).send("User not found");
+    console.log(user);
+
+    return res.json({user:user});
+  }
+  catch (err) {
     return res.status(400).send(err);
   }
 });
@@ -213,10 +221,7 @@ router.get("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    var user = await User.find({
-      _id: id
-    });
-
+    var user = await User.find({_id: id});
     user = user[0];
 
     if (!user) return res.status(404).send("User not found");
@@ -279,6 +284,101 @@ router.delete('/:id1/review/:id2', async (req, res) => {
 
   }
 })
+
+// id1 endorses id2
+// id2 is endorsed by id1
+// POST REQUEST
+
+router.post('/:id1/endorse/:id2', async (req, res) => {
+  try {
+      const id1 = req.params.id1;
+      const id2 = req.params.id2;
+
+      let user1 = await User.find({_id: id1});
+      user1 = user1[0];
+
+      let user2 = await User.find({_id: id2});
+      user2 = user2[0];
+
+      if (!user1 || !user2) return res.status(404).send('user not found');
+
+      if(user1.userType == 'OWNER' || user1.userType == 'ADMIN') {
+
+        if (user1.owner.endorses.filter(user => user.equals(user2._id)).length > 0)
+          return res.status(400).json({alreadyFollows: 'User already endorses the user'});
+
+        else {
+          if(user2.userType == 'OWNER') {
+            user1.owner.endorses.push(user2);
+            user1.save();
+
+            user2.owner.endorsedBy.push(user1);
+            user2.save();
+
+            return res.json({user1: user1, user2: user2});
+          }
+          else return res.json({cannotFollow: 'An owner user type cannot endorse this User'});
+        }
+
+
+
+      } else if(user1.userType == 'CRITIC' || user1.userType == 'ADMIN') {
+
+        if (user1.critic.endorses.filter(user => user.equals(user2._id)).length > 0)
+          return res.status(400).json({alreadyFollows: 'User already endorses the user'});
+        else {
+
+          if(user2.userType == 'OWNER') {
+            user1.critic.endorses.push(user2);
+            user1.save();
+
+            user2.owner.endorsedBy.push(user1);
+            user2.save();
+
+            return res.json({user1: user1, user2: user2});
+          }
+          else return res.json({cannotFollow: 'A critic user type cannot endorse this User'});
+
+        }
+
+      } else return res.send("This USER TYPE cannot endorse");
+
+  }
+  catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+
+// id1 unendorse id2
+// id2 is unendorsed by id1
+// POST REQUEST
+
+router.post('/:id1/unendorse/:id2', async (req, res) => {
+  const id1 = req.params.id1;
+  const id2 = req.params.id2;
+
+  let user1 = await User.find({
+    _id: id1
+  });
+  user1 = user1[0];
+  let user2 = await User.find({_id: id2});
+  user2 = user2[0];
+
+  if (!user1 || !user2) return res.status(404).send('user not found');
+
+  if (user1.userType == "OWNER" || user1.userType == "ADMIN") {
+    if (user1.owner.endorses.filter(user => user.equals(user2._id)).length == 0)
+      return res.status(400).json({doesNotEndorse: 'User does not endorse the user'});
+
+
+  } else if (user1.userType == "CRITIC" || user1.userType == "ADMIN") {
+
+
+
+  } else return res.send("This user type cannot endorse");
+});
+
 // id1 follows id2
 // id2 is follwed by id1
 // POST REQUEST
@@ -376,8 +476,6 @@ router.post('/:id1/follow/:id2', async (req, res) => {
     res.status(400).send(err);
   }
 });
-
-
 
 
 // id1 unfollows id2
