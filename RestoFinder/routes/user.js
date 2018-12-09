@@ -11,6 +11,8 @@ router.get("/test", (req, res) => res.json({
 }));
 
 // register User
+// NEEDS ENTIRE SCHEMA UNSTRUCTURED/ NOT IN A MAP + confirmpassword
+// POST REQUEST
 router.post('/register', (req, res) => {
   User.findOne({
     username: req.body.username
@@ -130,6 +132,8 @@ router.post('/register', (req, res) => {
 
 
 // login
+// needs username and password
+// POST REQUEST
 router.post('/login', (req, res) => {
   if (req.body.username == '' || req.body.password == '')
   return res.status(400).json({
@@ -239,7 +243,7 @@ router.delete("/:id", async (req, res) => {
 router.get('/:id/reviews', async (req, res) => {
   try {
     let id = req.params.id;
-    const user = await User.find({
+    let user = await User.find({
       _id: id
     });
     user = user[0];
@@ -251,7 +255,7 @@ router.get('/:id/reviews', async (req, res) => {
     else {
       const reviews = await Review.find({
         user: id
-      }).populate('user').populate('comments.userId').exec();
+      }).populate('user');
       return res.send(reviews);
     }
 
@@ -291,57 +295,57 @@ router.delete('/:id1/review/:id2', async (req, res) => {
 
 router.post('/:id1/endorse/:id2', async (req, res) => {
   try {
-      const id1 = req.params.id1;
-      const id2 = req.params.id2;
+    const id1 = req.params.id1;
+    const id2 = req.params.id2;
 
-      let user1 = await User.find({_id: id1});
-      user1 = user1[0];
+    let user1 = await User.find({_id: id1});
+    user1 = user1[0];
 
-      let user2 = await User.find({_id: id2});
-      user2 = user2[0];
+    let user2 = await User.find({_id: id2});
+    user2 = user2[0];
 
-      if (!user1 || !user2) return res.status(404).send('user not found');
+    if (!user1 || !user2) return res.status(404).send('user not found');
 
-      if(user1.userType == 'OWNER' || user1.userType == 'ADMIN') {
+    if(user1.userType == 'OWNER' || user1.userType == 'ADMIN') {
 
-        if (user1.owner.endorses.filter(user => user.equals(user2._id)).length > 0)
-          return res.status(400).json({alreadyFollows: 'User already endorses the user'});
+      if (user1.owner.endorses.filter(user => user.equals(user2._id)).length > 0)
+      return res.status(400).json({alreadyFollows: 'User already endorses the user'});
 
-        else {
-          if(user2.userType == 'OWNER') {
-            user1.owner.endorses.push(user2);
-            user1.save();
+      else {
+        if(user2.userType == 'OWNER') {
+          user1.owner.endorses.push(user2);
+          user1.save();
 
-            user2.owner.endorsedBy.push(user1);
-            user2.save();
+          user2.owner.endorsedBy.push(user1);
+          user2.save();
 
-            return res.json({user1: user1, user2: user2});
-          }
-          else return res.json({cannotFollow: 'An owner user type cannot endorse this User'});
+          return res.json({user1: user1, user2: user2});
         }
+        else return res.json({cannotFollow: 'An owner user type cannot endorse this User'});
+      }
 
 
 
-      } else if(user1.userType == 'CRITIC' || user1.userType == 'ADMIN') {
+    } else if(user1.userType == 'CRITIC' || user1.userType == 'ADMIN') {
 
-        if (user1.critic.endorses.filter(user => user.equals(user2._id)).length > 0)
-          return res.status(400).json({alreadyFollows: 'User already endorses the user'});
-        else {
+      if (user1.critic.endorses.filter(user => user.equals(user2._id)).length > 0)
+      return res.status(400).json({alreadyFollows: 'User already endorses the user'});
+      else {
 
-          if(user2.userType == 'OWNER') {
-            user1.critic.endorses.push(user2);
-            user1.save();
+        if(user2.userType == 'OWNER') {
+          user1.critic.endorses.push(user2);
+          user1.save();
 
-            user2.owner.endorsedBy.push(user1);
-            user2.save();
+          user2.owner.endorsedBy.push(user1);
+          user2.save();
 
-            return res.json({user1: user1, user2: user2});
-          }
-          else return res.json({cannotFollow: 'A critic user type cannot endorse this User'});
-
+          return res.json({user1: user1, user2: user2});
         }
+        else return res.json({cannotFollow: 'A critic user type cannot endorse this User'});
 
-      } else return res.send("This USER TYPE cannot endorse");
+      }
+
+    } else return res.send("This USER TYPE cannot endorse");
 
   }
   catch (err) {
@@ -355,28 +359,96 @@ router.post('/:id1/endorse/:id2', async (req, res) => {
 // POST REQUEST
 
 router.post('/:id1/unendorse/:id2', async (req, res) => {
-  const id1 = req.params.id1;
-  const id2 = req.params.id2;
+  try {
+    const id1 = req.params.id1;
+    const id2 = req.params.id2;
 
-  let user1 = await User.find({
-    _id: id1
-  });
-  user1 = user1[0];
-  let user2 = await User.find({_id: id2});
-  user2 = user2[0];
+    let user1 = await User.find({
+      _id: id1
+    });
+    user1 = user1[0];
+    let user2 = await User.find({_id: id2});
+    user2 = user2[0];
 
-  if (!user1 || !user2) return res.status(404).send('user not found');
+    if (!user1 || !user2) return res.status(404).send('user not found');
 
-  if (user1.userType == "OWNER" || user1.userType == "ADMIN") {
-    if (user1.owner.endorses.filter(user => user.equals(user2._id)).length == 0)
-      return res.status(400).json({doesNotEndorse: 'User does not endorse the user'});
+    if (user1.userType == "OWNER" || user1.userType == "ADMIN") {
+
+      if (user1.owner.endorses.filter(user => user.equals(user2._id)).length == 0)
+      return res.status(400).json({doesNotEndorse: 'Owner does not endorse this user'});
+
+      let removalindex = 0;
+      user1.owner.endorses.map((item, index) => {
+        if(item.toString() == user2._id.toString())
+        removalindex = index;
+      });
+
+      console.log('remove index for the user', removalindex);
+
+      user1.owner.endorses.splice(removalindex,1);
+
+      user1.save();
+
+      if(user2.userType == "OWNER") {
+        let removalindex = 0;
+        user2.owner.endorsedBy.map((item, index) => {
+          if(item.toString() == user1._id.toString())
+          removalindex = index;
+        });
 
 
-  } else if (user1.userType == "CRITIC" || user1.userType == "ADMIN") {
+        console.log('remove index for the user', removalindex);
+
+        user2.owner.endorsedBy.splice(removalindex,1);
+
+        user2.save();
+
+        return res.json({user1: user1, user2: user2});
+
+      } else return res.status(400).json({unEndorseError: 'cannot unendorse this user'});
+
+    } else if (user1.userType == "CRITIC" || user1.userType == "ADMIN") {
+      if (user1.critic.endorses.filter(user => user.equals(user2._id)).length == 0)
+      return res.status(400).json({doesNotEndorse: 'Critic does not endorse the Owner'});
+
+      let removalindex = 0;
+      user1.critic.endorses.map((item, index) => {
+        if(item.toString() == user2._id.toString())
+        removalindex = index;
+      });
+
+      // user1.registeredUser.follows.splice(removalindex,1);
 
 
+      console.log('remove index for the user', removalindex);
 
-  } else return res.send("This user type cannot endorse");
+      user1.critic.endorses.splice(removalindex,1);
+
+      user1.save();
+
+      if(user2.userType == "OWNER") {
+        let removalindex = 0;
+        user2.owner.endorsedBy.map((item, index) => {
+          if(item.toString() == user1._id.toString())
+          removalindex = index;
+        });
+
+
+        console.log('remove index for the user', removalindex);
+
+        user2.owner.endorsedBy.splice(removalindex,1);
+
+        user2.save();
+
+        return res.json({user1: user1, user2: user2});
+      }
+
+    } else return res.send("This user type cannot endorse");
+  }
+
+  catch(err) {
+    console.log(err);
+  }
 });
 
 // id1 follows id2
@@ -408,7 +480,7 @@ router.post('/:id1/follow/:id2', async (req, res) => {
       console.log(user2._id);
 
       if (user1.registeredUser.follows.filter(user => user.equals(user2._id)).length > 0)
-        return res.status(400).json({alreadyFollows: 'User already follows the user'});
+      return res.status(400).json({alreadyFollows: 'User already follows the user'});
 
 
       if (user2.userType == 'CRITIC' || user2.userType == 'REGISTERED') {
@@ -455,7 +527,7 @@ router.post('/:id1/follow/:id2', async (req, res) => {
       console.log('owner as first user')
       console.log('critic the second')
       if (user1.owner.follows.filter(user => user.equals(user2._id)).length > 0)
-        return res.status(400).json({alreadyFollows: 'User already follows the user'});
+      return res.status(400).json({alreadyFollows: 'User already follows the user'});
       else {
         user1.owner.follows.push(user2);
         user1.save();
@@ -508,7 +580,7 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
       console.log("user2 id is ", user2._id);
 
       if (user1.registeredUser.follows.filter(user => user.equals(user2._id)).length == 0)
-        return res.status(400).json({NotFollows: 'User doesnt follow the user'});
+      return res.status(400).json({NotFollows: 'User doesnt follow the user'});
 
 
 
@@ -517,7 +589,7 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
         let removalindex = 0;
         user1.registeredUser.follows.map((item, index) => {
           if(item.toString() == user2._id.toString())
-            removalindex = index;
+          removalindex = index;
         });
 
         // user1.registeredUser.follows.splice(removalindex,1);
@@ -534,7 +606,7 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
           // user2.registeredUser.followedBy.shift(user1);
           user2.registeredUser.followedBy.map((item, index) => {
             if(item.toString() == user1._id.toString())
-              removalindex = index;
+            removalindex = index;
           });
 
           user2.registeredUser.follows.splice(removalindex,1);
@@ -547,7 +619,7 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
 
           user2.critic.followedBy.map((item, index) => {
             if(item.toString() == user1._id.toString())
-              removalindex = index;
+            removalindex = index;
           });
           user2.critic.followedBy.splice(removalindex,1);
           user2.save();
@@ -563,13 +635,13 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
 
     else if ((user1.userType == 'CRITIC' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
       if (user1.critic.follows.filter(user => user.equals(user2._id)).length == 0)
-        return res.status(400).json({NotFollows: 'User doesnt follow the user'});
+      return res.status(400).json({NotFollows: 'User doesnt follow the user'});
       else {
         let removalindex = 0;
         let removalindex2 = 0;
         user1.critic.follows.map((item, index) => {
           if(item.toString() == user2._id.toString())
-            removalindex = index;
+          removalindex = index;
         });
 
         user1.critic.follows.splice(removalindex, 1);
@@ -577,7 +649,7 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
 
         user2.critic.followedBy.map((item, index) => {
           if(item.toString() == user1._id.toString())
-            removalindex2 = index;
+          removalindex2 = index;
         });
 
         user2.critic.followedBy.splice(removalindex2, 1);
@@ -590,14 +662,14 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
     else if ((user1.userType == 'OWNER' || user1.userType == 'ADMIN') && user2.userType == 'CRITIC') {
 
       if (user1.owner.follows.filter(user => user.equals(user2._id)).length == 0)
-        return res.status(400).json({alreadyFollows: 'User doesnt user'});
+      return res.status(400).json({alreadyFollows: 'User doesnt user'});
       else {
 
         let removalindex = 0;
         let removalindex2 = 0;
         user1.owner.follows.map((item, index) => {
           if(item.toString() == user2._id.toString())
-            removalindex = index;
+          removalindex = index;
         });
 
         user1.owner.follows.splice(removalindex, 1);
@@ -605,7 +677,7 @@ router.post('/:id1/unfollow/:id2', async (req, res) => {
 
         user2.critic.followedBy.map((item, index) => {
           if(item.toString() == user1._id.toString())
-            removalindex2 = index;
+          removalindex2 = index;
         });
 
         user2.critic.followedBy.splice(removalindex2, 1);
