@@ -847,11 +847,11 @@ router.post('/:id/endorses', async (req, res) => {
 
     if (!user) return res.status(404).send("User not found");
 
-    else if (user.userType == 'OWNER' || user.userType == 'CRITIC') {
-      if(user.userType == 'OWNER') {
+    else if (user.userType == 'OWNER' || user.userType == 'CRITIC' || user.userType == 'ADMIN') {
+      if(user.userType == 'OWNER' || user.userType == 'ADMIN') {
         let endorses = user.owner.endorses;
         return res.json(endorses);
-      } else {
+      } else if(user.userType == 'CRITIC' || user.userType == 'ADMIN'){
         let endorses = user.critic.endorses;
         return res.json(endorses);
       }
@@ -879,7 +879,7 @@ router.post('/:id/endorsedBy', async (req, res) => {
 
     if (!user) return res.status(404).send("User not found");
 
-    else if (user.userType == 'OWNER') {
+    else if (user.userType == 'OWNER' || user.userType == 'ADMIN') {
       let endorsedBy = user.owner.endorsedBy;
       return res.json(endorsedBy);
 
@@ -966,7 +966,6 @@ router.post('/:id1/unfavorites/:id2', async(req, res) => {
         if(item.toString() == restId._id.toString())
         removalindex = index;
 
-
       });
 
       console.log('remove index for the restaurant', removalindex);
@@ -982,5 +981,10 @@ router.post('/:id1/unfavorites/:id2', async(req, res) => {
     res.status(400).send(err);
   }
 });
+
+
+// /userId1/favorite
+// get favorites list for a user
+
 
 module.exports = router;
