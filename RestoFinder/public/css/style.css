@@ -67,6 +67,9 @@ p {
 .top-bottom-margins {
   margin: 50px 0;
 }
+.admin-table td {
+  text-align: center;
+}
 .nav-menu {
   position: absolute;
   z-index: 1;

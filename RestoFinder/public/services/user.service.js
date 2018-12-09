@@ -9,7 +9,8 @@
             getAllUsers: getAllUsers,
             getUser: getUser,
             setUser: setUser,
-            register: register
+            register: register,
+            removeUser: removeUser
         };
         return api;
 
@@ -21,11 +22,14 @@
             return $http.get(baseUrl +"/" + id);
         }
 
-        function setUser(id) {
+        function setUser(id, user) {
 
         }
         function register(user) {
             return $http.post(baseUrl + "/register", user);
+        }
+        function removeUser(id) {
+            return $http.delete(baseUrl + "/" + id);
         }
     }
 })();
