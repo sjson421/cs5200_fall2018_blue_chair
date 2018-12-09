@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
 // get all
 router.get("/", async (req, res) => {
   try {
-    const reviews = await Review.find();
+    const reviews = await Review.find().populate('user').populate('restaurant');
     res.send(reviews);
   } catch (err) {
     res.status(400).send(err);

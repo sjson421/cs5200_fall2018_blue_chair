@@ -11,15 +11,15 @@
                     </div>
                     <ul class="social-counts">
                         <li>
-                            <h6>26</h6>
+                            <h6>{{reviews.length}}</h6>
                             <span>Reviews</span>
                         </li>
                         <li>
-                            <h6>326</h6>
+                            <h6>{{followedBy.length}}</h6>
                             <span>Followers</span>
                         </li>
                         <li>
-                            <h6>12</h6>
+                            <h6>{{follows.length}}</h6>
                             <span>Followed</span>
                         </li>
                     </ul>
@@ -33,7 +33,7 @@
                     <div ng-repeat="review in reviews">
                             <hr>
                             <div class="customer-review_wrap">
-                              <div class="customer-img">
+                              <!-- <div class="customer-img">
                                 <img
                                   src="../images/customer-img1.jpg"
                                   class="img-fluid"
@@ -41,7 +41,7 @@
                                 />
                                 <p>{{review.user.username}}</p>
                                 <span>00 Reviews</span>
-                              </div>
+                              </div> -->
                               <div class="customer-content-wrap">
                                 <div class="customer-content">
                                   <div class="customer-review">
