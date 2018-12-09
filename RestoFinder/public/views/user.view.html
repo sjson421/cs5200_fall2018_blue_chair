@@ -5,9 +5,9 @@
             <div class="col-md-4 responsive-wrap">
                 <div class="follow">
                     <div class="follow-img">
-                        <img src="../images/follow-img.jpg" class="img-fluid" alt="#">
-                        <h6>Christine Evans</h6>
-                        <span>New York I'm so sick of this woman's face</span>
+                        <img src="../images/follow-img.jpg"  alt="#">
+                        <h6>Username: {{user.username}}</h6>
+                        <span>City: {{user.address.city}}</span>
                     </div>
                     <ul class="social-counts">
                         <li>
@@ -30,62 +30,62 @@
 
                     <h5>Reviews</h5>
                     <hr>
-                    <div class="customer-review_wrap">
-                        <div class="customer-review">
-                            <h6>Best noodles in the Newyork city</h6>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span class="round-icon-blank"></span>
-                            <p>Reviewed 2 days ago</p>
-                        </div>
-                        <div class="customer-rating">8.0</div>
-                    </div>
-                    <p class="customer-text">I love the noodles here but it is so rare that I get to come here. Tasty Hand-Pulled Noodles is the best type of whole in the wall restaurant. The staff are really nice, and you should be seated quickly. I usually get the
-                        hand pulled noodles in a soup. House Special #1 is amazing and the lamb noodles are also great. If you want your noodles a little chewier, get the knife cut noodles, which are also amazing. Their dumplings are great
-                        dipped in their chili sauce.
-                    </p>
-                    <p class="customer-text">I love how you can see into the kitchen and watch them make the noodles and you can definitely tell that this is a family run establishment. The prices are are great with one dish maybe being $9. You just have to remember
-                        to bring cash.
-                    </p>
+                    <div ng-repeat="review in reviews">
+                            <hr>
+                            <div class="customer-review_wrap">
+                              <div class="customer-img">
+                                <img
+                                  src="../images/customer-img1.jpg"
+                                  class="img-fluid"
+                                  alt="#"
+                                />
+                                <p>{{review.user.username}}</p>
+                                <span>00 Reviews</span>
+                              </div>
+                              <div class="customer-content-wrap">
+                                <div class="customer-content">
+                                  <div class="customer-review">
+                                    <h6>Title </h6>
+                                    <span></span> <span></span> <span></span> <span></span>
+                                    <span class="round-icon-blank"></span>
+                                    <p>Reviewed on {{review.time_created | date : 'medium'}}</p>
+                                  </div>
+                                  <div class="customer-rating">{{review.rating}}</div>
+                                </div>
+                                <p class="customer-text">
+                                {{review.text}}
+                                </p>
+                                <!-- <ul>
+                                  <li>
+                                    <img
+                                      src="../images/review-img1.jpg"
+                                      class="img-fluid"
+                                      alt="#"
+                                    />
+                                  </li>
+                                  <li>
+                                    <img
+                                      src="../images/review-img2.jpg"
+                                      class="img-fluid"
+                                      alt="#"
+                                    />
+                                  </li>
+                                  <li>
+                                    <img
+                                      src="../images/review-img3.jpg"
+                                      class="img-fluid"
+                                      alt="#"
+                                    />
+                                  </li>
+                                </ul> -->
+                                <span>28 people marked this review as helpful</span>
+                                <a href="#"><span class="icon-like"></span>Helpful</a>
+                              </div>
+                            </div>
+                          </div>
 
                     <hr>
-                    <ul class="">
-                        <div class="follow-img">
-                            <h6>
-                                Followers
-                            </h6>
-                            <hr>
-                            <!-- TODO fix this later -->
-                            <table class="">
-                                <tbody>
-                                <tr ng-repeat="f in followed">
-                                    <td><img src={{f.imgUrl}} class="img-fluid" alt="#"></td>
-                                    <td><a href={{f.url}}>{{f.firstName f.lastName}}</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </ul>
-                    <ul class="">
-                        <div class="follow-img">
-                            <h6>
-                                Followed
-                            </h6>
-                            <hr>
-                            <!-- TODO fix this later -->
-                            <table class="">
-                                <tbody>
-                                <tr ng-repeat="dataModel in followed">
-                                    <td><img src="../images/customer-img1.jpg" class="img-fluid" alt="#"></td>
-                                    <td><a href="#">{{dataModel.firstName dataModel.lastName}}</a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </ul>
-                    <hr>
+                    
                 </div>
             </div>
         </div>

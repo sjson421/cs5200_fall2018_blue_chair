@@ -10,14 +10,14 @@ var sleep = require("sleep");
 // To set environment variable do "export API_KEY=value" in terminal
 const API_KEY = process.env.API_KEY;
 const client = yelp.client(API_KEY);
-const yelpUserId = "5c01e4265c2ce02c1f8ce6d5";
+const yelpUserId = "5c0c263fc78e0c5c4b80052b";
 
 async function createDefaultYelpuser() {
   let yelpUser = {
     _id: "5c01e4265c2ce02c1f8ce6d5",
     username: "yelp-user",
     email: "default@yelp.com",
-    password: "####",
+    password: "$2a$10$nSbVwuCJQRTPvacF0sP0ounk9kefGig9cV6K4eFd7lv.iwRgNJZSO",
     address: {
       streetaddress: "123",
       city: "abc",

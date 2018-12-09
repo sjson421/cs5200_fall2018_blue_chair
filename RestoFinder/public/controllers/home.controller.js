@@ -22,7 +22,7 @@
             }
 
             function getCurrentLoggedInUser(){
-                $rootScope.currentUser = LoginService.getCookieData()
+                $rootScope.currentUser = JSON.parse(LoginService.getCookieData())
                 console.log("current user is", $scope.currentUser);
             }
             
