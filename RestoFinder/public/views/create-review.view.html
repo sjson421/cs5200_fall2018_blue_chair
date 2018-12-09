@@ -1,0 +1,19 @@
+<form class="container">
+    <div class="top-bottom-margins">
+        <h2>Create Review</h2>
+        <hr>
+        <form name="create-review">
+            <div class="form-group">
+                <label for="username">Rating</label>
+                <input type="text" class="form-control" id="username" placeholder="Enter username" ng-model="username">
+            </div>
+            <div class="form-group">
+                <label for="email">Review</label>
+                <input type="text" class="form-control" id="email" aria-describedby="emailHelp"
+                       placeholder="Enter email" ng-model="email">
+            </div>
+            <br/><br/>
+            <button type="submit" class="btn btn-primary" ng-click="register()">Submit</button>
+        </form>
+    </div>
+</form>
