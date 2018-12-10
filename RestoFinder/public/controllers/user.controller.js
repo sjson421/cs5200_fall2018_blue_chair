@@ -23,6 +23,7 @@
       $scope.endorsesLoading = true;
       $scope.endorsedByLoading = true;
       $scope.loggedEndorsesLoading = true;
+      $scope.ownerRestaurant = null;
       //   $scope.getUserReviews = getUserReviews();
       //   $scope.getUserFollows = getUserFollows();
       //   $scope.getUserFollowedBy = getUserFollowedBy();
@@ -58,6 +59,7 @@
             getUserEndorses();
             getLoggedInUserEndorses();
             getUserEndorsedBy();
+            getOwnerRestaurant();
           })
           .catch(function(err) {
             console.log(err);
@@ -221,13 +223,31 @@
               $scope.loggedFollows.splice(index2, 1);
               checkUserInFollowsOfLoggedInUser();
             }
+            console.log("followed by is ", $scope.followedBy);
+            let index3 = getIndexOfLoggedUserInArray($scope.loggedUser, $scope.followedBy);
+            console.log("index3 returned is", index3);// $scope.followedBy.indexOf({user: $scope.loggedUser})
+            if(index3 > -1){
+              console.log("index finding worked", index3);
+              $scope.followedBy.splice(index3, 1);
+            }
           },
           function(err) {
             console.log("error unfollowing", err);
           }
         );
       };
-
+      function getIndexOfLoggedUserInArray(userToFind, userArray){
+        let returnIndex = null;
+        userArray.forEach((element,index) => {
+          console.log("element is", element.user._id);
+          console.log("index is", index);
+          console.log("user to find is", userToFind._id);
+          if(element.user._id == userToFind._id){
+            returnIndex = index;
+          }
+        });
+        return returnIndex;
+      }
       $scope.deleteReview = function deleteReview(review) {
         // body
         let reviewId = review._id;
@@ -266,6 +286,11 @@
           function(response) {
             //    $scope.follows
             $scope.loggedFollows.push(userId2);
+            console.log("current followed by is", $scope.followedBy);
+            console.log("loggged user is", $scope.loggedUser);
+            $scope.followedBy.push({
+              user: $scope.loggedUser
+            });
             checkUserInFollowsOfLoggedInUser();
           },
           function(err) {
@@ -275,6 +300,13 @@
       };
 
       function getLoggedInUserFollows() {
+
+        if (
+          $scope.loggedUserType == "REGISTERED" ||
+          $scope.loggedUserType == "CRITIC" ||
+          $scope.loggedUserType == "OWNER"
+        ){
+
         let id = $scope.loggedUser._id;
         UserService.getFollows(id).then(
           function(response) {
@@ -286,6 +318,8 @@
             console.log("error in fetching folllows of logged In users", err);
           }
         );
+        }
+
       }
 
       function getLoggedInUserFollowedBy() {}
@@ -393,10 +427,7 @@
         $location.url("/restaurant/" + restaurant._id);
       };
 
-      function getOwnerRestaurant(){
-        // owner is $scope.user
-        // Not available
-      }
+    
 
       $scope.unEndorseOwner = function unEndorseOwner(owner, index=null) {
         // body
@@ -414,7 +445,10 @@
               $scope.loggedEndorses.splice(index2, 1);
               checkUserInEndorseOfLoggedInUser()
             }
-             
+            let index3 = getIndexOfLoggedUserInArray($scope.loggedUser, $scope.endorsedBy)//$scope.endorsedBy.indexOf({user: $scope.loggedUser})
+            if(index3 > -1){
+              $scope.endorsedBy.splice(index3,1);
+            } 
             },
             function(err){
               console.log('error in unendorsing owner',err);
@@ -448,6 +482,9 @@
             function(response){
               console.log("response after endorsing", response.data);
               $scope.loggedEndorses.push(response.data.user2._id);
+              $scope.endorsedBy.push({
+                user: $scope.loggedUser
+              });
               checkUserInEndorseOfLoggedInUser();
             },
             function(err){
@@ -467,6 +504,55 @@
         // return $scope.loggedFollows.
       }
       function getLoggedInUserEndorsedBy(){
+        // pass
+      }
+
+      function getOwnerRestaurant(){
+        if($scope.userType == 'OWNER'){
+          let ownerId = $scope.user._id;
+          UserService.getOwnerRestaurant(ownerId)
+            .then(
+                function(response){
+                  console.log("owner restaurant is", response.data);
+                  $scope.ownerRestaurant = response.data
+                  console.log("owner", $scope.ownerRestaurant);
+                },
+                function(err){
+                  console.log(err);
+                }
+            )
+        }
+      }
+
+      $scope.createOwnerRestaurant = function createOwnerRestaurant(){
+        // pass
+      }
+
+      $scope.unClaimRestaurant = function unClaimRestaurant(){
+        let restaurantId = $scope.ownerRestaurant._id;
+        let ownerId = $scope.loggedUser._id;
+
+        UserService.deleteOwnerRestaurant(ownerId, restaurantId)
+          .then(
+              function(response){
+                $scope.ownerRestaurant = null;
+              },
+              function(err){
+                console.log("err");
+              }
+          )
+
+      }
+
+      function getAdvertisements(){
+
+      }
+
+      function deleteAdvertisement(){
+
+      }
+
+      function updateAdvertisement(){
         
       }
       

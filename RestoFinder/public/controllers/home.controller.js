@@ -6,6 +6,7 @@
             $scope.userSearch = "";
             $scope.getFeaturedRestaurants = getFeaturedResults();
             $scope.getCurrentLoggedInUser = getCurrentLoggedInUser(); 
+            $scope.viewRestaurant = viewRestaurant;
             $scope.getSearchResults = function(){
                 $rootScope.searchType = "restaurant";
                 $rootScope.search = $scope.search;
@@ -34,5 +35,11 @@
                 console.log("current user is", $scope.currentUser);
             }
             
+            function viewRestaurant(restaurant) {
+                console.log("restaurant passed is", restaurant);
+                let id = restaurant._id;
+                $location.url("/restaurant/" + id);
+              }
+
         });
 })();
