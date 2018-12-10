@@ -1101,7 +1101,7 @@ router.post('/:userid/owns/:restid', async (req, res) => {
 
     } else return res.json({illegalUserType: 'This User Type is not allowed to own restaurants'});
 
-    return res.json({user: user, rest: rest});
+    return res.json(user);
   }
   catch(err) {
     console.log(err);
@@ -1132,16 +1132,12 @@ router.post('/:userid/disown/:restid', async (req, res) => {
 
 
           rest.save();
-          User.updateOne({_id: userid},
-             {
-               $pop: { 'owner.restaurant' : -1}
-             }
-           )
-              .then(async () => {
-                let result  = await User.find({_id: userid});
-                return res.json({user: result, rest: rest});
-              })
-              .catch(err => res.send(err));
+
+          user.owner.restaurant = undefined;
+          user.save();
+
+
+          res.json({user: user, rest: rest});
           // _.omit(user.owner, "restaurant");
 
 
