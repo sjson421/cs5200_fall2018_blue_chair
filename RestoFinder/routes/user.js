@@ -190,48 +190,48 @@ router.post('/register', (req, res) => {
 //     }
 //   });
 //
-//   // login
-//   // needs username and password
-//   // POST REQUEST
-//   router.post('/login', (req, res) => {
-//     if (req.body.username == '' || req.body.password == '')
-//     return res.status(400).json({
-//       login: 'Username or password is empty'
-//     });
-//
-//     const username = req.body.username;
-//     const password = req.body.password;
-//
-//     User.findOne({
-//       username
-//     })
-//     .then(user => {
-//       if (!user) {
-//         return res.status(404).json({
-//           username: 'User not found'
-//         });
-//       }
-//       bcrypt.compare(password, user.password)
-//       .then(isMatch => {
-//         if (isMatch)
-//         res.send(user);
-//         else
-//         return res.status(400).json({
-//           password: 'Password wrong'
-//         });
-//       });
-//     });
-//   });
-//
-//   // get all users
-//   router.get("/", async (req, res) => {
-//     try {
-//       const users = await User.find();
-//       return res.send(users);
-//     } catch (err) {
-//       return res.status(400).send(err);
-//     }
-//   });
+// login
+// needs username and password
+// POST REQUEST
+router.post('/login', (req, res) => {
+  if (req.body.username == '' || req.body.password == '')
+  return res.status(400).json({
+    login: 'Username or password is empty'
+  });
+
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.findOne({
+    username
+  })
+  .then(user => {
+    if (!user) {
+      return res.status(404).json({
+        username: 'User not found'
+      });
+    }
+    bcrypt.compare(password, user.password)
+    .then(isMatch => {
+      if (isMatch)
+      res.send(user);
+      else
+      return res.status(400).json({
+        password: 'Password wrong'
+      });
+    });
+  });
+});
+
+// get all users
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find();
+    return res.send(users);
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+});
 
 // get user by term
 // send the username from front end
@@ -1069,6 +1069,7 @@ router.get('/:id/favorites', async(req, res) => {
 
 // add restaurant to userType = OWNER
 // get the user back with restaurant added
+// change the is_claimed field for the restaurant
 // /userId/owns/restId
 // POST REQUEST
 
@@ -1108,6 +1109,12 @@ router.post('/:userid/owns/:restid', async (req, res) => {
     res.status(400).send(err);
   }
 });
+
+
+// remove the restaurant key from owner object
+// change the is_claimed field to false
+// /userId/disowns/restId
+// POST REQUEST
 
 router.post('/:userid/disown/:restid', async (req, res) => {
   try {
@@ -1155,6 +1162,10 @@ router.post('/:userid/disown/:restid', async (req, res) => {
   }
 });
 
+
+// getowned/UserID
+// get the restaurant owned by the user.userType = OWNER;
+// GET Request
 
 router.get('/getowned/:id', async (req, res) => {
   try{
