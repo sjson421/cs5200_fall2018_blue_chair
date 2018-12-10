@@ -131,6 +131,36 @@ router.post('/register', (req, res) => {
 });
 
 
+// update User based on UserType
+// userid in params
+// req.body has the profile data.
+// PUT REQUEST
+router.put('/update/:id', async (req, res) => {
+  try {
+    const userid = req.params.id;
+    let user = await User.find({_id: userid});
+    user = user[0];
+
+    const userfields = {};
+    if (!user) return res.status(404).send('user not found');
+
+  
+
+    User.updateOne({_id: id},
+    {
+
+    })
+
+    return res.json(user);
+
+
+  }
+  catch(err){
+    console.log(err);
+    return res.status(400).send(err);
+  }
+});
+
 // login
 // needs username and password
 // POST REQUEST
@@ -983,7 +1013,7 @@ router.post('/:id1/unfavorites/:id2', async(req, res) => {
 });
 
 
-// /userId1/favorite
+// /userId/favorite
 // get favorites list for a user
 // GET REQUEST
 router.get('/:id/favorites', async(req, res) => {
@@ -1005,7 +1035,35 @@ router.get('/:id/favorites', async(req, res) => {
     console.log(err);
     res.status(400).send(err);
   }
-})
+});
+
+
+// add restaurant to userType = OWNER
+// get the user back with restaurant added
+// /userId/owns/restId
+// POST REQUEST
+
+router.post('/:userid/owns/:restid', async (req, res) => {
+  try {
+    const userid = req.params.userid;
+    const restid  =req.params.restid;
+
+    let user = await User.find({_id: userid});
+    user = user[0];
+
+    let rest = await Restaurant.find({_id: restid});
+    rest = rest[0];
+
+    return res.json({user: user, rest: rest});
+  }
+  catch(err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+
+
 
 
 module.exports = router;
