@@ -86,7 +86,7 @@
             return $http.post(baseUrl + "/" + userId1 + "/" + "unfollow/" + userId2);
         }
         function deleteEndorse(userId1, userId2){
-            return $http.post(baseUrl + "/" + userId1 + "/" + "endorse/" + userId2);
+            return $http.post(baseUrl + "/" + userId1 + "/" + "unendorse/" + userId2);
         }
         function deleteFavorite(userId, restaurantId){
             return $http.post(baseUrl + "/" + userId + "/" + "unfavorites/" + restaurantId);

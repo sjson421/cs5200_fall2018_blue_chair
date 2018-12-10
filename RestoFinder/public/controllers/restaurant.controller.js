@@ -147,7 +147,7 @@
             .then(
               function(response){
                 console.log("response received is", response.data);
-                $scope.reviews.push(response.data);
+                $scope.reviews.push(response.data[0]);
                 $mdDialog.cancel();
               }
             )

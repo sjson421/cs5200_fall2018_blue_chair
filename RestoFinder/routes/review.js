@@ -24,7 +24,8 @@ router.post("/", async (req, res) => {
     });
     review.validate();
     const result = await review.save();
-    res.send(result);
+    const returnResult = await Review.find({_id: result._id}).populate('user').populate('restaurant');
+    res.send(returnResult);
   } catch (err) {
     res.status(400).send(err);
   }

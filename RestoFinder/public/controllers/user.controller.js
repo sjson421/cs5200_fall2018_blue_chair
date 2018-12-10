@@ -22,6 +22,7 @@
       $scope.favouritesLoading = true;
       $scope.endorsesLoading = true;
       $scope.endorsedByLoading = true;
+      $scope.loggedEndorsesLoading = true;
       //   $scope.getUserReviews = getUserReviews();
       //   $scope.getUserFollows = getUserFollows();
       //   $scope.getUserFollowedBy = getUserFollowedBy();
@@ -55,6 +56,7 @@
             getUserFollowedBy();
             getUserFavourites();
             getUserEndorses();
+            getLoggedInUserEndorses();
             getUserEndorsedBy();
           })
           .catch(function(err) {
@@ -172,7 +174,7 @@
       }
 
       function getUserEndorsedBy() {
-        if ($scope.userType == "CRITIC") {
+        if ($scope.userType == "OWNER") {
           let id = $scope.user._id;
           UserService.getEndorsedBy(id).then(
             function(response) {
@@ -329,7 +331,7 @@
       }
 
       function getLoggedInUserFavourites() {
-        if ($scope.userType == "REGISTERED") {
+        if ($scope.loggedUserType == "REGISTERED") {
           UserService.getFavorites($scope.loggedUser._id).then(
             function(response) {
               populateRestaurants1 = [];
@@ -394,6 +396,78 @@
       function getOwnerRestaurant(){
         // owner is $scope.user
         // Not available
+      }
+
+      $scope.unEndorseOwner = function unEndorseOwner(owner, index=null) {
+        // body
+
+        UserService.deleteEndorse($scope.loggedUser._id, owner._id)
+          .then(
+            function(response){
+              if(index != null){
+                $scope.endorses.splice(index,1);
+              }
+            let index2 = $scope.loggedEndorses.indexOf(owner._id);
+            //console.log("user id unfollowed is", );
+            console.log("index find is", index2);
+            if (index2 > -1) {
+              $scope.loggedEndorses.splice(index2, 1);
+              checkUserInEndorseOfLoggedInUser()
+            }
+             
+            },
+            function(err){
+              console.log('error in unendorsing owner',err);
+            }
+          )
+      }
+
+      function getLoggedInUserEndorses(){
+        let id = $scope.loggedUser._id;
+        if ($scope.loggedUserType == "OWNER" || $scope.loggedUserType == "CRITIC") {
+          UserService.getEndorses(id).then(
+            function(response) {
+              $scope.loggedEndorses = response.data;
+              $scope.loggedEndorsesLoading = false;
+              checkUserInEndorseOfLoggedInUser()
+
+            },
+            function(err) {
+              console.log("error in fetching logged endorses", err);
+            }
+          );
+        }
+      }
+
+      $scope.endorseUser = function endorseUser(owner){
+        let userId1 = $scope.loggedUser._id;
+        let userId2 = owner._id;
+
+        UserService.createEndorse(userId1, userId2)
+          .then(
+            function(response){
+              console.log("response after endorsing", response.data);
+              $scope.loggedEndorses.push(response.data.user2._id);
+              checkUserInEndorseOfLoggedInUser();
+            },
+            function(err){
+              console.log("Error in endorsing user", err);
+            }
+          )
+
+      }
+
+      function checkUserInEndorseOfLoggedInUser() {
+        // body
+        $scope.userNotInLoggedInEndorses = !$scope.loggedEndorses.includes(
+          $scope.user._id
+        );
+
+        // let id = user._id;
+        // return $scope.loggedFollows.
+      }
+      function getLoggedInUserEndorsedBy(){
+        
       }
       
       // review, follows, followedBy, favorites, endorses, endorsedBy, restaurant
