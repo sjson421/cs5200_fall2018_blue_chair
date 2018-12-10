@@ -5,6 +5,7 @@ const User = require('../data/models/User.schema.server');
 const Review = require('../data/models/Review.schema.server');
 const Restaurant = require('../data/models/Restaurant.schema.server');
 const bcrypt = require('bcryptjs');
+let _ = require('underscore');
 
 // Get user dao here
 router.get("/test", (req, res) => res.json({
@@ -120,7 +121,6 @@ router.post('/register', (req, res) => {
           });
         });
 
-        return res.json({user: newUser});
       } else {
         return res.status(400).json({
           password: 'Passwords do not match'
@@ -131,78 +131,107 @@ router.post('/register', (req, res) => {
 });
 
 
-// update User based on UserType
-// userid in params
-// req.body has the profile data.
-// PUT REQUEST
-router.put('/update/:id', async (req, res) => {
-  try {
-    const userid = req.params.id;
-    let user = await User.find({_id: userid});
-    user = user[0];
-
-    const userfields = {};
-    if (!user) return res.status(404).send('user not found');
-
-  
-
-    User.updateOne({_id: id},
-    {
-
-    })
-
-    return res.json(user);
-
-
-  }
-  catch(err){
-    console.log(err);
-    return res.status(400).send(err);
-  }
-});
-
-// login
-// needs username and password
-// POST REQUEST
-router.post('/login', (req, res) => {
-  if (req.body.username == '' || req.body.password == '')
-  return res.status(400).json({
-    login: 'Username or password is empty'
-  });
-
-  const username = req.body.username;
-  const password = req.body.password;
-
-  User.findOne({
-    username
-  })
-  .then(user => {
-    if (!user) {
-      return res.status(404).json({
-        username: 'User not found'
-      });
-    }
-    bcrypt.compare(password, user.password)
-    .then(isMatch => {
-      if (isMatch)
-      res.send(user);
-      else
-      return res.status(400).json({
-        password: 'Password wrong'
-      });
-    });
-  });
-});
-
-// get all users
-router.get("/", async (req, res) => {
-  try {
-    const users = await User.find();
-    return res.send(users);
-  } catch (err) {
-    return res.status(400).send(err);
-  }
-});
+// // update User
+// // SEND IN THE ENTIRE User BODY!!!! Updated and non updated fields too!
+// // this will need the password field because the entire update code is inside
+// // bcyrpt hash
+// // userid in params
+// // req.body has the profile data.
+// // PUT REQUEST
+// router.put('/update/:id', async (req, res) => {
+//   try {
+//     const userid = req.params.id;
+//     let user = await User.find({_id: userid});
+//     user = user[0];
+//
+//     // const userfields = {};
+//     if (!user) return res.status(404).send('user not found');
+//
+//     const password = req.body.password;
+//
+//     bcrypt.hash(password, 10, function (err, hash) {
+//       if(err) {
+//         return res.status(400).send(err);
+//       }
+//
+//       req.body.password = hash;
+//
+//       User.findOneAndUpdate(req.params.id,
+//         {
+//           $set: {
+//             username: req.body.username,
+//             email: req.body.email,
+//             password: req.body.password,
+//             address: {
+//               streetaddress: req.body.streetaddress,
+//               streetaddress2: req.body.streetaddress2,
+//               city: req.body.city,
+//               state: req.body.state,
+//               country: req.body.country,
+//               zipcode: req.body.zipcode
+//             },
+//             picture: req.body.picture,
+//             phone: req.body.phone,
+//             company: {
+//               name: req.body.name,
+//               position: req.body.position
+//             }
+//           }
+//         }, {new: true}, function (err, user) {
+//           if (err) return res.send(err).status(500);
+//           return res.send(user).status(200);
+//         });
+//       });
+//     }
+//
+//     catch(err){
+//       console.log(err);
+//       return res.status(400).send(err);
+//     }
+//   });
+//
+//   // login
+//   // needs username and password
+//   // POST REQUEST
+//   router.post('/login', (req, res) => {
+//     if (req.body.username == '' || req.body.password == '')
+//     return res.status(400).json({
+//       login: 'Username or password is empty'
+//     });
+//
+//     const username = req.body.username;
+//     const password = req.body.password;
+//
+//     User.findOne({
+//       username
+//     })
+//     .then(user => {
+//       if (!user) {
+//         return res.status(404).json({
+//           username: 'User not found'
+//         });
+//       }
+//       bcrypt.compare(password, user.password)
+//       .then(isMatch => {
+//         if (isMatch)
+//         res.send(user);
+//         else
+//         return res.status(400).json({
+//           password: 'Password wrong'
+//         });
+//       });
+//     });
+//   });
+//
+//   // get all users
+//   router.get("/", async (req, res) => {
+//     try {
+//       const users = await User.find();
+//       return res.send(users);
+//     } catch (err) {
+//       return res.status(400).send(err);
+//     }
+//   });
 
 // get user by term
 // send the username from front end
@@ -988,7 +1017,7 @@ router.post('/:id1/unfavorites/:id2', async(req, res) => {
 
     if(user.userType == "REGISTERED" || user.userType == "ADMIN") {
       if (user.registeredUser.favourites.filter(rest => rest.equals(restId._id)).length == 0)
-        return res.status(400).json({alreadyFavorite: 'User does not have the restaurant as favorite'});
+      return res.status(400).json({alreadyFavorite: 'User does not have the restaurant as favorite'});
 
 
       let removalindex = 0;
@@ -1054,6 +1083,24 @@ router.post('/:userid/owns/:restid', async (req, res) => {
     let rest = await Restaurant.find({_id: restid});
     rest = rest[0];
 
+
+    if(user.userType == "OWNER" || user.userType == "ADMIN")
+    {
+
+      if(!user.owner.restaurant || user.owner.restaurant == {}) {
+        if(!rest.is_claimed)
+        {
+          user.owner.restaurant = rest;
+          rest.is_claimed = !rest.is_claimed;
+
+          user.save();
+          rest.save();
+        } else return res.json({alreadyOwned: 'This restaurant is already owned by someone else.'});
+
+      } else return res.json({userOwns: 'This user already Owns a restaurant'});
+
+    } else return res.json({illegalUserType: 'This User Type is not allowed to own restaurants'});
+
     return res.json({user: user, rest: rest});
   }
   catch(err) {
@@ -1062,6 +1109,77 @@ router.post('/:userid/owns/:restid', async (req, res) => {
   }
 });
 
+router.post('/:userid/disown/:restid', async (req, res) => {
+  try {
+    const userid = req.params.userid;
+    const restid = req.params.restid;
+
+    let user = await User.find({_id: userid});
+    user = user[0];
+
+    let rest = await Restaurant.find({_id: restid});
+    rest = rest[0];
+
+    if(!user) return res.status(404).send("User not found");
+
+    if(user.userType == "OWNER" || user.userType == "ADMIN") {
+      if(user.owner.restaurant) {
+
+        if(rest.is_claimed) {
+
+          console.log("user.owner.restaurant");
+          rest.is_claimed = !rest.is_claimed;
+
+
+          rest.save();
+          User.updateOne({_id: userid},
+             {
+               $pop: { 'owner.restaurant' : -1}
+             }
+           )
+              .then(async () => {
+                let result  = await User.find({_id: userid});
+                return res.json({user: result, rest: rest});
+              })
+              .catch(err => res.send(err));
+          // _.omit(user.owner, "restaurant");
+
+
+        } else return res.json({alreadyOwned: 'This restaurant is owned by someone else.'});
+
+      } else return res.json({userOwns: 'This user does not Own a restaurant'});
+
+    } else return res.json({illegalUserType: 'This User Type is not allowed to own restaurants'});
+
+
+  }
+  catch(err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+
+router.get('getowned/:id', async (req, res) => {
+  try{
+    let user = User.find({_id: req.params.id});
+
+    if(!user) return res.status(404).send("User not found");
+
+    if(user.userType == "OWNER" || user.userType == "ADMIN") {
+
+      return res.json(user.owner.restaurant);
+    }
+
+    else return res.json({illegalUserType: 'This User Type is not allowed to own restaurants'});
+
+
+  }
+  catch(err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+})
 
 
 
