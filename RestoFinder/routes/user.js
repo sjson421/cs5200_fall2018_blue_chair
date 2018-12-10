@@ -1087,7 +1087,7 @@ router.post('/:userid/owns/:restid', async (req, res) => {
     if(user.userType == "OWNER" || user.userType == "ADMIN")
     {
 
-      if(!user.owner.restaurant || user.owner.restaurant == {}) {
+      if(!user.owner.restaurant) {
         if(!rest.is_claimed)
         {
           user.owner.restaurant = rest;
@@ -1137,7 +1137,7 @@ router.post('/:userid/disown/:restid', async (req, res) => {
           user.save();
 
 
-          res.json({user: user, rest: rest});
+          res.json(user);
           // _.omit(user.owner, "restaurant");
 
 
@@ -1168,7 +1168,6 @@ router.get('getowned/:id', async (req, res) => {
     }
 
     else return res.json({illegalUserType: 'This User Type is not allowed to own restaurants'});
-
 
   }
   catch(err) {
