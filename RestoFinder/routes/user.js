@@ -1156,15 +1156,20 @@ router.post('/:userid/disown/:restid', async (req, res) => {
 });
 
 
-router.get('getowned/:id', async (req, res) => {
+router.get('/getowned/:id', async (req, res) => {
   try{
-    let user = User.find({_id: req.params.id});
+    let user = await User.find({_id: req.params.id});
+    user = user[0];
 
     if(!user) return res.status(404).send("User not found");
 
+
     if(user.userType == "OWNER" || user.userType == "ADMIN") {
 
-      return res.json(user.owner.restaurant);
+      let restaurant = await Restaurant.find({ _id: user.owner.restaurant});
+      restaurant = restaurant[0];
+
+      return res.json(restaurant);
     }
 
     else return res.json({illegalUserType: 'This User Type is not allowed to own restaurants'});
