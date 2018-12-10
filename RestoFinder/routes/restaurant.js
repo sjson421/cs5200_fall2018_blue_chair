@@ -133,7 +133,7 @@ router.get("/:id/review", async (req, res) => {
     if (!restaurant) return res.status(404).send("Object not found");
     const reviews = await Review.find({ restaurant: id })
       .populate("user")
-      .populate("comments.userId");
+      .populate("restaurant");
     res.send(reviews);
   } catch (err) {
     res.status(400).send(err);

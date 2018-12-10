@@ -18,13 +18,14 @@ router.post("/", async (req, res) => {
       restaurant: restaurantId,
       rating: req.body.rating,
       text: req.body.text,
-      time_create: req.body.time_create,
+      time_created: req.body.time_created,
       url: req.body.url,
       comments: []
     });
     review.validate();
     const result = await review.save();
-    res.send(result);
+    const returnResult = await Review.find({_id: result._id}).populate('user').populate('restaurant');
+    res.send(returnResult);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -44,7 +45,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    const review = await Review.find({ _id: id });
+    const review = await Review.find({ _id: id }).populate('restaurant').populate('user');
     res.send(review);
   } catch (err) {
     res.status(400).send(err);
@@ -72,14 +73,14 @@ router.put("/:id", async (req, res) => {
           restaurant: restaurantId,
           rating: req.body.rating,
           text: req.body.text,
-          time_create: req.body.time_create,
+          time_created: req.body.time_created,
           url: req.body.url,
           comments: req.body.comments
         }
       }
     )
       .then(async () => {
-        var result = await Review.find({ _id: id });
+        var result = await Review.find({ _id: id }).populate('user').populate('restaurant');
         res.send(result[0]);
       })
       .catch(err => {

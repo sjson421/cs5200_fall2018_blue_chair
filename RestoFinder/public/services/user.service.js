@@ -55,9 +55,11 @@
         }
         function getEndorses(id){
             // no API
+            return $http.get(baseUrl + "/" + id + "/endorses");
         }
         function getEndorsedBy(id){
             // no API
+            return $http.get(baseUrl + "/" + id + "/endorsedBy");   
         }
         // userId1 follows userId2
         function createFollow(userId1, userId2){
@@ -68,9 +70,11 @@
         }
         function getFavorites(id){
             // No API
+            return $http.get(baseUrl + "/" + id + "/favorites");
         }
         function createFavorite(userId, restaurantId){
             // No API
+            return $http.post(baseUrl + "/" + userId + "/favorites/" + restaurantId);
         }
         function getOwnerRestaurant(userId){
             // ??
@@ -82,9 +86,11 @@
             return $http.post(baseUrl + "/" + userId1 + "/" + "unfollow/" + userId2);
         }
         function deleteEndorse(userId1, userId2){
-            return $http.post(baseUrl + "/" + userId1 + "/" + "endorse/" + userId2);
+            return $http.post(baseUrl + "/" + userId1 + "/" + "unendorse/" + userId2);
         }
-        function deleteFavorite(userId, restaurantId){}
+        function deleteFavorite(userId, restaurantId){
+            return $http.post(baseUrl + "/" + userId + "/" + "unfavorites/" + restaurantId);
+        }
             // No API
         function removeUser(id) {
             return $http.delete(baseUrl + "/" + id);

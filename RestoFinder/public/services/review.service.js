@@ -8,7 +8,9 @@
         var api = {
             getAllReviews: getAllReviews,
             getReview: getReview,
-            removeReview: removeReview
+            removeReview: removeReview,
+            createReview: createReview,
+            updateReview: updateReview
         };
         return api;
 
@@ -22,6 +24,12 @@
 
         function removeReview(id) {
             return $http.delete(baseUrl + "/" + id);
+        }
+        function createReview(review){
+            return $http.post(baseUrl, review);
+        }
+        function updateReview(id,review){
+            return $http.put(baseUrl + "/" + id, review);
         }
     }
 })();

@@ -7,10 +7,18 @@ const Restaurant = require("../models/Restaurant.schema.server");
 const User = require("../models/User.schema.server");
 const yelp = require("yelp-fusion");
 var sleep = require("sleep");
+const _ = require("underscore");
 // To set environment variable do "export API_KEY=value" in terminal
 const API_KEY = process.env.API_KEY;
 const client = yelp.client(API_KEY);
-const yelpUserId = "5c0c263fc78e0c5c4b80052b";
+const userIdArray = [
+  "5c0c263fc78e0c5c4b80052b",
+  "5c09c9feeb7e3f1816f68638",
+  "5c09ca67eb7e3f1816f6863e",
+  "5c0c4e1be7ca556b2fa19be9",
+  "5c09cd35592493188a5e86b2",
+  "5c0c8f99ffca42810a9b2d8d",
+];
 
 async function createDefaultYelpuser() {
   let yelpUser = {
@@ -34,11 +42,12 @@ async function createDefaultYelpuser() {
 
 async function populateReviews() {
   console.log("function called");
+  await Review.remove({});
   var restaurants = await Restaurant.find();
   for (const restaurant of restaurants) {
     try {
       console.log("in function now it will make a call to api");
-      sleep.sleep(3);
+      sleep.sleep(1);
       const result = await client.reviews(restaurant.id);
       console.log("result received");
       const yelpReviews = result.jsonBody.reviews;
@@ -48,6 +57,7 @@ async function populateReviews() {
       for (const review of yelpReviews) {
         try {
           console.log("inside here");
+          let yelpUserId = _.sample(userIdArray);
           const newReview = new Review({
             user: yelpUserId,
             restaurant: restaurant._id,
@@ -63,7 +73,6 @@ async function populateReviews() {
           console.log(err);
         }
       }
-      
     } catch (err) {
       console.log(err);
     }
