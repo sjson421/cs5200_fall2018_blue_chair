@@ -138,6 +138,7 @@ router.post('/register', (req, res) => {
 // userid in params
 // req.body has the profile data.
 // PUT REQUEST
+// ONLY ALLOWS TO CHANGE USER.schema contents and not other.
 router.put('/update/:id', async (req, res) => {
   try {
     const userid = req.params.id;
@@ -153,13 +154,9 @@ router.put('/update/:id', async (req, res) => {
 
     if(users.length > 0) return res.send('USERNAME OR EMAIL ALREADY EXISTS. CHANGE TO CONTINUE');
 
-
-
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(password, salt, (err, hash) => {
         if (err) throw err;
-
-        if(user.userType == 'REGISTERED' || user.userType == 'OWNER' || user.userType == 'ADMIN') {
           User.updateOne({_id: userid},
             {
               $set: {
@@ -182,36 +179,6 @@ router.put('/update/:id', async (req, res) => {
             let user = await User.find({_id: userid});
             res.json(user[0]);
           }).catch(err => res.status(400).send(err));
-
-        }
-        else if(user.userType == 'CRITIC' || user.userType == 'ADMIN') {
-          User.updateOne({_id: userid},
-            {
-              $set: {
-                username: req.body.username,
-                email: req.body.email,
-                password: hash,
-                address: {
-                  streetaddress: req.body.streetaddress,
-                  streetaddress2: req.body.streetaddress2,
-                  city: req.body.city,
-                  state: req.body.state,
-                  country: req.body.country,
-                  zipcode: req.body.zipcode
-                },
-                picture: req.body.picture,
-                phone: req.body.phone,
-                company: {
-                  name: req.body.name,
-                  position: req.body.position
-                }
-              }
-            }
-          ).then(async() => {
-            let user = await User.find({_id: userid});
-            res.json(user[0]);
-          }).catch(err => res.status(400).send(err));
-        }
       });
     });
   }
@@ -221,6 +188,8 @@ router.put('/update/:id', async (req, res) => {
     return res.status(400).send(err);
   }
 });
+
+
 //
 // login
 // needs username and password
@@ -1213,9 +1182,9 @@ router.get('/getowned/:id', async (req, res) => {
       let restaurant = await Restaurant.find({ _id: user.owner.restaurant});
       restaurant = restaurant[0];
       if(restaurant)
-        return res.json(restaurant);
+      return res.json(restaurant);
       else
-        return res.status(400).send("DOESNT OWN A RESTAURANT");
+      return res.status(400).send("DOESNT OWN A RESTAURANT");
 
     }
 
@@ -1226,9 +1195,33 @@ router.get('/getowned/:id', async (req, res) => {
     console.log(err);
     res.status(400).send(err);
   }
-})
+});
 
 
+router.get('/getAds/:id', async (req, res) => {
+  try {
+    let user = await User.find({_id: req.params.id});
+    user = user[0];
+
+    if(!user) return res.status(404).send("User not found");
+
+
+    if(user.userType == "ADVERTISER" || user.userType == "ADMIN"){
+      let advertisement = await Advertisement.find({advertiser: req.params.id});
+
+      if(advertisement.length > 0)
+      return res.json(advertisement);
+      else
+      return res.status(400).send("DOESNT HAVE ADVERTISEMENT");
+    }
+    else return res.json({illegalUserType: 'This User Type is not allowed to have advertisements'});
+
+  }
+  catch(err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
 
 
 module.exports = router;
