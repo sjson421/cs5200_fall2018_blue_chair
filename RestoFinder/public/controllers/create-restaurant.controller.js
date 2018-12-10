@@ -1,47 +1,42 @@
 (function () {
     angular
         .module("RestoFinder")
-        .controller("RegisterController", function ($rootScope, $scope, $window, UserService) {
-            $scope.types = [
-                "REGISTERED", "CRITIC", "OWNER", "ADVERTISER", "ADMIN"
+        .controller("CreateRestaurantController", function ($rootScope, $scope, $window, RestaurantService) {
+            $scope.prices = [
+                "$", "$$", "$$$", "$$$$", "$$$$$"
             ];
-
-// Dropdown menu select => dynamically render fields for critic, etc.
-            $scope.register = function () {
-                if (!$scope.picture) {
-                    $scope.picture = "https://i.stack.imgur.com/34AD2.jpg";
-                }
-                var user = {
-                    username: $scope.username,
-                    email: $scope.email,
-                    password: $scope.password,
-                    confirmpassword: $scope.confirmPassword,
-                    streetaddress: $scope.address,
-                    streetaddress2: $scope.address2,
-                    city: $scope.city,
-                    state: $scope.state,
-                    country: $scope.country,
-                    zipcode: $scope.zip,
+            $scope.create = function () {
+                var restaurant = {
+                    id: "",
+                    name: $scope.name,
+                    is_claimed: false,
+                    location: {
+                        address1: $scope.address,
+                        address2: $scope.address2,
+                        city: $scope.city,
+                        state: $scope.state,
+                        zip_code: $scope.zip,
+                        country: $scope.country,
+                        display_address: undefined,
+                        cross_streets: ""
+                    },
                     phone: $scope.phone,
-                    picture: $scope.picture,
-                    userType: $scope.type,
-
-                    name: $scope.company,
-                    position: $scope.position,
-
-                    credit_card_number: $scope.credit_card_number,
-                    cardType: $scope.cardType,
-                    cvv: $scope.cvv
+                    url: "",
+                    price: $scope.price,
+                    rating: 0,
+                    review_count: 0,
+                    is_closed: false,
+                    image_url: "",
+                    hours: undefined,
+                    photos: undefined,
+                    categories: undefined
                 };
-                console.log("user getting post is", user);
-                UserService.register(user)
+                RestaurantService.createRestaurant(restaurant)
                     .then(function (response) {
-                        alert("Registration successful!");
+                        alert("Restaurant creation successful!");
                         $window.location.href = '/';
                     }, function (err) {
-                        if (err.data.password == 'Passwords do not match') {
-                            alert("Passwords do not match");
-                        }
+                        alert("There has been an error in restaurant creation! " + err.message);
                     });
             };
         });

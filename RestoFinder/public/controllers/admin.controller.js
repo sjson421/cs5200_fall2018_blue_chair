@@ -1,7 +1,10 @@
 (function () {
     angular
         .module("RestoFinder")
-        .controller("AdminController", function ($rootScope, $scope, UserService, ReviewService, RestaurantService) {
+        .controller("AdminController", function ($rootScope, $scope, UserService, ReviewService, RestaurantService, LoginService) {
+            var loggedUser = JSON.parse(LoginService.getCookieData());
+            $scope.userType = loggedUser.userType;
+
             $scope.isVisibleUsers = false;
             $scope.showHideUsers = function () {
                 $scope.isVisibleUsers = $scope.isVisibleUsers ? false : true;
