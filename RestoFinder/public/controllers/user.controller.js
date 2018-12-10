@@ -20,7 +20,8 @@
       $scope.followsLoading = true;
       $scope.followedByLoading = true;
       $scope.favouritesLoading = true;
-
+      $scope.endorsesLoading = true;
+      $scope.endorsedByLoading = true;
       //   $scope.getUserReviews = getUserReviews();
       //   $scope.getUserFollows = getUserFollows();
       //   $scope.getUserFollowedBy = getUserFollowedBy();
@@ -52,8 +53,9 @@
             getUserReviews();
             getUserFollows();
             getUserFollowedBy();
-            // getUserFavorites();
-            // getLoggedInFavorites();
+            getUserFavourites();
+            getUserEndorses();
+            getUserEndorsedBy();
           })
           .catch(function(err) {
             console.log(err);
@@ -147,9 +149,20 @@
       function getUserEndorses() {
         if ($scope.userType == "OWNER" || $scope.userType == "CRITIC") {
           let id = $scope.user._id;
-          UserService.getEndorses().then(
+          UserService.getEndorses(id).then(
             function(response) {
-              $scope.endorses = response.data;
+              // $scope.endorses = response.data;
+              endorsesUsers = [];
+              $q.all(extractUsers(response.data, endorsesUsers)).then(
+                function(response) {
+                  $scope.endorses = angular.copy(endorsesUsers);
+                  $scope.endorsesLoading = false;
+                },
+                function(err) {
+                  console.log(err);
+                }
+              );
+
             },
             function(err) {
               console.log("error in fetching endorses", err);
@@ -161,9 +174,19 @@
       function getUserEndorsedBy() {
         if ($scope.userType == "CRITIC") {
           let id = $scope.user._id;
-          UserService.getEndorsedBy().then(
+          UserService.getEndorsedBy(id).then(
             function(response) {
-              $scope.endorsedBy = response.data;
+              // $scope.endorsedBy = response.data;
+              endorsedByUsers = [];
+              $q.all(extractUsers(response.data, endorsedByUsers)).then(
+                function(response) {
+                  $scope.endorsedBy = angular.copy(endorsedByUsers);
+                  $scope.endorsedByLoading = false;
+                },
+                function(err) {
+                  console.log(err);
+                }
+              );
             },
             function(err) {
               console.log("error in fetching endorsedBy", err);
@@ -367,26 +390,30 @@
       $scope.viewRestaurant = function viewRestaurant(restaurant) {
         $location.url("/restaurant/" + restaurant._id);
       };
+
+      function getOwnerRestaurant(){
+        // owner is $scope.user
+        // Not available
+      }
       
       // review, follows, followedBy, favorites, endorses, endorsedBy, restaurant
       // RU
       // 1. reviews
-      // 2. follows
-      // 3. followedBy
-      // 4. Favs
+      // 2. follows (RU, CRitic)
+      // 3. followedBy (RU)
+      // 4. Favs (Restaurants)
       // plus details + edit for his details ( his email,password,address,profilepic)
       // Critic
       // 1. reviews
       // 2. his profile including company
-      // 3. endorses
-      // 4. follows
-      // 5. followedBy
+      // 3. endorses (Owner)
+      // 4. follows (Critic)
+      // 5. followedBy (RU, Owner)
       // Owner
-      // 1. follows
-      // 2. endorsedBy
-      // 3. endorses
-      // 4. restaurant
-      // 5. events
+      // 1. follows (Critic)
+      // 2. endorsedBy (Critic)
+      // 3. endorses (Owner)
+      // 4. restaurant 
       // Advertiser
       // create Advertisements
       // view Advertisements

@@ -55,9 +55,11 @@
         }
         function getEndorses(id){
             // no API
+            return $http.get(baseUrl + "/" + id + "/endorses");
         }
         function getEndorsedBy(id){
             // no API
+            return $http.get(baseUrl + "/" + id + "/endorsedBy");   
         }
         // userId1 follows userId2
         function createFollow(userId1, userId2){

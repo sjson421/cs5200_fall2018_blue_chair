@@ -838,7 +838,7 @@ router.get('/:id/followedby', async (req, res) => {
 // get endorses list for the user
 // returns an array
 
-router.post('/:id/endorses', async (req, res) => {
+router.get('/:id/endorses', async (req, res) => {
   try {
     const id = req.params.id;
     let user = await User.find({_id: id});
@@ -870,7 +870,7 @@ router.post('/:id/endorses', async (req, res) => {
 // get endorsedBy list for the user
 // returns an array
 
-router.post('/:id/endorsedBy', async (req, res) => {
+router.get('/:id/endorsedBy', async (req, res) => {
   try {
     const id = req.params.id;
     let user = await User.find({_id: id});
