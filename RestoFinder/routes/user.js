@@ -131,64 +131,96 @@ router.post('/register', (req, res) => {
 });
 
 
-// // update User
-// // SEND IN THE ENTIRE User BODY!!!! Updated and non updated fields too!
-// // this will need the password field because the entire update code is inside
-// // bcyrpt hash
-// // userid in params
-// // req.body has the profile data.
-// // PUT REQUEST
-// router.put('/update/:id', async (req, res) => {
-//   try {
-//     const userid = req.params.id;
-//     let user = await User.find({_id: userid});
-//     user = user[0];
-//
-//     // const userfields = {};
-//     if (!user) return res.status(404).send('user not found');
-//
-//     const password = req.body.password;
-//
-//     bcrypt.hash(password, 10, function (err, hash) {
-//       if(err) {
-//         return res.status(400).send(err);
-//       }
-//
-//       req.body.password = hash;
-//
-//       User.findOneAndUpdate(req.params.id,
-//         {
-//           $set: {
-//             username: req.body.username,
-//             email: req.body.email,
-//             password: req.body.password,
-//             address: {
-//               streetaddress: req.body.streetaddress,
-//               streetaddress2: req.body.streetaddress2,
-//               city: req.body.city,
-//               state: req.body.state,
-//               country: req.body.country,
-//               zipcode: req.body.zipcode
-//             },
-//             picture: req.body.picture,
-//             phone: req.body.phone,
-//             company: {
-//               name: req.body.name,
-//               position: req.body.position
-//             }
-//           }
-//         }, {new: true}, function (err, user) {
-//           if (err) return res.send(err).status(500);
-//           return res.send(user).status(200);
-//         });
-//       });
-//     }
-//
-//     catch(err){
-//       console.log(err);
-//       return res.status(400).send(err);
-//     }
-//   });
+// update User
+// SEND IN THE ENTIRE User BODY!!!! Updated and non updated fields too!
+// this will need the password field because the entire update code is inside
+// bcyrpt hash
+// userid in params
+// req.body has the profile data.
+// PUT REQUEST
+router.put('/update/:id', async (req, res) => {
+  try {
+    const userid = req.params.id;
+    let user = await User.find({_id: userid});
+    user = user[0];
+
+    // const userfields = {};
+    if (!user) return res.status(404).send('user not found');
+
+    let password = req.body.password;
+
+    let users = await User.find({'username': req.body.username, 'email': req.body.email});
+
+    if(users.length > 0) return res.send('USERNAME OR EMAIL ALREADY EXISTS. CHANGE TO CONTINUE');
+
+
+
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        if (err) throw err;
+
+        if(user.userType == 'REGISTERED' || user.userType == 'OWNER' || user.userType == 'ADMIN') {
+          User.updateOne({_id: userid},
+            {
+              $set: {
+                username: req.body.username,
+                email: req.body.email,
+                password: hash,
+                address:{
+                  streetaddress: req.body.streetaddress,
+                  streetaddress2: req.body.streetaddress2,
+                  city: req.body.city,
+                  state: req.body.state,
+                  country: req.body.country,
+                  zipcode: req.body.zipcode
+                },
+                picture: req.body.picture,
+                phone: req.body.phone,
+              }
+            }
+          ).then(async() => {
+            let user = await User.find({_id: userid});
+            res.json(user[0]);
+          }).catch(err => res.status(400).send(err));
+
+        }
+        else if(user.userType == 'CRITIC' || user.userType == 'ADMIN') {
+          User.updateOne({_id: userid},
+            {
+              $set: {
+                username: req.body.username,
+                email: req.body.email,
+                password: hash,
+                address: {
+                  streetaddress: req.body.streetaddress,
+                  streetaddress2: req.body.streetaddress2,
+                  city: req.body.city,
+                  state: req.body.state,
+                  country: req.body.country,
+                  zipcode: req.body.zipcode
+                },
+                picture: req.body.picture,
+                phone: req.body.phone,
+                company: {
+                  name: req.body.name,
+                  position: req.body.position
+                }
+              }
+            }
+          ).then(async() => {
+            let user = await User.find({_id: userid});
+            res.json(user[0]);
+          }).catch(err => res.status(400).send(err));
+        }
+      });
+    });
+  }
+
+  catch(err){
+    console.log(err);
+    return res.status(400).send(err);
+  }
+});
 //
 // login
 // needs username and password
@@ -291,6 +323,7 @@ router.delete("/:id", async (req, res) => {
     const result = await User.deleteOne({
       _id: user._id
     });
+
     return res.send(result);
   } catch (err) {
     res.status(400).send(err);
@@ -1179,8 +1212,11 @@ router.get('/getowned/:id', async (req, res) => {
 
       let restaurant = await Restaurant.find({ _id: user.owner.restaurant});
       restaurant = restaurant[0];
+      if(restaurant)
+        return res.json(restaurant);
+      else
+        return res.status(400).send("DOESNT OWN A RESTAURANT");
 
-      return res.json(restaurant);
     }
 
     else return res.json({illegalUserType: 'This User Type is not allowed to own restaurants'});
