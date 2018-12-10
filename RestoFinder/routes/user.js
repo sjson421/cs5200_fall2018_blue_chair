@@ -1198,7 +1198,7 @@ router.get('/getowned/:id', async (req, res) => {
 });
 
 
-router.get('/getAds/:id', async (req, res) => {
+router.get('/getads/:id', async (req, res) => {
   try {
     let user = await User.find({_id: req.params.id});
     user = user[0];

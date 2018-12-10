@@ -1,0 +1,38 @@
+(function () {
+    angular
+        .module("RestoFinder")
+        .factory("SearchService", searchService);
+
+    function searchService($http) {
+        var baseUrl = "http://localhost:5000/api/advertisement"
+        var api = {
+           getAdvertisements: getAdvertisements,
+           getAdvertisement: getAdvertisement,
+           createAdvertisement: createAdvertisement,
+           updateAdvertisement: updateAdvertisement,
+           deleteAdvertisment: deleteAdvertisment
+        };
+        return api;
+      
+        function getAdvertisements(){
+            return $http.get(baseUrl);
+        }
+
+        function getAdvertisement(id){
+            return $http.get(baseUrl + "/" + id);
+        }
+
+        function createAdvertisement(advertisement){
+            return $http.post(baseUrl, advertisement);
+        }
+
+        function updateAdvertisement(advertisement){
+            return $http.put(baseUrl + "/" + advertisement._id, advertisement);
+        }
+
+        function deleteAdvertisment(id){
+            return $http.delete(baseUrl + "/" + id);
+        }
+
+    }
+})();
