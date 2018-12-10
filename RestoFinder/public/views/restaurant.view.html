@@ -202,8 +202,11 @@
               <span class="open-now">OPEN NOW</span>
             </p>
           </div>
-          <a href="#" class="btn btn-outline-danger btn-contact"
-            >Favorite Restaurant button here</a
+          <a class="btn btn-outline-primary btn-contact"
+            ng-if="userType == 'REGISTERED' && !alreadyFavourite" ng-click="favouriteRestaurant()">Favorite</a
+          >
+          <a class="btn btn-outline-danger btn-contact"
+            ng-if="userType == 'REGISTERED' && alreadyFavourite" ng-click="unFavouriteRestaurant()">Unlike</a
           >
         </div>
         <div class="follow">

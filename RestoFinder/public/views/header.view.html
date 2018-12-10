@@ -32,7 +32,7 @@
               <li class="nav-item" ng-if="currentUser != null">
                 <a class="nav-link" href="#" ng-click="logout()">Logout</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" ng-if="currentUser == null">
                 <a class="nav-link" href="#!/register">Register</a>
               </li>
             </ul>
