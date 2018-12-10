@@ -11,7 +11,8 @@
       $q,
       $location,
       ReviewService,
-      RestaurantService
+      RestaurantService,
+      $mdDialog
     ) {
       $scope.getLoggedInUser = getLoggedInUser();
       //$scope.getProfileUser = getProfileUser();
@@ -216,6 +217,22 @@
         );
       };
 
+      $scope.updateReview = function updateReview(review, index){
+        let reviewId = review._id;
+        $mdDialog.show({
+          controller: "UpdateReviewController",
+          templateUrl: "../views/create-review.dialog.view.html",
+          parent: angular.element(document.body),
+          clickOutsideToClose: false,
+          scope: $scope,
+          preserveScope: true,
+          locals: {
+            review: review,
+            index: index
+          }
+        });
+      }
+
       $scope.followUser = function followUser(user) {
         // body
         let userId1 = $scope.loggedUser._id;
@@ -350,6 +367,7 @@
       $scope.viewRestaurant = function viewRestaurant(restaurant) {
         $location.url("/restaurant/" + restaurant._id);
       };
+      
       // review, follows, followedBy, favorites, endorses, endorsedBy, restaurant
       // RU
       // 1. reviews
@@ -373,5 +391,41 @@
       // create Advertisements
       // view Advertisements
       // delete Advertisements
-    });
+    })
+    .controller("UpdateReviewController", function($scope, $mdDialog, review, index, ReviewService){
+      let date = new Date();
+      date = date.toString();
+      $scope.type = "Update";
+      $scope.dataLoading = false;
+      $scope.newReview = {
+        user: $scope.loggedUser._id,
+        restaurant: review.restaurant._id,
+        rating: review.rating,
+        text: review.text,
+        time_created: date,
+        url: "",
+        yelp_review: false,
+        
+      }
+      $scope.postReview = function postReview () {
+        // body
+        $scope.dataLoading = true;
+        console.log("review being posted is", $scope.newReview);
+        ReviewService.updateReview(review._id, $scope.newReview)
+          .then(function (response){
+        
+              $scope.reviews.splice(index,1);
+              $scope.reviews.push(response.data);
+              $mdDialog.cancel();
+          },function(err){
+            console.log(err);
+          })
+      }
+
+      $scope.cancel = function cancel () {
+        // body
+        $mdDialog.cancel();
+      }
+
+    })
 })();

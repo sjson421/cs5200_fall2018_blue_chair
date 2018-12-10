@@ -8,7 +8,8 @@
       $routeParams,
       RestaurantService,
       LoginService,
-      UserService
+      UserService,
+      $mdDialog
     ) {
       console.log("routeParams", $routeParams);
       $scope.getLoggedInUser = getLoggedInUser();
@@ -101,5 +102,61 @@
             }
           )
       }
+
+      $scope.createReview = function createReview(){
+        $mdDialog.show({
+          controller: "DialogController",
+          templateUrl: "../views/create-review.dialog.view.html",
+          parent: angular.element(document.body),
+          clickOutsideToClose: false,
+          scope: $scope,
+          preserveScope: true
+          // locals: {
+          //   qsb_jdf_id: $scope.qsbJdfId,
+          //   pipeline_dialog: angular.copy($scope.pipeline),
+          //   jdf_instance_id: $scope.jdfInstanceId
+          // }
+        });
+      }
+
+
+
+    })
+
+    .controller("DialogController", function($scope, $rootScope, $mdDialog, ReviewService){
+        let date = new Date();
+        date = date.toString();
+        $scope.type = "Create"
+        console.log("date is",date);
+        $scope.newReview = {
+          user: $scope.loggedUser._id,
+          restaurant: $scope.restaurant._id,
+          rating: $scope.rating,
+          text: $scope.text,
+          time_created: date,
+          url: "",
+          yelp_review: false,
+          
+        }
+
+        $scope.postReview = function postReview () {
+          // body
+          $scope.dataLoading = true;
+          console.log("review being posted is", $scope.newReview);
+          ReviewService.createReview($scope.newReview)
+            .then(
+              function(response){
+                console.log("response received is", response.data);
+                $scope.reviews.push(response.data);
+                $mdDialog.cancel();
+              }
+            )
+        }
+
+        $scope.cancel = function cancel () {
+          // body
+          $mdDialog.cancel();
+        }
+
     });
 })();

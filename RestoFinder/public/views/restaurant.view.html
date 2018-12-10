@@ -127,18 +127,19 @@
                   alt="#"
                 />
                 <p>{{review.user.username}}</p>
-                <span>00 Reviews</span>
               </div>
               <div class="customer-content-wrap">
-                <div class="customer-content">
-                  <div class="customer-review">
-                    <h6>Title </h6>
-                    <span></span> <span></span> <span></span> <span></span>
-                    <span class="round-icon-blank"></span>
-                    <p>Reviewed on {{review.time_created | date : 'medium'}}</p>
-                  </div>
-                  <div class="customer-rating">{{review.rating}}</div>
-                </div>
+                  <div class="customer-content">
+                      <div class="customer-review">
+                        <h6 style="padding: 5px;">{{ review.restaurant.name }}</h6>
+                        <!--
+                          <span></span> <span></span> <span></span> <span></span>
+                          <span class="round-icon-blank"></span>
+                        -->
+                        <p>Reviewed on {{ review.time_created | date: 'short' }}</p>
+                      </div>
+                      <div class="customer-rating">{{ review.rating }}</div>
+                    </div>
                 <p class="customer-text">
                 {{review.text}}
                 </p>
@@ -207,6 +208,9 @@
           >
           <a class="btn btn-outline-danger btn-contact"
             ng-if="userType == 'REGISTERED' && alreadyFavourite" ng-click="unFavouriteRestaurant()">Unlike</a
+          >
+          <a class="btn btn-outline-primary btn-contact"
+            ng-if="userType == 'REGISTERED' || userType == 'CRITIC'" ng-click="createReview()">Create Review</a
           >
         </div>
         <div class="follow">
