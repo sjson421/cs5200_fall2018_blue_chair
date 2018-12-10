@@ -23,7 +23,9 @@
             deleteEndorse: deleteEndorse,
             deleteFavorite: deleteFavorite,
             deleteFollow: deleteFollow,
-            removeUser: removeUser
+            removeUser: removeUser,
+            getOwnerRestaurant: getOwnerRestaurant,
+            deleteOwnerRestaurant: deleteOwnerRestaurant
         };
         return api;
 
@@ -78,9 +80,10 @@
         }
         function getOwnerRestaurant(userId){
             // ??
+            return $http.get(baseUrl + "/getowned/" + userId);
         }
         function createOwnerRestaurant(userId,restaurantId){
-            // ??
+            return $http.post(baseUrl + "/" + userId + "/owns/" + restaurantId);
         }
         function deleteFollow(userId1, userId2){
             return $http.post(baseUrl + "/" + userId1 + "/" + "unfollow/" + userId2);
@@ -90,6 +93,9 @@
         }
         function deleteFavorite(userId, restaurantId){
             return $http.post(baseUrl + "/" + userId + "/" + "unfavorites/" + restaurantId);
+        }
+        function deleteOwnerRestaurant(userId, restaurantId){
+            return $http.post(baseUrl + "/" + userId + "/disown/" +restaurantId);
         }
             // No API
         function removeUser(id) {
