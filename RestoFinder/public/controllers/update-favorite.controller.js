@@ -1,47 +1,32 @@
 (function () {
     angular
         .module("RestoFinder")
-        .controller("UpdateFavoriteController", function ($rootScope, $scope, $window, UserService) {
-            $scope.types = [
-                "REGISTERED", "CRITIC", "OWNER", "ADVERTISER", "ADMIN"
-            ];
+        .controller("UpdateFavoriteController", function ($rootScope, $scope, $window, $routeParams, RestaurantService, UserService) {
+            const userId = $routeParams.userId;
+            const restaurantId = $routeParams.restaurantId;
 
-            $scope.register = function () {
-                if (!$scope.picture) {
-                    $scope.picture = "https://i.stack.imgur.com/34AD2.jpg";
-                }
-                var user = {
-                    username: $scope.username,
-                    email: $scope.email,
-                    password: $scope.password,
-                    confirmpassword: $scope.confirmPassword,
-                    streetaddress: $scope.address,
-                    streetaddress2: $scope.address2,
-                    city: $scope.city,
-                    state: $scope.state,
-                    country: $scope.country,
-                    zipcode: $scope.zip,
-                    phone: $scope.phone,
-                    picture: $scope.picture,
-                    userType: $scope.type,
+            UserService.getUser(userId)
+                .then(function (response) {
+                    $scope.username = response.data.user.username;
+                });
+            RestaurantService.getAllRestaurants()
+                .then(function(response) {
+                    $scope.allRestaurants = response.data;
+                });
 
-                    name: $scope.company,
-                    position: $scope.position,
-
-                    credit_card_number: $scope.creditCardNumber,
-                    cardType: $scope.cardType,
-                    cvv: $scope.cvv
-                };
-                console.log("user getting post is", user);
-                UserService.register(user)
-                    .then(function (response) {
-                        alert("Registration successful!");
-                        $window.location.href = '/';
-                    }, function (err) {
-                        if (err.data.password == 'Passwords do not match') {
-                            alert("Passwords do not match");
+            $scope.updateFavorite = function () {
+                const string = $scope.restaurant;
+                const res = string.split(" ");
+                const restaurantId = res[1];
+                UserService.createFavorite(userId, restaurantId)
+                    .then(
+                        function (response) {
+                            alert("Favorite successfully updated!")
+                        },
+                        function (err) {
+                            console.log(err);
                         }
-                    });
+                    )
             };
         });
 })();

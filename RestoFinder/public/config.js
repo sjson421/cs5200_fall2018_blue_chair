@@ -64,7 +64,7 @@
                 templateUrl: "./views/create-favorite.view.html",
                 controller: "CreateFavoriteController"
             })
-            .when("/update-favorite", {
+            .when("/update-favorite/:userId/:restaurantId", {
                 templateUrl: "./views/update-favorite.view.html",
                 controller: "UpdateFavoriteController"
             });

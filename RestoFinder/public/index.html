@@ -33,7 +33,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.9/angular-material.min.js"></script>
-   
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-route.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular-cookies.min.js"></script>
 
@@ -62,71 +62,70 @@
     <script src="./controllers/create-favorite.controller.js"></script>
     <script src="./controllers/update-favorite.controller.js"></script>
 
-     <!-- Add services-->
-     <script src="./services/search.service.js"></script>
-     <script src="./services/restaurant.service.js"></script>
+    <!-- Add services-->
+    <script src="./services/search.service.js"></script>
+    <script src="./services/restaurant.service.js"></script>
     <script src="./services/review.service.js"></script>
-     <script src="./services/login.service.js"></script>
-     <script src="./services/flash.service.js"></script>
+    <script src="./services/login.service.js"></script>
+    <script src="./services/flash.service.js"></script>
     <script src="./services/user.service.js"></script>
     <script src="./services/advertisement.service.js"></script>
     <script src="./services/event.service.js"></script>
-   
 </head>
 
 <body ng-app="RestoFinder">
-    <flash-message></flash-message>
-    <!--============================= HEADER =============================-->
-    <div ng-controller="HeaderController">
-        <div ng-include="'./views/header.view.html'"></div>
-    </div>
-      
-    <div ng-view></div>
-    <!--============================= FOOTER =============================-->
-    <footer class="main-block dark-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="copyright">
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        <p>Copyright &copy; 2018 Listing. All rights reserved | This template is made with <i
-                                class="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                        </p>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        <ul>
-                            <li><a href="#"><span class="ti-facebook"></span></a></li>
-                            <li><a href="#"><span class="ti-twitter-alt"></span></a></li>
-                            <li><a href="#"><span class="ti-instagram"></span></a></li>
-                        </ul>
-                    </div>
+<flash-message></flash-message>
+<!--============================= HEADER =============================-->
+<div ng-controller="HeaderController">
+    <div ng-include="'./views/header.view.html'"></div>
+</div>
+
+<div ng-view></div>
+<!--============================= FOOTER =============================-->
+<footer class="main-block dark-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="copyright">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    <p>Copyright &copy; 2018 Listing. All rights reserved | This template is made with <i
+                            class="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    </p>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    <ul>
+                        <li><a href="#"><span class="ti-facebook"></span></a></li>
+                        <li><a href="#"><span class="ti-twitter-alt"></span></a></li>
+                        <li><a href="#"><span class="ti-instagram"></span></a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </footer>
-    <!--//END FOOTER -->
+    </div>
+</footer>
+<!--//END FOOTER -->
 
 
-    <!-- jQuery, Bootstrap JS. -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!-- Angular components -->
+<!-- jQuery, Bootstrap JS. -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!-- Angular components -->
 
 
-    <script>
-        $(window).scroll(function () {
-            // 100 = The point you would like to fade the nav in.
+<script>
+    $(window).scroll(function () {
+        // 100 = The point you would like to fade the nav in.
 
-            if ($(window).scrollTop() > 100) {
+        if ($(window).scrollTop() > 100) {
 
-                $('.fixed').addClass('is-sticky');
+            $('.fixed').addClass('is-sticky');
 
-            } else {
+        } else {
 
-                $('.fixed').removeClass('is-sticky');
+            $('.fixed').removeClass('is-sticky');
 
-            }
-            ;
-        });
-    </script>
+        }
+        ;
+    });
+</script>
 </body>
 
 </html>

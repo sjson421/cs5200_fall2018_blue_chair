@@ -1,0 +1,15 @@
+<form class="container">
+    <div class="top-bottom-margins">
+        <h2>Updating Favorite for User: {{username}}</h2>
+        <hr>
+        <form name="registration">
+            <label for="dropdown">Restaurant</label>
+            <br/>
+            <select id="dropdown" ng-model="restaurant">
+                <option ng-repeat="r in allRestaurants">ID {{r._id}} : ({{r.name}})</option>
+            </select>
+            <br/><br/>
+            <button type="submit" class="btn btn-primary" ng-click="updateFavorite()">Submit</button>
+        </form>
+    </div>
+</form>

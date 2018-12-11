@@ -15,10 +15,10 @@
         <tbody>
         <tr ng-repeat="f in favorites">
             <td>
-                <a href = "#!/restaurant/{{f[0]._id}}">{{f[0].name}}</a>
+                <a href="#!/restaurant/{{f[0]._id}}">{{f[0].name}}</a>
             </td>
             <td>
-                <a href="/#!/update-favorite/{{f[0]._id}}" class="btn btn-primary">Update</a>
+                <a href="/#!/update-favorite/{{userId}}/{{f[0]._id}}" class="btn btn-primary">Update</a>
             </td>
             <td>
                 <button class="btn btn-danger" ng-click="removeFavorite(f[0]._id, $index)">Remove</button>

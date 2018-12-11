@@ -88,6 +88,10 @@
             return $http.post(baseUrl + "/" + userId + "/favorites/" + restaurantId);
         }
 
+        function updateFavorite(userId, restaurantId) {
+            return $http.put(baseUrl + "/" + userId + "/favorites/" + restaurantId);
+        }
+
         function getOwnerRestaurant(userId) {
             // ??
             return $http.get(baseUrl + "/getowned/" + userId);
