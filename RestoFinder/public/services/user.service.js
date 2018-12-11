@@ -4,7 +4,7 @@
         .factory("UserService", userService);
 
     function userService($http) {
-        var baseUrl = "http://localhost:5000/api/user";
+        var baseUrl = "http://restofinder.rishabmalik.info/api/user";
         var api = {
             getAllUsers: getAllUsers,
             getUser: getUser,

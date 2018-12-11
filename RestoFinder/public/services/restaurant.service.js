@@ -4,7 +4,7 @@
         .factory("RestaurantService", restaurantService);
 
     function restaurantService($http) {
-        var baseUrl = "http://localhost:5000/api/restaurant"
+        var baseUrl = "http://restofinder.rishabmalik.info/api/restaurant"
         var api = {
             getFeaturedRestaurants: getFeaturedRestaurants,
             getAllRestaurants: getAllRestaurants,
@@ -17,7 +17,7 @@
         return api;
 
         function getFeaturedRestaurants() {
-            url = "http://localhost:5000/api/featured";
+            url = "http://restofinder.rishabmalik.info/api/featured";
             return $http.get(url);
         }
 

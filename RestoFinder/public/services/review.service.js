@@ -4,7 +4,7 @@
         .factory("ReviewService", reviewService);
 
     function reviewService($http) {
-        var baseUrl = "http://localhost:5000/api/review"
+        var baseUrl = "http://restofinder.rishabmalik.info/api/review"
         var api = {
             getAllReviews: getAllReviews,
             getReview: getReview,

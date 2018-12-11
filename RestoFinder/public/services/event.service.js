@@ -4,7 +4,7 @@
         .factory("EventService", eventService);
 
     function eventService($http) {
-       var baseUrl  = "http://localhost:5000/api/event"
+       var baseUrl  = "http://restofinder.rishabmalik.info/api/event"
         var api = {
           getEvents: getEvents,
           getEvent: getEvent,
