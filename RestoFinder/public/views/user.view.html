@@ -2869,9 +2869,9 @@
 <!-- Anony user view -->
 <section
   class="light-bg booking-details_wrap"
-  ng-if="loggedUser == null"
+  ng-if="loggedUser == null || loggedUser.userType == 'ADMIN'"
 >
   <div class="container">
-    Login to view profile
+    Login to view profile, If you are admin, visit admin panel to manage users
   </div>
 </section>
