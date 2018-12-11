@@ -100,11 +100,11 @@
                   <p>{{restaurant.url}}</p>
                 </li> -->
               </ul>
-              <div class="bottom-icons">
-                <!-- <div class="closed-now">CLOSED NOW</div> -->
+              <!-- <div class="bottom-icons">
+               
                 <span class="ti-heart"></span>
                 <span class="ti-bookmark"></span>
-              </div>
+              </div> -->
             </div>
         </a>
         </div>
@@ -121,7 +121,7 @@
 </section>
 <!-- //END FEATURED PLACES -->
 <!-- ============================= ADD LISTING ============================= -->
-<section class="main-block light-bg">
+<!-- <section class="main-block light-bg">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -144,5 +144,35 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 <!-- //END ADD LISTING -->
+<section class="main-block light-bg">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-5">
+          <div class="styled-heading">
+            <h3>Advertisements</h3>
+          </div>
+        </div>
+      </div>
+      <div class="row" ng-if ="!advertisementsLoading">
+        <div class="col-md-4 featured-responsive"  ng-repeat="advertisement in advertisements">
+          <div class="featured-place-wrap">
+            <a>
+              <img src={{advertisement.image_url}} class="restaurant-image" alt="#" />
+              <!-- <span class="featured-rating-orange ">{{restaurant.rating}}</span> -->
+              <div class="featured-title-box">
+                <h6>{{ advertisement.text }}</h6>
+                <!-- <p>Restaurant</p> -->
+                <span>• </span>
+                <p>{{advertisement.posted_on}} Posted On</p>
+          </a>
+          </div>
+        </div>
+      </div>
+      <div class="spinner" ng-if ="advertisementsLoading">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+      </div>
+    </div>
+  </section>

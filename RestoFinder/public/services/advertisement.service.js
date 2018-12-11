@@ -10,7 +10,7 @@
            getAdvertisement: getAdvertisement,
            createAdvertisement: createAdvertisement,
            updateAdvertisement: updateAdvertisement,
-           deleteAdvertisment: deleteAdvertisment
+           deleteAdvertisement: deleteAdvertisement
         };
         return api;
       
@@ -30,7 +30,7 @@
             return $http.put(baseUrl + "/" + advertisement._id, advertisement);
         }
 
-        function deleteAdvertisment(id){
+        function deleteAdvertisement(id){
             return $http.delete(baseUrl + "/" + id);
         }
 

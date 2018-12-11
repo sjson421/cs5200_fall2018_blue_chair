@@ -552,8 +552,8 @@
           UserService.getAdvertisementsForUser($scope.user._id)
             .then(function(response){
               console.log("fetching advertisements" ,response.data);
-              $response.advertisements = response.data;
-              $reponse.advertisementsLoading = false;
+              $scope.advertisements = response.data;
+              $scope.advertisementsLoading = false;
             },
             function(err){
               console.log(err);
@@ -563,7 +563,7 @@
         }
       }
 
-      $scope.deleteAdvertisment = function deleteAdvertisement(advertisement, $index){
+      $scope.deleteAdvertisement = function deleteAdvertisement(advertisement, index){
         AdvertisementService.deleteAdvertisement(advertisement._id)
           .then(
             function(response){
