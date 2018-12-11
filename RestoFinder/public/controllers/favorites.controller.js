@@ -6,7 +6,6 @@
             $scope.userId = userId;
             UserService.getUser(userId)
                 .then(function (response) {
-                    console.log(response.data);
                     $scope.username = response.data.user.username;
                 });
             UserService.getFavorites(userId)
@@ -20,6 +19,7 @@
                     ).then(
                         function(response) {
                             $scope.favorites = angular.copy(populateRestaurants);
+                            console.log($scope.favorites);
                         },
                         function(err) {
                             console.log(err);

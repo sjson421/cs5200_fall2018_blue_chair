@@ -6,7 +6,12 @@
     <h6>Favorites</h6> <br/>
     <a class="btn btn-success" href="/#!/create-favorite/{{userId}}">Create Favorite</a>
     <br/>
-    <table class="table table-sm admin-table">
+    <div ng-show="favorites.length == 0">
+        <br/>
+        <br/>
+        <p>This user has no favorites.</p>
+    </div>
+    <table class="table table-sm admin-table" ng-show="favorites.length > 0">
         <thead>
         <tr>
             <th>Restaurant</th>
