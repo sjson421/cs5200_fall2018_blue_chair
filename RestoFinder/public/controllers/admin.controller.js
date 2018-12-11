@@ -2,6 +2,7 @@
     angular
         .module("RestoFinder")
         .controller("AdminController", function ($rootScope, $scope, UserService, ReviewService, RestaurantService, LoginService) {
+
             var loggedUser = JSON.parse(LoginService.getCookieData());
             $scope.userType = loggedUser.userType;
 

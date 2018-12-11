@@ -6,7 +6,6 @@
                 "REGISTERED", "CRITIC", "OWNER", "ADVERTISER", "ADMIN"
             ];
 
-// Dropdown menu select => dynamically render fields for critic, etc.
             $scope.register = function () {
                 if (!$scope.picture) {
                     $scope.picture = "https://i.stack.imgur.com/34AD2.jpg";
@@ -39,9 +38,7 @@
                         alert("Registration successful!");
                         $window.location.href = '/';
                     }, function (err) {
-                        if (err.data.password == 'Passwords do not match') {
-                            alert("Passwords do not match");
-                        }
+                        alert(err);
                     });
             };
         });

@@ -7,22 +7,23 @@
             ];
 
             let id = $routeParams.restaurantId;
-            const restaurant = RestaurantService.getRestaurant(id);
+            RestaurantService.getRestaurant(id)
+                .then(function(response) {
+                    restaurant = response.data[0];
+                    $scope.name = restaurant.name;
+                    if (restaurant.location) {
+                        $scope.address = restaurant.location.address1;
+                        $scope.address2 = restaurant.location.address2;
+                        $scope.city = restaurant.location.city;
+                        $scope.state = restaurant.location.state;
+                        $scope.zip = restaurant.location.zip_code;
+                        $scope.country = restaurant.location.country;
+                    }
+                    $scope.phone = restaurant.phone;
+                    $scope.price = restaurant.price;
+                });
 
-            $scope.name = restaurant.name;
-
-            if (restaurant.location) {
-                $scope.address = restaurant.location.address1;
-                $scope.address2 = restaurant.location.address2;
-                $scope.city = restaurant.location.city;
-                $scope.state = restaurant.location.state;
-                $scope.zip = restaurant.location.zip_code;
-                $scope.country = restaurant.location.country;
-            }
-            $scope.phone = restaurant.phone;
-            $scope.price = restaurant.price;
-
-            $scope.create = function () {
+            $scope.update = function () {
                 var restaurant = {
                     name: $scope.name,
                     location: {
@@ -41,7 +42,7 @@
                         alert("Restaurant update successful!");
                         $window.location.href = '/';
                     }, function (err) {
-                        alert("There has been an error in restaurant update! " + err.message);
+                        alert("There has been an error in restaurant update! " + err);
                     });
             };
         });
