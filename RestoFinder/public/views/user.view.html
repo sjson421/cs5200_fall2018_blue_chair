@@ -1986,11 +1986,11 @@
   ============================= Section Break =============================
 -->
 
-<!-- Owner/Advertiser is viewing another RU PROFILE -->
+<!-- Owner is viewing another RU PROFILE -->
 <!-- Only Read -->
 <section
   class="light-bg booking-details_wrap"
-  ng-if="loggedUser._id != user._id && (userType == 'REGISTERED' || userType == 'ADVERTISER') && loggedUserType == 'OWNER'"
+  ng-if="loggedUser._id != user._id && userType == 'REGISTERED' && loggedUserType == 'OWNER'"
 >
   <div class="container">
     <div class="row">
@@ -2533,6 +2533,175 @@
             </div>
             <hr />
           </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--
+  ============================= Section Break =============================
+-->
+
+<!-- Owner is viewing another RU PROFILE -->
+<!-- Only Read -->
+<section
+  class="light-bg booking-details_wrap"
+  ng-if="loggedUser._id != user._id && userType == 'REGISTERED' && loggedUserType == 'ADVERTISER'"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 responsive-wrap">
+        <div class="follow">
+          <div class="follow-img" style="text-align: center">
+            <br />
+            <br />
+            <img
+              src="../images/follow-img.jpg"
+              class="img-fluid"
+              style="border-radius: 50%;"
+              alt="#"
+            />
+            <br />
+            <br />
+            <h6>{{ user.username | uppercase }}</h6>
+            <span>{{ user.address.city | uppercase }}</span>
+          </div>
+          <br />
+
+          <ul class="social-counts" ng-if="!followedByLoading">
+            <li>
+              <h6>{{ reviews.length }}</h6>
+              <span>Reviews</span>
+            </li>
+            <li>
+              <h6>{{ followedBy.length }}</h6>
+              <span>Followers</span>
+            </li>
+            <li>
+              <h6>{{ follows.length }}</h6>
+              <span>Followed</span>
+            </li>
+            <!--
+              <li ng-if="userNotInLoggedInFollows">
+                <button class="btn btn-primary" ng-click="followUser(user)">
+                  Follow
+                </button>
+              </li>
+              <li ng-if="!userNotInLoggedInFollows">
+                <button class="btn btn-danger" ng-click="unfollowUser(user)">
+                  Unfollow
+                </button>
+              </li>
+            -->
+          </ul>
+          <div class="spinner" ng-if="followedByLoading">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 responsive-wrap">
+        <div class="main-block light-bg">
+          <h5>Reviews</h5>
+          <div ng-repeat="review in reviews" ng-if="!reviewsLoading">
+            <hr />
+            <div class="customer-content">
+              <div class="customer-review">
+                <h6 style="padding: 5px;">{{ review.restaurant.name }}</h6>
+                <!--
+                  <span></span> <span></span> <span></span> <span></span>
+                  <span class="round-icon-blank"></span>
+                -->
+                <p>Reviewed on {{ review.time_created | date: "short" }}</p>
+              </div>
+              <div class="customer-rating">{{ review.rating }}</div>
+            </div>
+            <br />
+            <p class="customer-text">{{ review.text }}</p>
+            <br />
+            <span>28</span>
+            <a href="#"><span class="icon-like"></span> likes</a> &nbsp; &nbsp;
+            &nbsp; &nbsp;
+            <!--
+              <a href="#"><span class="icon-pencil"></span></a> &nbsp; &nbsp; &nbsp; &nbsp;
+              <a ng-click="deleteReview(review)"><span class="icon-trash"></span></a>
+            -->
+          </div>
+          <div class="spinner" ng-if="reviewsLoading">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+          <hr />
+        </div>
+        <div class="main-block light-bg">
+          <h5>Follows</h5>
+          <div ng-repeat="follow in follows" ng-if="!followsLoading">
+            <hr />
+            <div class="row">
+              <div class="col-md-4">{{ follow.user.username }}</div>
+              <div class="col-md-4">{{ follow.user.userType }}</div>
+              <div class="col-md-4">
+                <button
+                  class="btn btn-danger"
+                  ng-click="viewProfile(follow.user)"
+                >
+                  View Profile
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="spinner" ng-if="followsLoading">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+          <hr />
+        </div>
+        <div class="main-block light-bg">
+          <h5>Followed By</h5>
+          <div ng-repeat="followed in followedBy" ng-if="!followedByLoading">
+            <hr />
+            <div class="row">
+              <div class="col-md-4">{{ followed.user.username }}</div>
+              <div class="col-md-4">{{ followed.user.userType }}</div>
+              <div class="col-md-4">
+                <button
+                  class="btn btn-danger"
+                  ng-click="viewProfile(followed.user)"
+                >
+                  view profile
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="spinner" ng-if="followedByLoading">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+          <hr />
+        </div>
+        <div class="main-block light-bg">
+          <h5>Favourites</h5>
+          <div ng-repeat="favourite in favourites" ng-if="!favouritesLoading">
+            <hr />
+            <div class="row">
+              <div class="col-md-4">{{ favourite[0].name }}</div>
+              <div class="col-md-4">{{ favourite[0].location.city }}</div>
+              <div class="col-md-4">
+                <button
+                  class="btn btn-primary"
+                  ng-click="viewRestaurant(favourite[0])"
+                >
+                  view Restaurant
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="spinner" ng-if="favouritesLoading">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+          <hr />
+        </div>
       </div>
     </div>
   </div>

@@ -1,9 +1,9 @@
 (function () {
     angular
         .module("RestoFinder")
-        .factory("SearchService", searchService);
+        .factory("AdvertisementService", advertisementService);
 
-    function searchService($http) {
+    function advertisementService($http) {
         var baseUrl = "http://localhost:5000/api/advertisement"
         var api = {
            getAdvertisements: getAdvertisements,

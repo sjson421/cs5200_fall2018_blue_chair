@@ -25,6 +25,7 @@
       $scope.endorsedByLoading = true;
       $scope.loggedEndorsesLoading = true;
       $scope.ownerRestaurant = null;
+      $scope.advertisements =[];
       //   $scope.getUserReviews = getUserReviews();
       //   $scope.getUserFollows = getUserFollows();
       //   $scope.getUserFollowedBy = getUserFollowedBy();
@@ -550,6 +551,7 @@
         if($scope.userType == "ADVERTISER"){
           UserService.getAdvertisementsForUser($scope.user._id)
             .then(function(response){
+              console.log("fetching advertisements" ,response.data);
               $response.advertisements = response.data;
               $reponse.advertisementsLoading = false;
             },
@@ -587,8 +589,9 @@
       }
 
       $scope.createAdvertisement = function createAdvertisement(){
+        console.log("in heres");
         $mdDialog.show({
-          controller: "AdvertismentController",
+          controller: "AdvertisementController",
           templateUrl: "../views/create-advertisement.dialog.view.html",
           parent: angular.element(document.body),
           clickOutsideToClose: false,
@@ -661,7 +664,7 @@
 
     })
 
-    .controller("AdvertismentController", function($scope, $mdDialog, AdvertisementService){
+    .controller("AdvertisementController", function($scope, $mdDialog, AdvertisementService){
       let date = new Date();
       date = date.toString();
       $scope.type = "Create";
@@ -674,11 +677,11 @@
         url: $scope.url
         
       }
-      $scope.postAdvertisment = function postAdvertisment () {
+      $scope.postAdvertisement = function postAdvertisement () {
         // body
         $scope.dataLoading = true;
         console.log("advertisment being posted is", $scope.newAdvertisment);
-        AdvertisementService.createAdvertisement(newAdvertisment)
+        AdvertisementService.createAdvertisement($scope.newAdvertisment)
           .then(
               function(response){
                 $scope.advertisements.push(response.data);

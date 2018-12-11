@@ -8,14 +8,14 @@
                         <div class="form-group"
                              ng-class="{ 'has-error': form.advertisement-text.$error.required }">
                             <label for="text">Text</label>
-                            <textarea name="advertisement-text" id="advertisment-text" class="form-control" ng-model="newAdvertisement.text"
+                            <textarea name="advertisement-text" id="advertisment-text" class="form-control" ng-model="newAdvertisment.text"
                                    required></textarea>
                             <span ng-show="form.advertisement-text.$error.required" class="help-block">text is required</span>
                         </div>
                         <div class="form-group"
                              ng-class="{ 'has-error': form.url.$dirty && form.url.$error.required }">
                             <label for="url">url</label>
-                            <input type="text" name="url" id="rating" class="form-control" ng-model="newReview.url"
+                            <input type="text" name="url" id="rating" class="form-control" ng-model="newAdvertisment.url"
                                    required/>
                             <span ng-show="form.url.$dirty && form.url.$error.required" class="help-block">URL is required</span>
                         </div>

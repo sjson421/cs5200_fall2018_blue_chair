@@ -29,7 +29,7 @@
                     name: $scope.company,
                     position: $scope.position,
 
-                    credit_card_number: $scope.credit_card_number,
+                    credit_card_number: $scope.creditCardNumber,
                     cardType: $scope.cardType,
                     cvv: $scope.cvv
                 };
