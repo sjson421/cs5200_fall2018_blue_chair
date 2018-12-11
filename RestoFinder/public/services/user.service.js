@@ -40,7 +40,7 @@
         }
 
         function updateUser(id, user) {
-            return $http.put(baseUrl + "/" + id, user);
+            return $http.put(baseUrl + "/update/" + id, user);
         }
 
         function register(user) {

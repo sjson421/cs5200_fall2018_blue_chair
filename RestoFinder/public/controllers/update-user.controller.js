@@ -10,6 +10,7 @@
             UserService.getUser(id)
                 .then(function (response) {
                     user = response.data.user;
+                    console.log(user);
                     $scope.username = user.username;
                     $scope.email = user.email;
 
@@ -23,15 +24,8 @@
                     $scope.phone = user.phone;
                     $scope.picture = user.picture;
                     $scope.type = user.userType;
-
-                    $scope.company = user.name;
-                    $scope.position = user.position;
-
-                    $scope.creditCardNumber = user.credit_card_number;
-                    $scope.cardType = user.cardType;
-                    $scope.cvv = user.cvv;
                 });
-            $scope.register = function () {
+            $scope.updateUser = function () {
                 if (!$scope.picture) {
                     $scope.picture = "https://i.stack.imgur.com/34AD2.jpg";
                 }
@@ -39,7 +33,6 @@
                     username: $scope.username,
                     email: $scope.email,
                     password: $scope.password,
-                    confirmpassword: $scope.confirmPassword,
                     streetaddress: $scope.address,
                     streetaddress2: $scope.address2,
                     city: $scope.city,
@@ -47,22 +40,15 @@
                     country: $scope.country,
                     zipcode: $scope.zip,
                     phone: $scope.phone,
-                    picture: $scope.picture,
-                    userType: $scope.type,
-
-                    name: $scope.company,
-                    position: $scope.position,
-
-                    credit_card_number: $scope.creditCardNumber,
-                    cardType: $scope.cardType,
-                    cvv: $scope.cvv
+                    picture: $scope.picture
                 };
                 UserService.updateUser(id, user)
                     .then(function (response) {
+                        console.log(response);
                         alert("Update successful!");
-                        $window.location.href = '/';
+                        // $window.location.href = '/';
                     }, function (err) {
-                        alert(err.data.toString());
+                        alert(err.data);
                     });
             };
         });
