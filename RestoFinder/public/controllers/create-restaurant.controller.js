@@ -36,7 +36,7 @@
                         alert("Restaurant creation successful!");
                         $window.location.href = '/';
                     }, function (err) {
-                        alert("There has been an error in restaurant creation! " + err.message);
+                        alert("There has been an error in restaurant creation! " + err);
                     });
             };
         });
