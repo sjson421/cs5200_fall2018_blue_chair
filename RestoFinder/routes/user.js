@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require('../data/models/User.schema.server');
 const Review = require('../data/models/Review.schema.server');
 const Restaurant = require('../data/models/Restaurant.schema.server');
+const Advertisement = require('../data/models/Advertisement.schema.server');
 const bcrypt = require('bcryptjs');
 let _ = require('underscore');
 
