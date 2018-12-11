@@ -150,39 +150,30 @@ router.put('/update/:id', async (req, res) => {
     // const userfields = {};
     if (!user) return res.status(404).send('user not found');
 
-    let password = req.body.password;
-
     // let users = await User.find({'username': req.body.username, 'email': req.body.email});
     //
     // if(users.length > 0) return res.send('USERNAME OR EMAIL ALREADY EXISTS. CHANGE TO CONTINUE');
-
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, (err, hash) => {
-        if (err) throw err;
-          User.updateOne({_id: userid},
-            {
-              $set: {
-                username: req.body.username,
-                email: req.body.email,
-                password: hash,
-                address:{
-                  streetaddress: req.body.streetaddress,
-                  streetaddress2: req.body.streetaddress2,
-                  city: req.body.city,
-                  state: req.body.state,
-                  country: req.body.country,
-                  zipcode: req.body.zipcode
-                },
-                picture: req.body.picture,
-                phone: req.body.phone,
-              }
-            }
-          ).then(async() => {
-            let user = await User.find({_id: userid});
-            res.json(user[0]);
-          }).catch(err => res.status(400).send(err));
-      });
-    });
+    User.updateOne({_id: userid},
+      {
+        $set: {
+          username: req.body.username,
+          email: req.body.email,
+          address:{
+            streetaddress: req.body.streetaddress,
+            streetaddress2: req.body.streetaddress2,
+            city: req.body.city,
+            state: req.body.state,
+            country: req.body.country,
+            zipcode: req.body.zipcode
+          },
+          picture: req.body.picture,
+          phone: req.body.phone,
+        }
+      }
+    ).then(async() => {
+      let user = await User.find({_id: userid});
+      res.json(user[0]);
+    }).catch(err => res.status(400).send(err));
   }
 
   catch(err){

@@ -13,8 +13,6 @@
                     console.log(user);
                     $scope.username = user.username;
                     $scope.email = user.email;
-
-                    $scope.password = user.password;
                     $scope.address = user.address.streetaddress;
                     $scope.address2 = user.address.streetaddress2;
                     $scope.city = user.address.city;
@@ -32,7 +30,6 @@
                 var user = {
                     username: $scope.username,
                     email: $scope.email,
-                    password: $scope.password,
                     streetaddress: $scope.address,
                     streetaddress2: $scope.address2,
                     city: $scope.city,
