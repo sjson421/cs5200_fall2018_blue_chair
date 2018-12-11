@@ -51,6 +51,10 @@
             .when("/update-restaurant/:restaurantId", {
                 templateUrl: "./views/update-restaurant.view.html",
                 controller: "UpdateRestaurantController"
+            })
+            .when("/update-user/:userId", {
+                templateUrl: "./views/update-user.view.html",
+                controller: "UpdateUserController"
             });
     }
 

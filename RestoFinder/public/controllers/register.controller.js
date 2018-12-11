@@ -38,7 +38,9 @@
                         alert("Registration successful!");
                         $window.location.href = '/';
                     }, function (err) {
-                        alert(err);
+                        if (err.data.password == 'Passwords do not match') {
+                            alert("Passwords do not match");
+                        }
                     });
             };
         });

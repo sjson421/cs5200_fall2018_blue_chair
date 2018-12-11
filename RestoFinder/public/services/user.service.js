@@ -8,7 +8,7 @@
         var api = {
             getAllUsers: getAllUsers,
             getUser: getUser,
-            setUser: setUser,
+            updateUser: updateUser,
             register: register,
             getReviews: getReviews,
             getFollows: getFollows,
@@ -30,81 +30,95 @@
         };
         return api;
 
-        function getAllUsers(){
+        function getAllUsers() {
             return $http.get(baseUrl);
         }
 
-        function getUser(id){
-            return $http.get(baseUrl +"/" + id);
+        function getUser(id) {
+            return $http.get(baseUrl + "/" + id);
         }
 
-        function setUser(id, user) {
-
+        function updateUser(id, user) {
+            return $http.put(baseUrl + "/" + id, user);
         }
+
         function register(user) {
             return $http.post(baseUrl + "/register", user);
         }
 
-        function getReviews(id){
+        function getReviews(id) {
             return $http.get(baseUrl + "/" + id + "/reviews")
         }
 
-        function getFollows(id){
+        function getFollows(id) {
             return $http.get(baseUrl + "/" + id + "/follows");
         }
 
-        function getFollowedBy(id){
-            return $http.get(baseUrl + "/" + id + "/followedBy");   
+        function getFollowedBy(id) {
+            return $http.get(baseUrl + "/" + id + "/followedBy");
         }
-        function getEndorses(id){
+
+        function getEndorses(id) {
             // no API
             return $http.get(baseUrl + "/" + id + "/endorses");
         }
-        function getEndorsedBy(id){
+
+        function getEndorsedBy(id) {
             // no API
-            return $http.get(baseUrl + "/" + id + "/endorsedBy");   
+            return $http.get(baseUrl + "/" + id + "/endorsedBy");
         }
+
         // userId1 follows userId2
-        function createFollow(userId1, userId2){
+        function createFollow(userId1, userId2) {
             return $http.post(baseUrl + "/" + userId1 + "/" + "follow/" + userId2);
         }
-        function createEndorse(userId1, userId2){
+
+        function createEndorse(userId1, userId2) {
             return $http.post(baseUrl + "/" + userId1 + "/" + "endorse/" + userId2);
         }
-        function getFavorites(id){
+
+        function getFavorites(id) {
             // No API
             return $http.get(baseUrl + "/" + id + "/favorites");
         }
-        function createFavorite(userId, restaurantId){
+
+        function createFavorite(userId, restaurantId) {
             // No API
             return $http.post(baseUrl + "/" + userId + "/favorites/" + restaurantId);
         }
-        function getOwnerRestaurant(userId){
+
+        function getOwnerRestaurant(userId) {
             // ??
             return $http.get(baseUrl + "/getowned/" + userId);
         }
-        function createOwnerRestaurant(userId,restaurantId){
+
+        function createOwnerRestaurant(userId, restaurantId) {
             return $http.post(baseUrl + "/" + userId + "/owns/" + restaurantId);
         }
-        function deleteFollow(userId1, userId2){
+
+        function deleteFollow(userId1, userId2) {
             return $http.post(baseUrl + "/" + userId1 + "/" + "unfollow/" + userId2);
         }
-        function deleteEndorse(userId1, userId2){
+
+        function deleteEndorse(userId1, userId2) {
             return $http.post(baseUrl + "/" + userId1 + "/" + "unendorse/" + userId2);
         }
-        function deleteFavorite(userId, restaurantId){
+
+        function deleteFavorite(userId, restaurantId) {
             return $http.post(baseUrl + "/" + userId + "/" + "unfavorites/" + restaurantId);
         }
-        function deleteOwnerRestaurant(userId, restaurantId){
-            return $http.post(baseUrl + "/" + userId + "/disown/" +restaurantId);
+
+        function deleteOwnerRestaurant(userId, restaurantId) {
+            return $http.post(baseUrl + "/" + userId + "/disown/" + restaurantId);
         }
-            // No API
+
+        // No API
         function removeUser(id) {
             return $http.delete(baseUrl + "/" + id);
         }
 
         // get Advertisements for user
-        function getAdvertisementsForUser(userId){
+        function getAdvertisementsForUser(userId) {
             return $http.get(baseUrl + "/getads/" + userId);
         }
     }

@@ -1,7 +1,7 @@
 <section class="booking-details_wrap container">
     <div ng-show="userType == 'ADMIN'">
         <h5>
-            Users
+            Users and their Favorites
         </h5>
         <hr>
         <button class="btn btn-outline-primary" ng-click="showHideUsers()">View Users</button>
@@ -12,12 +12,17 @@
                 <thead>
                 <tr>
                     <th>User</th>
+                    <th>Type</th>
+                    <th>Favorites</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="u in users">
                     <td>
                         <a href="/#!/user/{{u._id}}">{{u.username}}</a>
+                    </td>
+                    <td>
+                        <p>{{u.userType}}</p>
                     </td>
                     <td>
                         <a href="/#!/update-user/{{u._id}}" class="btn btn-primary">Update</a>
