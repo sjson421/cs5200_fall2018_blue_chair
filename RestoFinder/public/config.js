@@ -55,6 +55,18 @@
             .when("/update-user/:userId", {
                 templateUrl: "./views/update-user.view.html",
                 controller: "UpdateUserController"
+            })
+            .when("/favorites/:userId", {
+                templateUrl: "./views/favorites.view.html",
+                controller: "FavoritesController"
+            })
+            .when("/create-favorite/:userId", {
+                templateUrl: "./views/create-favorite.view.html",
+                controller: "CreateFavoriteController"
+            })
+            .when("/update-favorite", {
+                templateUrl: "./views/update-favorite.view.html",
+                controller: "UpdateFavoriteController"
             });
     }
 
