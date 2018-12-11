@@ -15,10 +15,12 @@
       $scope.getLoggedInUser = getLoggedInUser();
       $scope.getRestaurant = getRestaurant();
       $scope.getReviews = getReviews();
+      $scope.loadingOwner = true;
       function getRestaurant() {
         RestaurantService.getRestaurant($routeParams.restaurantId).then(
           function(response) {
             $scope.restaurant = response.data[0];
+            $scope.loadingOwner = false;
             getLoggedInUserFavourites();
             console.log(response.data);
           },
@@ -29,11 +31,39 @@
         // body
         $scope.loggedUser = JSON.parse(LoginService.getCookieData());
         if ($scope.loggedUser != null && $scope.loggedUser) {
+          console.log("in here");
           $rootScope.currentUser = $scope.loggedUser;
           $scope.userType = $scope.loggedUser.userType;
+          console.log("logged in user is", $scope.loggedUser);
+         
         } 
       }
 
+      $scope.claimRestaurant = function claimRestaurant(){
+        UserService.createOwnerRestaurant($scope.loggedUser._id, $scope.restaurant._id)
+          .then(
+            function(response){
+              if(response.data.hasOwnProperty("userOwns")){
+                alert("user already owns a restaurant")
+              }
+              else{
+                $scope.restaurant.is_claimed = true;
+              }
+             
+              //getRestaurantOwner();
+            },
+            function(err){
+              console.log(err);
+            }
+
+          )
+      }
+
+      function getRestaurantOwner(){
+        if($scope.restaurant.is_claimed){
+          UserService.getOwnerRestaurant()
+        }
+      }
       function getReviews() {
         RestaurantService.getReviewsForRestaurant(
           $routeParams.restaurantId

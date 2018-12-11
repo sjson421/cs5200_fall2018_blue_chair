@@ -20,10 +20,10 @@
             id="navbarNavDropdown"
           >
             <ul class="navbar-nav">
-              <li class="nav-item active">
-                <a class="nav-link" href="#!/admin">ADMIN DELETE LATER</a>
+              <li class="nav-item active" ng-if="currentUser != null && currentUser.userType == 'ADMIN'">
+                <a class="nav-link" href="#!/admin">ADMIN MANAGE</a>
               </li>
-              <li class="nav-item active" ng-if="currentUser != null">
+              <li class="nav-item active" ng-if="currentUser != null && currentUser.userType != 'ADMIN'">
                 <a class="nav-link" ng-click="goToProfile()">Profile</a>
               </li>
               <li class="nav-item" ng-if="currentUser == null">
