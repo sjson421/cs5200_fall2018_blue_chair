@@ -25,7 +25,8 @@
             deleteFollow: deleteFollow,
             removeUser: removeUser,
             getOwnerRestaurant: getOwnerRestaurant,
-            deleteOwnerRestaurant: deleteOwnerRestaurant
+            deleteOwnerRestaurant: deleteOwnerRestaurant,
+            getAdvertisementsForUser: getAdvertisementsForUser
         };
         return api;
 
@@ -100,6 +101,11 @@
             // No API
         function removeUser(id) {
             return $http.delete(baseUrl + "/" + id);
+        }
+
+        // get Advertisements for user
+        function getAdvertisementsForUser(userId){
+            return $http.get(baseUrl + "/getads/" + userId);
         }
     }
 })();

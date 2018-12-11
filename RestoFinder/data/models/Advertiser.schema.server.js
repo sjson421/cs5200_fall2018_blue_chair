@@ -12,13 +12,10 @@ const AdvertiserSchema = new Schema({
     payment: {
         credit_card_number: {
             type: String,
-            required: true,
-            minlength: 10,
-            maxlength: 10
+            required: true
         },
         cardType:{
-            type: String,
-            enum: ["Visa", "Mastercard", "Discover"]
+            type: String
         },
         cvv: {
             type: String,

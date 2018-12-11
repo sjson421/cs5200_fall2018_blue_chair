@@ -12,7 +12,8 @@
       $location,
       ReviewService,
       RestaurantService,
-      $mdDialog
+      $mdDialog,
+      AdvertisementService
     ) {
       $scope.getLoggedInUser = getLoggedInUser();
       //$scope.getProfileUser = getProfileUser();
@@ -24,6 +25,7 @@
       $scope.endorsedByLoading = true;
       $scope.loggedEndorsesLoading = true;
       $scope.ownerRestaurant = null;
+      $scope.advertisements =[];
       //   $scope.getUserReviews = getUserReviews();
       //   $scope.getUserFollows = getUserFollows();
       //   $scope.getUserFollowedBy = getUserFollowedBy();
@@ -60,6 +62,7 @@
             getLoggedInUserEndorses();
             getUserEndorsedBy();
             getOwnerRestaurant();
+            getAdvertisements();
           })
           .catch(function(err) {
             console.log(err);
@@ -545,15 +548,60 @@
       }
 
       function getAdvertisements(){
-
+        if($scope.userType == "ADVERTISER"){
+          UserService.getAdvertisementsForUser($scope.user._id)
+            .then(function(response){
+              console.log("fetching advertisements" ,response.data);
+              $response.advertisements = response.data;
+              $reponse.advertisementsLoading = false;
+            },
+            function(err){
+              console.log(err);
+            }
+            )
+            
+        }
       }
 
-      function deleteAdvertisement(){
-
+      $scope.deleteAdvertisment = function deleteAdvertisement(advertisement, $index){
+        AdvertisementService.deleteAdvertisement(advertisement._id)
+          .then(
+            function(response){
+              $scope.advertisements.splice(index,1);
+            },
+            function(err){
+              console.log(err);
+            }
+          )
       }
 
-      function updateAdvertisement(){
-        
+      $scope.updateAdvertisement = function updateAdvertisement(advertisement, $index){
+        AdvertisementService.updateAdvertisement(advertisement)
+          .then(
+            function(response){
+              $scope.advertisements.splice(index,1);
+              $scope.advertisements.push(response.data);
+            },
+            function(err){
+              console.log(err);
+            }
+          )
+      }
+
+      $scope.createAdvertisement = function createAdvertisement(){
+        console.log("in heres");
+        $mdDialog.show({
+          controller: "AdvertisementController",
+          templateUrl: "../views/create-advertisement.dialog.view.html",
+          parent: angular.element(document.body),
+          clickOutsideToClose: false,
+          scope: $scope,
+          preserveScope: true
+          // locals: {
+          //   review: review,
+          //   index: index
+          // }
+        });
       }
       
       // review, follows, followedBy, favorites, endorses, endorsedBy, restaurant
@@ -615,4 +663,42 @@
       }
 
     })
+
+    .controller("AdvertisementController", function($scope, $mdDialog, AdvertisementService){
+      let date = new Date();
+      date = date.toString();
+      $scope.type = "Create";
+      $scope.dataLoading = false;
+      $scope.newAdvertisment = {
+        advertiser: $scope.loggedUser._id,
+        text: $scope.text,
+       posted_on: date,
+      image_url:  "",
+        url: $scope.url
+        
+      }
+      $scope.postAdvertisement = function postAdvertisement () {
+        // body
+        $scope.dataLoading = true;
+        console.log("advertisment being posted is", $scope.newAdvertisment);
+        AdvertisementService.createAdvertisement($scope.newAdvertisment)
+          .then(
+              function(response){
+                $scope.advertisements.push(response.data);
+                $mdDialog.cancel();
+              },
+              function(err){
+                console.log(err);
+                $mdDialog.cancel();
+              }
+          )
+     
+      }
+
+      $scope.cancel = function cancel () {
+        // body
+        $mdDialog.cancel();
+      }
+
+    });
 })();
