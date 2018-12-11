@@ -1,7 +1,7 @@
 (function () {
     angular
         .module("RestoFinder")
-        .controller("AdminController", function ($rootScope, $scope, UserService, ReviewService, RestaurantService, LoginService) {
+        .controller("AdminController", function ($rootScope, $scope, UserService, RestaurantService, LoginService) {
 
             var loggedUser = JSON.parse(LoginService.getCookieData());
             $scope.userType = loggedUser.userType;
@@ -25,10 +25,6 @@
                 .then(function(response) {
                     $scope.users = response.data;
                 });
-            ReviewService.getAllReviews()
-                .then(function(response) {
-                    $scope.reviews = response.data;
-                });
             RestaurantService.getAllRestaurants()
                 .then(function(response) {
                     $scope.restaurants = response.data;
@@ -39,7 +35,7 @@
                     .then(function(response) {
                         $scope.users.splice(index, 1)
                     },function(err) {
-                        alert("There has been an error in removing the user.\nError: " + err.message)
+                        alert("There has been an error in removing the user.\nError: " + err.data)
                     });
             }
             $scope.removeReview = function removeReview(id, index) {
@@ -47,7 +43,7 @@
                     .then(function(response) {
                         $scope.reviews.splice(index, 1)
                     },function(err) {
-                        alert("There has been an error in removing the review.\nError: " + err.message)
+                        alert("There has been an error in removing the review.\nError: " + err.data)
                     });
             }
             $scope.removeRestaurant = function removeRestaurant(id, index) {
@@ -55,7 +51,7 @@
                     .then(function(response) {
                         $scope.restaurants.splice(index, 1)
                     },function(err) {
-                        alert("There has been an error in removing the restaurant.\nError: " + err.message)
+                        alert("There has been an error in removing the restaurant.\nError: " + err.data)
                     });
             }
         });
