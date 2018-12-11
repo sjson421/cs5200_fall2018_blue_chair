@@ -152,9 +152,9 @@ router.put('/update/:id', async (req, res) => {
 
     let password = req.body.password;
 
-    let users = await User.find({'username': req.body.username, 'email': req.body.email});
-
-    if(users.length > 0) return res.send('USERNAME OR EMAIL ALREADY EXISTS. CHANGE TO CONTINUE');
+    // let users = await User.find({'username': req.body.username, 'email': req.body.email});
+    //
+    // if(users.length > 0) return res.send('USERNAME OR EMAIL ALREADY EXISTS. CHANGE TO CONTINUE');
 
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(password, salt, (err, hash) => {
