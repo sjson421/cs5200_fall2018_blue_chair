@@ -5,6 +5,7 @@ const User = require('../data/models/User.schema.server');
 const Review = require('../data/models/Review.schema.server');
 const Restaurant = require('../data/models/Restaurant.schema.server');
 const Advertisement = require('../data/models/Advertisement.schema.server');
+const EventModel = require("../data/models/Event.schema.server");
 const bcrypt = require('bcryptjs');
 let _ = require('underscore');
 
@@ -1224,5 +1225,17 @@ router.get('/getads/:id', async (req, res) => {
   }
 });
 
+router.get("/:id/events", async(req,res) =>{
+
+  try{
+    let userId = req.params.id;
+    const result = await EventModel.find({owner: userId}).populate('restaurant').populate('owner');
+    res.send(result)
+  }
+  catch (err){
+    res.status(400).send(err);
+  }
+
+});
 
 module.exports = router;

@@ -26,7 +26,8 @@
             removeUser: removeUser,
             getOwnerRestaurant: getOwnerRestaurant,
             deleteOwnerRestaurant: deleteOwnerRestaurant,
-            getAdvertisementsForUser: getAdvertisementsForUser
+            getAdvertisementsForUser: getAdvertisementsForUser,
+            getEventsForUser: getEventsForUser
         };
         return api;
 
@@ -120,6 +121,10 @@
         // get Advertisements for user
         function getAdvertisementsForUser(userId) {
             return $http.get(baseUrl + "/getads/" + userId);
+        }
+
+        function getEventsForUser(id){
+            return $http.get(baseUrl + "/" + id + "/events");
         }
     }
 })();

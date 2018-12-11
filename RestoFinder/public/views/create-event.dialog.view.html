@@ -1,0 +1,115 @@
+<!-- referenced from Jason Watmore -->
+<section class="light-bg booking-details_wrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-md-offset-3">
+        <h2>Create Event</h2>
+        <form name="form" ng-submit="postEvent()" role="form">
+          <div
+            class="form-group"
+            ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }"
+          >
+            <label for="name">name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              class="form-control"
+              ng-model="newEvent.name"
+              required
+            />
+            <span
+              ng-show="form.name.$dirty && form.name.$error.required"
+              class="help-block"
+              >name is required</span
+            >
+          </div>
+          <div
+            class="form-group"
+            ng-class="{ 'has-error': form.event-description.$error.required }"
+          >
+            <label for="description">Description</label>
+            <textarea
+              name="event-description"
+              id="advertisment-text"
+              class="form-control"
+              ng-model="newEvent.description"
+              required
+            ></textarea>
+            <span
+              ng-show="form.event-description.$error.required"
+              class="help-block"
+              >description is required</span
+            >
+          </div>
+          <div
+            class="form-group"
+            ng-class="{ 'has-error': form.start_time.$dirty }"
+          >
+            <label for="start_time">Start time</label>
+            <input
+              type="text"
+              name="start_time"
+              id="start_time"
+              class="form-control"
+              ng-model="newEvent.start_time"
+            />
+            <span ng-show="form.start_time.$dirty " class="help-block"
+              >start_time error</span
+            >
+          </div>
+          <div
+            class="form-group"
+            ng-class="{ 'has-error': form.end_time.$dirty }"
+          >
+            <label for="end_time">End time</label>
+            <input
+              type="text"
+              name="end_time"
+              id="end_time"
+              class="form-control"
+              ng-model="newEvent.end_time"
+            />
+            <span ng-show="form.end_time.$dirty " class="help-block"
+              >end_time error</span
+            >
+          </div>
+          <div
+            class="form-group"
+            ng-class="{ 'has-error': form.price.$error.required }"
+          >
+            <label for="price">Price</label>
+            <input
+              name="price"
+              id="price"
+              type="number"
+              class="form-control"
+              ng-model="newEvent.price"
+              required
+            />
+            <span
+              ng-show="form.price.$error.required"
+              class="help-block"
+              >price is required</span
+            >
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="submit"
+              ng-disabled="form.$invalid"
+              class="btn btn-primary"
+            >
+              {{ type }} Event
+            </button>
+            <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+            <img
+              ng-if="dataLoading"
+              src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

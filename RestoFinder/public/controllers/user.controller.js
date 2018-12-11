@@ -13,7 +13,8 @@
       ReviewService,
       RestaurantService,
       $mdDialog,
-      AdvertisementService
+      AdvertisementService,
+      EventService
     ) {
       $scope.getLoggedInUser = getLoggedInUser();
       //$scope.getProfileUser = getProfileUser();
@@ -25,14 +26,35 @@
       $scope.endorsedByLoading = true;
       $scope.loggedEndorsesLoading = true;
       $scope.ownerRestaurant = null;
-      $scope.advertisements =[];
+      $scope.advertisements = [];
       //   $scope.getUserReviews = getUserReviews();
       //   $scope.getUserFollows = getUserFollows();
       //   $scope.getUserFollowedBy = getUserFollowedBy();
       //   $scope.getUserEndorses = getUserEndorses();
       //   $scope.getUserEndorsedBy = getUserEndorsedBy();
       //   $scope.getUserFavorites = getUserFavorites();
-
+      // review, follows, followedBy, favorites, endorses, endorsedBy, restaurant
+      // RU
+      // 1. reviews
+      // 2. follows (RU, CRitic)
+      // 3. followedBy (RU)
+      // 4. Favs (Restaurants)
+      // plus details + edit for his details ( his email,password,address,profilepic)
+      // Critic
+      // 1. reviews
+      // 2. his profile including company
+      // 3. endorses (Owner)
+      // 4. follows (Critic)
+      // 5. followedBy (RU, Owner)
+      // Owner
+      // 1. follows (Critic)
+      // 2. endorsedBy (Critic)
+      // 3. endorses (Owner)
+      // 4. restaurant
+      // Advertiser
+      // create Advertisements
+      // view Advertisements
+      // delete Advertisements
       function getLoggedInUser() {
         // body
         $scope.loggedUser = JSON.parse(LoginService.getCookieData());
@@ -63,6 +85,7 @@
             getUserEndorsedBy();
             getOwnerRestaurant();
             getAdvertisements();
+            getEventsForUser();
           })
           .catch(function(err) {
             console.log(err);
@@ -169,7 +192,6 @@
                   console.log(err);
                 }
               );
-
             },
             function(err) {
               console.log("error in fetching endorses", err);
@@ -227,9 +249,12 @@
               checkUserInFollowsOfLoggedInUser();
             }
             console.log("followed by is ", $scope.followedBy);
-            let index3 = getIndexOfLoggedUserInArray($scope.loggedUser, $scope.followedBy);
-            console.log("index3 returned is", index3);// $scope.followedBy.indexOf({user: $scope.loggedUser})
-            if(index3 > -1){
+            let index3 = getIndexOfLoggedUserInArray(
+              $scope.loggedUser,
+              $scope.followedBy
+            );
+            console.log("index3 returned is", index3); // $scope.followedBy.indexOf({user: $scope.loggedUser})
+            if (index3 > -1) {
               console.log("index finding worked", index3);
               $scope.followedBy.splice(index3, 1);
             }
@@ -239,13 +264,13 @@
           }
         );
       };
-      function getIndexOfLoggedUserInArray(userToFind, userArray){
+      function getIndexOfLoggedUserInArray(userToFind, userArray) {
         let returnIndex = null;
-        userArray.forEach((element,index) => {
+        userArray.forEach((element, index) => {
           console.log("element is", element.user._id);
           console.log("index is", index);
           console.log("user to find is", userToFind._id);
-          if(element.user._id == userToFind._id){
+          if (element.user._id == userToFind._id) {
             returnIndex = index;
           }
         });
@@ -265,7 +290,7 @@
         );
       };
 
-      $scope.updateReview = function updateReview(review, index){
+      $scope.updateReview = function updateReview(review, index) {
         let reviewId = review._id;
         $mdDialog.show({
           controller: "UpdateReviewController",
@@ -279,7 +304,7 @@
             index: index
           }
         });
-      }
+      };
 
       $scope.followUser = function followUser(user) {
         // body
@@ -303,26 +328,23 @@
       };
 
       function getLoggedInUserFollows() {
-
         if (
           $scope.loggedUserType == "REGISTERED" ||
           $scope.loggedUserType == "CRITIC" ||
           $scope.loggedUserType == "OWNER"
-        ){
-
-        let id = $scope.loggedUser._id;
-        UserService.getFollows(id).then(
-          function(response) {
-            $scope.loggedFollows = response.data;
-            checkUserInFollowsOfLoggedInUser();
-            //checkUserInFollowsOfLoggedInUser();
-          },
-          function(err) {
-            console.log("error in fetching folllows of logged In users", err);
-          }
-        );
+        ) {
+          let id = $scope.loggedUser._id;
+          UserService.getFollows(id).then(
+            function(response) {
+              $scope.loggedFollows = response.data;
+              checkUserInFollowsOfLoggedInUser();
+              //checkUserInFollowsOfLoggedInUser();
+            },
+            function(err) {
+              console.log("error in fetching folllows of logged In users", err);
+            }
+          );
         }
-
       }
 
       function getLoggedInUserFollowedBy() {}
@@ -339,31 +361,26 @@
 
       function getUserFavourites() {
         if ($scope.userType == "REGISTERED") {
-          UserService.getFavorites($scope.user._id)
-          .then(
-              function(response){
-                populateRestaurants = [];
-                $q.all(
-                  extractRestaurants(
-                    response.data,
-                    populateRestaurants
-                  )
-                ).then(
-                  function(response) {
-                    $scope.favourites = angular.copy(populateRestaurants);
-                    console.log("favourites are ", $scope.favourites);
-                    $scope.favouritesLoading = false;
-                  },
-                  function(err) {
-                    console.log(err);
-                  }
-                );
-              },
-              function (err){
-                console.log(err);
-              }
-          )
-         
+          UserService.getFavorites($scope.user._id).then(
+            function(response) {
+              populateRestaurants = [];
+              $q.all(
+                extractRestaurants(response.data, populateRestaurants)
+              ).then(
+                function(response) {
+                  $scope.favourites = angular.copy(populateRestaurants);
+                  console.log("favourites are ", $scope.favourites);
+                  $scope.favouritesLoading = false;
+                },
+                function(err) {
+                  console.log(err);
+                }
+              );
+            },
+            function(err) {
+              console.log(err);
+            }
+          );
         }
       }
 
@@ -430,44 +447,46 @@
         $location.url("/restaurant/" + restaurant._id);
       };
 
-    
-
-      $scope.unEndorseOwner = function unEndorseOwner(owner, index=null) {
+      $scope.unEndorseOwner = function unEndorseOwner(owner, index = null) {
         // body
 
-        UserService.deleteEndorse($scope.loggedUser._id, owner._id)
-          .then(
-            function(response){
-              if(index != null){
-                $scope.endorses.splice(index,1);
-              }
+        UserService.deleteEndorse($scope.loggedUser._id, owner._id).then(
+          function(response) {
+            if (index != null) {
+              $scope.endorses.splice(index, 1);
+            }
             let index2 = $scope.loggedEndorses.indexOf(owner._id);
             //console.log("user id unfollowed is", );
             console.log("index find is", index2);
             if (index2 > -1) {
               $scope.loggedEndorses.splice(index2, 1);
-              checkUserInEndorseOfLoggedInUser()
+              checkUserInEndorseOfLoggedInUser();
             }
-            let index3 = getIndexOfLoggedUserInArray($scope.loggedUser, $scope.endorsedBy)//$scope.endorsedBy.indexOf({user: $scope.loggedUser})
-            if(index3 > -1){
-              $scope.endorsedBy.splice(index3,1);
-            } 
-            },
-            function(err){
-              console.log('error in unendorsing owner',err);
+            let index3 = getIndexOfLoggedUserInArray(
+              $scope.loggedUser,
+              $scope.endorsedBy
+            ); //$scope.endorsedBy.indexOf({user: $scope.loggedUser})
+            if (index3 > -1) {
+              $scope.endorsedBy.splice(index3, 1);
             }
-          )
-      }
+          },
+          function(err) {
+            console.log("error in unendorsing owner", err);
+          }
+        );
+      };
 
-      function getLoggedInUserEndorses(){
+      function getLoggedInUserEndorses() {
         let id = $scope.loggedUser._id;
-        if ($scope.loggedUserType == "OWNER" || $scope.loggedUserType == "CRITIC") {
+        if (
+          $scope.loggedUserType == "OWNER" ||
+          $scope.loggedUserType == "CRITIC"
+        ) {
           UserService.getEndorses(id).then(
             function(response) {
               $scope.loggedEndorses = response.data;
               $scope.loggedEndorsesLoading = false;
-              checkUserInEndorseOfLoggedInUser()
-
+              checkUserInEndorseOfLoggedInUser();
             },
             function(err) {
               console.log("error in fetching logged endorses", err);
@@ -476,26 +495,24 @@
         }
       }
 
-      $scope.endorseUser = function endorseUser(owner){
+      $scope.endorseUser = function endorseUser(owner) {
         let userId1 = $scope.loggedUser._id;
         let userId2 = owner._id;
 
-        UserService.createEndorse(userId1, userId2)
-          .then(
-            function(response){
-              console.log("response after endorsing", response.data);
-              $scope.loggedEndorses.push(response.data.user2._id);
-              $scope.endorsedBy.push({
-                user: $scope.loggedUser
-              });
-              checkUserInEndorseOfLoggedInUser();
-            },
-            function(err){
-              console.log("Error in endorsing user", err);
-            }
-          )
-
-      }
+        UserService.createEndorse(userId1, userId2).then(
+          function(response) {
+            console.log("response after endorsing", response.data);
+            $scope.loggedEndorses.push(response.data.user2._id);
+            $scope.endorsedBy.push({
+              user: $scope.loggedUser
+            });
+            checkUserInEndorseOfLoggedInUser();
+          },
+          function(err) {
+            console.log("Error in endorsing user", err);
+          }
+        );
+      };
 
       function checkUserInEndorseOfLoggedInUser() {
         // body
@@ -506,89 +523,89 @@
         // let id = user._id;
         // return $scope.loggedFollows.
       }
-      function getLoggedInUserEndorsedBy(){
+      function getLoggedInUserEndorsedBy() {
         // pass
       }
 
-      function getOwnerRestaurant(){
-        if($scope.userType == 'OWNER'){
+      function getOwnerRestaurant() {
+        if ($scope.userType == "OWNER") {
           let ownerId = $scope.user._id;
-          UserService.getOwnerRestaurant(ownerId)
-            .then(
-                function(response){
-                  console.log("owner restaurant is", response.data);
-                  $scope.ownerRestaurant = response.data
-                  console.log("owner", $scope.ownerRestaurant);
-                },
-                function(err){
-                  console.log(err);
-                }
-            )
+          UserService.getOwnerRestaurant(ownerId).then(
+            function(response) {
+              console.log("owner restaurant is", response.data);
+              $scope.ownerRestaurant = response.data;
+              console.log("owner", $scope.ownerRestaurant);
+            },
+            function(err) {
+              console.log(err);
+            }
+          );
         }
       }
 
-      $scope.createOwnerRestaurant = function createOwnerRestaurant(){
+      $scope.createOwnerRestaurant = function createOwnerRestaurant() {
         // pass
-      }
+      };
 
-      $scope.unClaimRestaurant = function unClaimRestaurant(){
+      $scope.unClaimRestaurant = function unClaimRestaurant() {
         let restaurantId = $scope.ownerRestaurant._id;
         let ownerId = $scope.loggedUser._id;
 
-        UserService.deleteOwnerRestaurant(ownerId, restaurantId)
-          .then(
-              function(response){
-                $scope.ownerRestaurant = null;
-              },
-              function(err){
-                console.log("err");
-              }
-          )
+        UserService.deleteOwnerRestaurant(ownerId, restaurantId).then(
+          function(response) {
+            $scope.ownerRestaurant = null;
+          },
+          function(err) {
+            console.log("err");
+          }
+        );
+      };
 
-      }
-
-      function getAdvertisements(){
-        if($scope.userType == "ADVERTISER"){
-          UserService.getAdvertisementsForUser($scope.user._id)
-            .then(function(response){
-              console.log("fetching advertisements" ,response.data);
+      function getAdvertisements() {
+        if ($scope.userType == "ADVERTISER") {
+          UserService.getAdvertisementsForUser($scope.user._id).then(
+            function(response) {
+              console.log("fetching advertisements", response.data);
               $scope.advertisements = response.data;
               $scope.advertisementsLoading = false;
             },
-            function(err){
+            function(err) {
               console.log(err);
             }
-            )
-            
+          );
         }
       }
 
-      $scope.deleteAdvertisement = function deleteAdvertisement(advertisement, index){
-        AdvertisementService.deleteAdvertisement(advertisement._id)
-          .then(
-            function(response){
-              $scope.advertisements.splice(index,1);
-            },
-            function(err){
-              console.log(err);
-            }
-          )
-      }
+      $scope.deleteAdvertisement = function deleteAdvertisement(
+        advertisement,
+        index
+      ) {
+        AdvertisementService.deleteAdvertisement(advertisement._id).then(
+          function(response) {
+            $scope.advertisements.splice(index, 1);
+          },
+          function(err) {
+            console.log(err);
+          }
+        );
+      };
 
-      $scope.updateAdvertisement = function updateAdvertisement(advertisement, $index){
-        AdvertisementService.updateAdvertisement(advertisement)
-          .then(
-            function(response){
-              $scope.advertisements.splice(index,1);
-              $scope.advertisements.push(response.data);
-            },
-            function(err){
-              console.log(err);
-            }
-          )
-      }
+      $scope.updateAdvertisement = function updateAdvertisement(
+        advertisement,
+        $index
+      ) {
+        AdvertisementService.updateAdvertisement(advertisement).then(
+          function(response) {
+            $scope.advertisements.splice(index, 1);
+            $scope.advertisements.push(response.data);
+          },
+          function(err) {
+            console.log(err);
+          }
+        );
+      };
 
-      $scope.createAdvertisement = function createAdvertisement(){
+      $scope.createAdvertisement = function createAdvertisement() {
         console.log("in heres");
         $mdDialog.show({
           controller: "AdvertisementController",
@@ -602,32 +619,76 @@
           //   index: index
           // }
         });
+      };
+
+      function getEventsForUser() {
+        if ($scope.userType == "OWNER") {
+          let userId = $scope.user._id;
+          UserService.getEventsForUser(userId).then(
+            function(response) {
+              $scope.events = response.data;
+              $scope.eventsLoading = false;
+            },
+            function(err) {
+              console.log(err);
+            }
+          );
+        }
+        else{
+          $scope.eventsLoading = true;
+        }
       }
+
+      $scope.deleteEvent = function deleteEvent(event, index) {
+        let eventId = event._id;
+        EventService.deleteEvent(eventId).then(
+          function(response) {
+            $scope.events.splice(index, 1);
+          },
+          function(err) {
+            console.log("unable to delete event", err);
+          }
+        );
+      };
+
+      // create and update event in model
+      $scope.createEvent = function createEvent(){
+        console.log("in create event");
+        console.log("logged user is" ,$scope.loggedUser);
+        if($scope.loggedUser.owner.hasOwnProperty('restaurant') || $scope.ownerRestaurant != null){
+          // dialog here
+          $mdDialog.show({
+            controller: "CreateEventController",
+            templateUrl: "../views/create-event.dialog.view.html",
+            parent: angular.element(document.body),
+            clickOutsideToClose: false,
+            scope: $scope,
+            preserveScope: true
+            // locals: {
+            //   review: review,
+            //   index: index
+            // }
+          });
+        }
+        else{
+          alert("You don't own a restaurant, claim a restaurant first for creating events");
+        }
+      }
+
+      $scope.updateEvent = function updateEvent(event, index) {
+        // body
+        console.log("in update event");
+      }
+
       
-      // review, follows, followedBy, favorites, endorses, endorsedBy, restaurant
-      // RU
-      // 1. reviews
-      // 2. follows (RU, CRitic)
-      // 3. followedBy (RU)
-      // 4. Favs (Restaurants)
-      // plus details + edit for his details ( his email,password,address,profilepic)
-      // Critic
-      // 1. reviews
-      // 2. his profile including company
-      // 3. endorses (Owner)
-      // 4. follows (Critic)
-      // 5. followedBy (RU, Owner)
-      // Owner
-      // 1. follows (Critic)
-      // 2. endorsedBy (Critic)
-      // 3. endorses (Owner)
-      // 4. restaurant 
-      // Advertiser
-      // create Advertisements
-      // view Advertisements
-      // delete Advertisements
     })
-    .controller("UpdateReviewController", function($scope, $mdDialog, review, index, ReviewService){
+    .controller("UpdateReviewController", function(
+      $scope,
+      $mdDialog,
+      review,
+      index,
+      ReviewService
+    ) {
       let date = new Date();
       date = date.toString();
       $scope.type = "Update";
@@ -639,32 +700,35 @@
         text: review.text,
         time_created: date,
         url: "",
-        yelp_review: false,
-        
-      }
-      $scope.postReview = function postReview () {
+        yelp_review: false
+      };
+      $scope.postReview = function postReview() {
         // body
         $scope.dataLoading = true;
         console.log("review being posted is", $scope.newReview);
-        ReviewService.updateReview(review._id, $scope.newReview)
-          .then(function (response){
-        
-              $scope.reviews.splice(index,1);
-              $scope.reviews.push(response.data);
-              $mdDialog.cancel();
-          },function(err){
+        ReviewService.updateReview(review._id, $scope.newReview).then(
+          function(response) {
+            $scope.reviews.splice(index, 1);
+            $scope.reviews.push(response.data);
+            $mdDialog.cancel();
+          },
+          function(err) {
             console.log(err);
-          })
-      }
+          }
+        );
+      };
 
-      $scope.cancel = function cancel () {
+      $scope.cancel = function cancel() {
         // body
         $mdDialog.cancel();
-      }
-
+      };
     })
 
-    .controller("AdvertisementController", function($scope, $mdDialog, AdvertisementService){
+    .controller("AdvertisementController", function(
+      $scope,
+      $mdDialog,
+      AdvertisementService
+    ) {
       let date = new Date();
       date = date.toString();
       $scope.type = "Create";
@@ -672,33 +736,81 @@
       $scope.newAdvertisment = {
         advertiser: $scope.loggedUser._id,
         text: $scope.text,
-       posted_on: date,
-      image_url:  "",
+        posted_on: date,
+        image_url: "",
         url: $scope.url
-        
-      }
-      $scope.postAdvertisement = function postAdvertisement () {
+      };
+      $scope.postAdvertisement = function postAdvertisement() {
         // body
         $scope.dataLoading = true;
         console.log("advertisment being posted is", $scope.newAdvertisment);
-        AdvertisementService.createAdvertisement($scope.newAdvertisment)
-          .then(
-              function(response){
-                $scope.advertisements.push(response.data);
-                $mdDialog.cancel();
-              },
-              function(err){
-                console.log(err);
-                $mdDialog.cancel();
-              }
-          )
-     
-      }
+        AdvertisementService.createAdvertisement($scope.newAdvertisment).then(
+          function(response) {
+            $scope.advertisements.push(response.data);
+            $mdDialog.cancel();
+          },
+          function(err) {
+            console.log(err);
+            $mdDialog.cancel();
+          }
+        );
+      };
 
-      $scope.cancel = function cancel () {
+      $scope.cancel = function cancel() {
         // body
         $mdDialog.cancel();
-      }
+      };
+    })
 
-    });
+    .controller("CreateEventController", function(
+      $scope,
+      $mdDialog,
+      EventService
+    ) {
+      let date = new Date();
+      date = date.toString();
+      $scope.type = "Create";
+      $scope.dataLoading = false;
+      let restaurantId =null;
+      if($scope.ownerRestaurant != null){
+        restaurantId = $scope.ownerRestaurant._id;
+      }
+      else{
+        restaurantId = $scope.loggedUser.owner.restaurant;
+      }
+      $scope.newEvent = {
+        name: $scope.name,
+        owner: $scope.loggedUser._id,
+        restaurant:restaurantId,
+        start_time: $scope.start_time,
+        end_time: $scope.end_time,
+        description: $scope.description,
+        price: $scope.price,
+        age: ""
+
+
+      };
+      $scope.postEvent = function postEvent() {
+        // body
+        $scope.dataLoading = true;
+        console.log("event being posted is", $scope.newEvent);
+        EventService.createEvent($scope.newEvent).then(
+          function(response) {
+            console.log("response is", response);
+            $scope.events.push(response.data[0]);
+            $scope.eventsLoading = false;
+            $mdDialog.cancel();
+          },
+          function(err) {
+            console.log(err);
+            $mdDialog.cancel();
+          }
+        );
+      };
+
+      $scope.cancel = function cancel() {
+        // body
+        $mdDialog.cancel();
+      };
+    })
 })();

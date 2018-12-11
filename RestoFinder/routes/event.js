@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Event = require("../data/models/Event.schema.server");
+const EventModel = require("../data/models/Event.schema.server");
 const User = require("../data/models/User.schema.server");
 const Restaurant = require("../data/models/Restaurant.schema.server");
 // post event
@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
     if (!restaurant) return res.status(404).send("Invalid Restaturant");
     if (user.userType != "OWNER" && user.userType != "ADMIN")
       return res.status(404).send("Invalid Request");
-    const event = new Event({
+    const event = new EventModel({
       name: req.body.name,
       owner: userId,
       restaurant: restaurantId,
@@ -27,7 +27,8 @@ router.post("/", async (req, res) => {
     });
     event.validate();
     const result = await event.save();
-    res.send(result);
+    const returnResult = await EventModel.find({_id: result._id}).populate('owner').populate('restaurant');
+    res.send(returnResult);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -36,7 +37,7 @@ router.post("/", async (req, res) => {
 // get all
 router.get("/", async (req, res) => {
   try {
-    const events = await Event.find();
+    const events = await EventModel.find().populate('restaurant').populate('owner');
     res.send(events);
   } catch (err) {
     res.status(400).send(err);
@@ -47,7 +48,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    const event = await Event.find({ _id: id });
+    const event = await EventModel.find({ _id: id }).populate('owner').populate('restaurant');
     res.send(event);
   } catch (err) {
     res.status(400).send(err);
@@ -58,7 +59,7 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    var event = await Event.find({ _id: id });
+    var event = await EventModel.find({ _id: id });
     event = event[0];
     if (!event) return res.status(404).send("Object not found");
     let userId = req.body.owner;
@@ -69,7 +70,7 @@ router.put("/:id", async (req, res) => {
     if (!restaurant) return res.status(404).send("Invalid Restaturant");
     if (user.userType != "OWNER" && user.userType != "ADMIN")
       return res.status(404).send("Invalid Request");
-    Event.updateOne(
+    EventModel.updateOne(
       { _id: id },
       {
         $set: {
@@ -86,7 +87,7 @@ router.put("/:id", async (req, res) => {
       }
     )
       .then(async () => {
-        var result = await Event.find({ _id: id });
+        var result = await EventModel.find({ _id: id }).populate('user').populate('owner');
         res.send(result[0]);
       })
       .catch(err => {
@@ -101,10 +102,10 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    var event = await Event.find({ _id: id });
+    var event = await EventModel.find({ _id: id });
     event = event[0];
     if (!event) return res.status(404).send("Object not found");
-    const result = await Event.deleteOne({ _id: event._id });
+    const result = await EventModel.deleteOne({ _id: event._id });
     res.send(result);
   } catch (err) {
     res.status(400).send(err);

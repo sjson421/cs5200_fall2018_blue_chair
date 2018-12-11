@@ -654,7 +654,33 @@
               </div>  
             </div>
             <hr />
-          </div>
+        </div>
+        <div class="main-block light-bg">
+            <h5>Events</h5>
+            <div ng-repeat="event in events" ng-if="!eventsLoading">
+              <hr />
+              <div class="customer-content">
+                <div class="customer-review">
+                  <h5 style="padding: 5px;">{{ event.name }}</h6>
+                  <h6 style="padding: 5px;">{{ event.restaurant.name }}</h5>
+                  <!--
+                    <span></span> <span></span> <span></span> <span></span>
+                    <span class="round-icon-blank"></span>
+                  -->
+                  <p>{{ event.start_time}}-{{ event.end_time }}</p>
+                </div>
+                <div class="customer-rating">  {{ event.price }}$</div>
+              </div>
+              <br />
+              <p class="customer-text">{{ event.description }}</p>
+              <br />
+            </div>
+            <div class="spinner" ng-if="eventsLoading">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <hr />
+        </div>
       </div>
     </div>
   </div>
@@ -1441,7 +1467,33 @@
               </div>  
             </div>
             <hr />
-          </div>
+        </div>
+        <div class="main-block light-bg">
+            <h5>Events</h5>
+            <div ng-repeat="event in events" ng-if="!eventsLoading">
+              <hr />
+              <div class="customer-content">
+                <div class="customer-review">
+                  <h5 style="padding: 5px;">{{ event.name }}</h6>
+                  <h6 style="padding: 5px;">{{ event.restaurant.name }}</h5>
+                  <!--
+                    <span></span> <span></span> <span></span> <span></span>
+                    <span class="round-icon-blank"></span>
+                  -->
+                  <p>{{ event.start_time}}-{{ event.end_time }}</p>
+                </div>
+                <div class="customer-rating">  {{ event.price }}$</div>
+              </div>
+              <br />
+              <p class="customer-text">{{ event.description }}</p>
+              <br />
+            </div>
+            <div class="spinner" ng-if="eventsLoading">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <hr />
+        </div>
       </div>
     </div>
   </div>
@@ -1492,18 +1544,14 @@
               <h6>{{ endorsedBy.length }}</h6>
               <span>Endorsed By</span>
             </li>
-            <!--
-              <li ng-if="userNotInLoggedInFollows">
-                <button class="btn btn-primary" ng-click="followUser(user)">
-                  Follow
+            
+              <li>
+                <button class="btn btn-primary" ng-click="createEvent()">
+                  Create Event
                 </button>
               </li>
-              <li ng-if="!userNotInLoggedInFollows">
-                <button class="btn btn-danger" ng-click="unfollowUser(user)">
-                  Unfollow
-                </button>
-              </li>
-            -->
+             
+           
           </ul>
           <div class="spinner" ng-if="followsLoading">
             <div class="double-bounce1"></div>
@@ -1628,6 +1676,41 @@
             
           </div>
           <hr />
+        </div>
+        <div class="main-block light-bg">
+            <h5>Events</h5>
+            <div ng-repeat="event in events" ng-if="!eventsLoading">
+              <hr />
+              <div class="customer-content">
+                <div class="customer-review">
+                  <h5 style="padding: 5px;">{{ event.name }}</h6>
+                  <h6 style="padding: 5px;">{{ event.restaurant.name }}</h5>
+                  <!--
+                    <span></span> <span></span> <span></span> <span></span>
+                    <span class="round-icon-blank"></span>
+                  -->
+                  <p>{{ event.start_time}}-{{ event.end_time }}</p>
+                </div>
+                <div class="customer-rating">{{ event.price }}$</div>
+              </div>
+              <br />
+              <p class="customer-text">{{ event.description }}</p>
+              <br />
+              <a ng-click="updateEvent(event,$index)"
+              ><span class="icon-pencil"></span
+            ></a>
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <a ng-click="deleteEvent(event, $index)"
+              ><span class="icon-trash"></span
+            ></a>
+          </div>
+          <hr />
+            </div>
+            <div class="spinner" ng-if="eventsLoading">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <hr />
         </div>
       </div>
     </div>
@@ -1783,7 +1866,33 @@
               </div>  
             </div>
             <hr />
-          </div>
+        </div>
+        <div class="main-block light-bg">
+            <h5>Events</h5>
+            <div ng-repeat="event in events" ng-if="!eventsLoading">
+              <hr />
+              <div class="customer-content">
+                <div class="customer-review">
+                  <h5 style="padding: 5px;">{{ event.name }}</h6>
+                  <h6 style="padding: 5px;">{{ event.restaurant.name }}</h5>
+                  <!--
+                    <span></span> <span></span> <span></span> <span></span>
+                    <span class="round-icon-blank"></span>
+                  -->
+                  <p>{{ event.start_time}}-{{ event.end_time }}</p>
+                </div>
+                <div class="customer-rating">  {{ event.price }}$</div>
+              </div>
+              <br />
+              <p class="customer-text">{{ event.description }}</p>
+              <br />
+            </div>
+            <div class="spinner" ng-if="eventsLoading">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <hr />
+        </div>
       </div>
     </div>
   </div>
@@ -2532,7 +2641,33 @@
               </div>  
             </div>
             <hr />
-          </div>
+        </div>
+        <div class="main-block light-bg">
+            <h5>Events</h5>
+            <div ng-repeat="event in events" ng-if="!eventsLoading">
+              <hr />
+              <div class="customer-content">
+                <div class="customer-review">
+                  <h5 style="padding: 5px;">{{ event.name }}</h6>
+                  <h6 style="padding: 5px;">{{ event.restaurant.name }}</h5>
+                  <!--
+                    <span></span> <span></span> <span></span> <span></span>
+                    <span class="round-icon-blank"></span>
+                  -->
+                  <p>{{ event.start_time}}-{{ event.end_time }}</p>
+                </div>
+                <div class="customer-rating">  {{ event.price }}$</div>
+              </div>
+              <br />
+              <p class="customer-text">{{ event.description }}</p>
+              <br />
+            </div>
+            <div class="spinner" ng-if="eventsLoading">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <hr />
+        </div>
       </div>
     </div>
   </div>
@@ -2542,7 +2677,7 @@
   ============================= Section Break =============================
 -->
 
-<!-- Owner is viewing another RU PROFILE -->
+<!-- Advertiser is viewing another RU PROFILE -->
 <!-- Only Read -->
 <section
   class="light-bg booking-details_wrap"
