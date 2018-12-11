@@ -26,7 +26,7 @@
             return $http.post(baseUrl, event);
         }
 
-        function updateEvent(event){
+        function updateEvent(id,event){
             return $http.put(baseUrl + "/" + id, event);
         }
 

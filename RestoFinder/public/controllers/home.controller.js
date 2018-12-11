@@ -8,15 +8,18 @@
       $location,
       RestaurantService,
       LoginService,
-      AdvertisementService
+      AdvertisementService,
+      EventService
     ) {
       $scope.search = "";
       $scope.userSearch = "";
       $scope.getFeaturedRestaurants = getFeaturedResults();
       $scope.getCurrentLoggedInUser = getCurrentLoggedInUser();
       $scope.getAdvertisements = getAdvertisements();
+      $scope.getEvents = getEvents();
       $scope.featuredLoading = true;
       $scope.advertisementsLoading = true;
+      $scope.eventsLoading = true;
         
       $scope.viewRestaurant = viewRestaurant;
       $scope.getSearchResults = function() {
@@ -68,6 +71,20 @@
                 }
 
             )
+      }
+
+      function getEvents(){
+        EventService.getEvents()
+          .then(
+            function(response){
+              $scope.events = response.data;
+              $scope.eventsLoading = false;
+            },
+            function (err) {
+              // body
+              console.log(err);
+            }
+          )
       }
     });
 })();

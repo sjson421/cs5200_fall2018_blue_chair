@@ -55,6 +55,7 @@ router.put("/:id", async (req, res) => {
     advertisement = advertisement[0];
     if (!advertisement) return res.status(404).send("Object not found");
     let userId = req.body.advertiser;
+    console.log("user id is", userId);
     const user = await User.findOne({ _id: userId });
     if (!user) return res.status(404).send("Invalid User");
     if (user.userType != "ADVERTISER" && user.userType != "ADMIN")

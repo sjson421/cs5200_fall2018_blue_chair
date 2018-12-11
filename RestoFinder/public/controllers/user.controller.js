@@ -60,10 +60,11 @@
         $scope.loggedUser = JSON.parse(LoginService.getCookieData());
         if ($scope.loggedUser != null && $scope.loggedUser) {
           $rootScope.currentUser = $scope.loggedUser;
+          $scope.loggedUserType = $scope.loggedUser.userType;
+          console.log("loggedUser is", $scope.loggedUser);
+          getProfileUser();
         }
-        $scope.loggedUserType = $scope.loggedUser.userType;
-        console.log("loggedUser is", $scope.loggedUser);
-        getProfileUser();
+       
       }
 
       function getProfileUser() {
@@ -575,6 +576,10 @@
           );
         }
       }
+      
+      $scope.updateUser = function updateUser(){
+        $location.url('update-user' + "/" + $scope.loggedUser._id);
+      }
 
       $scope.deleteAdvertisement = function deleteAdvertisement(
         advertisement,
@@ -592,17 +597,25 @@
 
       $scope.updateAdvertisement = function updateAdvertisement(
         advertisement,
-        $index
+        index
       ) {
-        AdvertisementService.updateAdvertisement(advertisement).then(
-          function(response) {
-            $scope.advertisements.splice(index, 1);
-            $scope.advertisements.push(response.data);
-          },
-          function(err) {
-            console.log(err);
+        $mdDialog.show({
+          controller: "UpdateAdvertisementController",
+          templateUrl: "../views/create-advertisement.dialog.view.html",
+          parent: angular.element(document.body),
+          clickOutsideToClose: false,
+          scope: $scope,
+          preserveScope: true,
+          locals: {
+            advertisement: advertisement,
+            index: index
           }
-        );
+        });
+
+
+
+
+        
       };
 
       $scope.createAdvertisement = function createAdvertisement() {
@@ -678,6 +691,18 @@
       $scope.updateEvent = function updateEvent(event, index) {
         // body
         console.log("in update event");
+        $mdDialog.show({
+          controller: "UpdateEventController",
+          templateUrl: "../views/create-event.dialog.view.html",
+          parent: angular.element(document.body),
+          clickOutsideToClose: false,
+          scope: $scope,
+          preserveScope: true,
+          locals: {
+             event: event,
+             index: index
+           }
+        });
       }
 
       
@@ -762,6 +787,61 @@
       };
     })
 
+    .controller("UpdateEventController", function(
+      $scope,
+      $mdDialog,
+      EventService,
+      event,
+      index
+    ) {
+      let date = new Date();
+      date = date.toString();
+      $scope.type = "Update";
+      $scope.dataLoading = false;
+      // let restaurantId =null;
+      // if($scope.ownerRestaurant != null){
+      //   restaurantId = $scope.ownerRestaurant._id;
+      // }
+      // else{
+      //   restaurantId = $scope.loggedUser.owner.restaurant;
+      // }
+      $scope.newEvent = {
+        name: event.name,
+        owner: $scope.loggedUser._id,
+        restaurant: event.restaurant._id,
+        start_time: event.start_time,
+        end_time: event.end_time,
+        description: event.description,
+        price: event.price,
+        age: ""
+
+
+      };
+      $scope.postEvent = function postEvent() {
+        // body
+        $scope.dataLoading = true;
+        console.log("event being posted is", $scope.newEvent);
+        EventService.updateEvent(event._id, $scope.newEvent).then(
+          function(response) {
+            console.log("response is", response);
+            $scope.events.splice(index,1);
+            $scope.events.push(response.data);
+            //$scope.eventsLoading = false;
+            $mdDialog.cancel();
+          },
+          function(err) {
+            console.log(err);
+            $mdDialog.cancel();
+          }
+        );
+      };
+
+      $scope.cancel = function cancel() {
+        // body
+        $mdDialog.cancel();
+      };
+    })
+
     .controller("CreateEventController", function(
       $scope,
       $mdDialog,
@@ -804,6 +884,48 @@
           function(err) {
             console.log(err);
             $mdDialog.cancel();
+          }
+        );
+      };
+
+      $scope.cancel = function cancel() {
+        // body
+        $mdDialog.cancel();
+      };
+    })
+
+
+    .controller("UpdateAdvertisementController", function(
+      $scope,
+      $mdDialog,
+      AdvertisementService,
+      advertisement,
+      index
+    ) {
+      let date = new Date();
+      date = date.toString();
+      $scope.type = "Update";
+      $scope.dataLoading = false;
+      $scope.newAdvertisment = {
+        advertiser: $scope.loggedUser._id,
+        text: advertisement.text,
+        posted_on: advertisement.posted_on,
+        image_url: "",
+        url: advertisement.url
+      };
+      $scope.postAdvertisement = function postAdvertisement() {
+        // body
+        $scope.dataLoading = true;
+        console.log("advertisment being posted is", $scope.newAdvertisment);
+        AdvertisementService.updateAdvertisement(advertisement._id,$scope.newAdvertisment).then(
+          function(response) {
+            $scope.advertisements.splice(index, 1);
+            $scope.advertisements.push(response.data);
+            $mdDialog.cancel();
+          },
+          function(err) {
+            $mdDialog.cancel()
+            console.log(err);
           }
         );
       };

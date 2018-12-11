@@ -26,8 +26,9 @@
             return $http.post(baseUrl, advertisement);
         }
 
-        function updateAdvertisement(advertisement){
-            return $http.put(baseUrl + "/" + advertisement._id, advertisement);
+        function updateAdvertisement(id, advertisement){
+            console.log("advertisement is",advertisement);
+            return $http.put(baseUrl + "/" + id, advertisement);
         }
 
         function deleteAdvertisement(id){

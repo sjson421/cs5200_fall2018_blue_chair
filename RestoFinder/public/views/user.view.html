@@ -1,3 +1,5 @@
+
+
 <!--
   =============================Section Break =============================
 -->
@@ -43,6 +45,9 @@
             <li>
               <h6>{{ favourites.length }}</h6>
               <span>Favourites</span>
+            </li>
+            <li>
+              <button class="btn btn-primary" ng-click="updateUser()">Update Info</button>
             </li>
           </ul>
           <div class="spinner" ng-if="followedByLoading">
@@ -813,6 +818,9 @@
               <h6>{{ endorses.length }}</h6>
               <span>Endorses</span>
             </li>
+            <li>
+                <button class="btn btn-primary" ng-click="updateUser()">Update Info</button>
+            </li>
             <!--
               <li ng-if="userNotInLoggedInFollows">
                 <button class="btn btn-primary" ng-click="followUser(user)">
@@ -1550,6 +1558,10 @@
                   Create Event
                 </button>
               </li>
+
+              <li>
+                  <button class="btn btn-primary" ng-click="updateUser()">Update Info</button>
+                </li>
              
            
           </ul>
@@ -2288,6 +2300,11 @@
             <h6>{{ user.username | uppercase }}</h6>
             <span>{{ user.address.city | uppercase }}</span>
             <span>{{ user.userType }}</span>
+            <ul>
+                <li>
+                    <button class="btn btn-primary" ng-click="updateUser()">Update Info</button>
+                  </li>
+            </ul>
           </div>
           <br />
 
@@ -2327,6 +2344,12 @@
                     ng-click="deleteAdvertisement(advertisement, $index)"
                   >
                     Delete Advertisement
+                  </button>
+                  <button
+                    class="btn btn-warning"
+                    ng-click="updateAdvertisement(advertisement, $index)"
+                  >
+                    Update Advertisement
                   </button>
                 </div>
              
@@ -2839,5 +2862,16 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+
+<!-- Anony user view -->
+<section
+  class="light-bg booking-details_wrap"
+  ng-if="loggedUser == null"
+>
+  <div class="container">
+    Login to view profile
   </div>
 </section>
