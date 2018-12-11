@@ -3,7 +3,7 @@
         .module("RestoFinder")
         .controller("UpdateFavoriteController", function ($rootScope, $scope, $window, $routeParams, RestaurantService, UserService) {
             const userId = $routeParams.userId;
-            const restaurantId = $routeParams.restaurantId;
+            const temp = $routeParams.restaurantId;
 
             UserService.getUser(userId)
                 .then(function (response) {
@@ -18,7 +18,9 @@
                 const string = $scope.restaurant;
                 const res = string.split(" ");
                 const restaurantId = res[1];
-                UserService.createFavorite(userId, restaurantId)
+                console.log(temp);
+                console.log(restaurantId);
+                UserService.updateFavorite(userId, restaurantId, temp)
                     .then(
                         function (response) {
                             alert("Favorite successfully updated!")

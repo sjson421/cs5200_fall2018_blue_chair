@@ -23,6 +23,7 @@
             deleteEndorse: deleteEndorse,
             deleteFavorite: deleteFavorite,
             deleteFollow: deleteFollow,
+            updateFavorite: updateFavorite,
             removeUser: removeUser,
             getOwnerRestaurant: getOwnerRestaurant,
             deleteOwnerRestaurant: deleteOwnerRestaurant,
@@ -88,8 +89,11 @@
             return $http.post(baseUrl + "/" + userId + "/favorites/" + restaurantId);
         }
 
-        function updateFavorite(userId, restaurantId) {
-            return $http.put(baseUrl + "/" + userId + "/favorites/" + restaurantId);
+        async function updateFavorite(userId, restaurantId, temp) {
+            await deleteFavorite(userId, temp);
+            return createFavorite(userId, restaurantId);
+
+
         }
 
         function getOwnerRestaurant(userId) {
@@ -127,7 +131,7 @@
             return $http.get(baseUrl + "/getads/" + userId);
         }
 
-        function getEventsForUser(id){
+        function getEventsForUser(id) {
             return $http.get(baseUrl + "/" + id + "/events");
         }
     }

@@ -17,6 +17,8 @@
                 const string = $scope.restaurant;
                 const res = string.split(" ");
                 const restaurantId = res[1];
+                console.log(userId);
+                console.log(restaurantId);
                 UserService.createFavorite(userId, restaurantId)
                     .then(
                         function (response) {
