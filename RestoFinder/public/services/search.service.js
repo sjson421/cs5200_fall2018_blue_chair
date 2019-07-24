@@ -11,12 +11,12 @@
         };
         return api;
         function getSearchRestaurants(term){
-            url = "http://restofinder.tejasparab1.com/api/restaurant/search/" + term;
+            url = "https://restofinder.tejasparab1.com/api/restaurant/search/" + term;
             return $http.get(url);
         }
 
         function getSearchUsers(term){
-            url = "http://restofinder.tejasparab1.com/api/user/search/" + term;
+            url = "https://restofinder.tejasparab1.com/api/user/search/" + term;
             return $http.get(url);
         }
         

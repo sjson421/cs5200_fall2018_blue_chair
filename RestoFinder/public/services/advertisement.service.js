@@ -4,7 +4,7 @@
         .factory("AdvertisementService", advertisementService);
 
     function advertisementService($http) {
-        var baseUrl = "http://restofinder.tejasparab1.com/api/advertisement"
+        var baseUrl = "https://restofinder.tejasparab1.com/api/advertisement"
         var api = {
            getAdvertisements: getAdvertisements,
            getAdvertisement: getAdvertisement,
