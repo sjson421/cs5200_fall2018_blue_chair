@@ -6,7 +6,7 @@ const client = yelp.client(API_KEY);
 
 async function populateRestaurants() {
     await RestaurantModel.remove()
-    locations = ['boston', 'seatlle', 'new york']
+    locations = ['boston', 'seattle', 'new york']
     
     for(let location of locations){
         let count = 0
@@ -26,7 +26,7 @@ async function populateRestaurants() {
                         image_url: restaurant.image_url,
                         is_closed: restaurant.is_closed,
                         location: restaurant.location,
-                        phone: restaurant.phone,
+                        phone: restaurant.phone === null? "NA" : restaurant.phone,
                         is_claimed: false,
                         price: restaurant.price,
                         rating: restaurant.rating,

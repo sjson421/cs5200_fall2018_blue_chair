@@ -11,12 +11,12 @@
         };
         return api;
         function getSearchRestaurants(term){
-            url = "http://restofinder.rishabmalik.info/api/restaurant/search/" + term;
+            url = "http://restofinder.tejasparab1.com/api/restaurant/search/" + term;
             return $http.get(url);
         }
 
         function getSearchUsers(term){
-            url = "http://restofinder.rishabmalik.info/api/user/search/" + term;
+            url = "http://restofinder.tejasparab1.com/api/user/search/" + term;
             return $http.get(url);
         }
         
