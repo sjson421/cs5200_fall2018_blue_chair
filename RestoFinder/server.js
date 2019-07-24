@@ -37,6 +37,6 @@ app.use('/api/event', event);
 app.use('/api/review',review);
 app.use('/api/advertisement', advertisement);
 app.use('/api/featured', featured);
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5105;
 
 app.listen(port, () => console.log(`Server running on ${port}`));
